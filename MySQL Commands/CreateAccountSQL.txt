@@ -1,0 +1,20 @@
+CREATE TABLE Account (
+	ID int not null,
+	name char(30),
+	username char(15) not null,
+	password char(20) not null,
+	email char(40) not null,
+	primary key(ID)
+);
+
+INSERT INTO Account
+(ID, name, username, password, email)
+	values(0, "John", "JohnDoe123", "password1", "JohnDoe@iastate.edu");
+
+INSERT INTO Account
+(ID, name, username, password, email)
+	values(1, "Jane", "JaneDoe987", "computer2", "JaneDoe@iastate.edu");
+
+INSERT INTO Account
+(ID, name, username, password, email)
+	values(2, "Bob", "BobDoe456", "notepad6", "BobDoe@iastate.edu");
