@@ -1,3 +1,4 @@
+// 09.30.2014;
 CREATE TABLE Account (
 	ID int not null,
 	name char(30),
@@ -18,3 +19,17 @@ INSERT INTO Account
 INSERT INTO Account
 (ID, name, username, password, email)
 	values(2, "Bob", "BobDoe456", "notepad6", "BobDoe@iastate.edu");
+	
+// 10.01.2014;
+
+ALTER TABLE Account
+MODIFY name VARCHAR(30);
+
+ALTER TABLE Account
+MODIFY username VARCHAR(15) NOT NULL;
+
+ALTER TABLE Account
+MODIFY password VARCHAR(20) NOT NULL;
+
+ALTER TABLE Account
+MODIFY email VARCHAR(40) NOT NULL; 
