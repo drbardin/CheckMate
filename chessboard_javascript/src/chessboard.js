@@ -8,6 +8,9 @@ var row = 0;
 var col = 0; 
 var num_squares = 0;
 
+// declare or import?
+var ctx = canvas.getContext("2d");
+
 function draw()
 {
 	// link with html5 canvas thingy (function? member?) 
