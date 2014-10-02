@@ -1,22 +1,27 @@
 // constants are caps. because this is my world. 
+
+// chess board is 8x8 
 var NUM_ROWS = 8;
 var NUM_COLS = 8; 
+// size of square is 100 pixels 
 var SQR_SIZE = 100; // want 800x800 board? sooo....8 * 100? 
+
 var SQR_COLOR_W = '#ffffff'; // white 
 var SQR_COLOR_B = '#000000'; // black
 var row = 0;
 var col = 0; 
 var num_squares = 0;
 
-// declare or import?
-var ctx = canvas.getContext("2d");
+// declare Canvas class-callers?
+var ctx = null;
+var canvas = null; 
 
 function draw()
 {
-	// link with html5 canvas thingy (function? member?) 
+	// link with html5 canvas thingy 
 	canvas = document.getElementById('chessb');
 
-	// check if canvas is supported?
+	// check if canvas is supported 
 	if(canvas.getContext)
 	{
 		ctx = canvas.getContext('2d');
@@ -47,7 +52,7 @@ function drawBoard()
 	
 	// Found this is W3 school. How to outline a drawing...
 	ctx.lineWidth = 3;
-	ctx.strokeRect(0, 0, NUM_ROWS * SQR_SIZE, NUM_COL * SQR_SIZE);
+	ctx.strokeRect(0, 0, NUM_ROWS * SQR_SIZE, NUM_COLS * SQR_SIZE);
 
 }
 
@@ -60,14 +65,14 @@ function drawRow(row)
 	}
 }
 
-function drawBlocks(row, num_squares)
+function drawSquare(row, num_squares)
 {
 	// make squares.... squares.o: squares.c 
 	//  fillRect( start x-coord, start y-coord, width in px, height in px) 
 	ctx.fillRect(row * SQR_SIZE, num_squares * SQR_SIZE, SQR_SIZE, SQR_SIZE );
 	
 	// color for blocks
-	ctx.fillStyle = getSquareColor(row, blocks_made);
+	ctx.fillStyle = getSquareColor(row, num_squares);
 	
 	// ctx.stroke(); -> calls the "line drawing" method to draw whatever you defined. Neat.  
 	ctx.stroke();
