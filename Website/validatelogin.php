@@ -1,4 +1,5 @@
 <?php
+
 	session_start();
 
 	// Your database info
@@ -6,31 +7,33 @@
 	$db_user = 'untergru_consult';
 	$db_pass = '%4KyAHvVGxX%F3*uik';
 	$db_name = 'untergru_consult';
-
-	$con = new mysqli($db_host, $db_user, $db_pass, $db_name);
+	$tbl_name = 'account'; 
 	
-	if ($con->connect_error)
-	{
-		die('Connect Error (' . $con->connect_errno . ') ' . $con->connect_error);
-	}
-
+	$con = mysql_connect($db_host, $db_user, $db_pass, $db_name)or die("Cannot connect");
+	mysql_select_db("$db_name")or die("Cannot select DB"); 
+	
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 
+	$username = stripslashes($username);
+	$password = stripslashes($password);
+	$username = mysql_real_escape_string($username);
+	$password = mysql_real_escape_string($password);
+	
+	$sql="SELECT * FROM $tbl_name WHERE username = '$username' and password = '$password'";
+	$result = mysql_query($sql);
 
-	$sql = "SELECT * FROM `account` WHERE username = '$username' AND password = '$password'";
-	$result = mysqli_query($sql);
+	// Mysql_num_row is counting table row
+	$count = mysql_num_rows($result);
 
-	//Check whether the query was successful or not
-	if($result) {
-		if(mysqli_num_rows($result) > 0) {
-			//Login Successful
-			header("location: player0.php");
-			exit();
-		}else {
-			//Login failed
-				header("location: index.php");
-				exit();
-			}
-		}
+	// If result matched $username and $password, table row must be 1 row
+	if($count==1){
+		// Register $username, $password and redirect to file "player0.php"
+		session_register("username");
+		session_register("password"); 
+		header("location:player0.php");
+	}
+	else {
+		echo "I'm disabled. Wrong Username or Password. Please retry.";
+	}
 ?>
