@@ -19,7 +19,7 @@
 			<br />
 			<br />
 			<br />
-			<form method="POST" action="validatelogin.php">
+			<form method="POST" action="player0.php">
 			Username*: <input type="username" name="username" /><br />
 			<br />
  			Password*: <input type="password" name="password" /><br />

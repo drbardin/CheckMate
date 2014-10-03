@@ -1,39 +1,36 @@
 <?php
-
-mysqli_connect("mysql.cs.iastate.edu","u309M13","T2GWRYDIw", "db309M13");
-
-if(mysqli_connect_errno())
-{
-	echo "Failed to connect to MySQL: " . mysql_error();
-} 
-
-$ID = $_POST['username'];
-$PD = $_POST['password'];
-
-function SignIn()
-{
 	session_start();
-	if(!empty($ID))
+
+	// Your database info
+	$db_host = '127.0.0.1';
+	$db_user = 'untergru_consult';
+	$db_pass = '%4KyAHvVGxX%F3*uik';
+	$db_name = 'untergru_consult';
+
+	$con = new mysqli($db_host, $db_user, $db_pass, $db_name);
+	
+	if ($con->connect_error)
 	{
-		$query = mysqli_query("SELECT * FROM Username where username = '$ID' AND password = '$PD'") or die(mysqli_error());
-		$row = mysqli_fetch_array($query) or die(mysqli_error());
-
-		if(!empty($row['username']) AND !empty($row['password']))
-		{
-			$_SESSION['username'] = $row['pass']; 
-			header('location:player0.php'); 
-			
-		}
-		else
-		{
-			echo "I'm disabled. Retry."; 
-		}
+		die('Connect Error (' . $con->connect_errno . ') ' . $con->connect_error);
 	}
-}
 
-if(isset($_POST['submit']))
-{
-	SignIn();
-}
+	$username = $_POST['username'];
+	$password = $_POST['password'];
 
+
+	$sql = "SELECT * FROM `account` WHERE username = '$username' AND password = '$password'";
+	$result = mysqli_query($sql);
+
+	//Check whether the query was successful or not
+	if($result) {
+		if(mysqli_num_rows($result) > 0) {
+			//Login Successful
+			header("location: player0.php");
+			exit();
+		}else {
+			//Login failed
+				header("location: index.php");
+				exit();
+			}
+		}
 ?>
