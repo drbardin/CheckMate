@@ -1,0 +1,345 @@
+//This is from my javascript pratice from codecademy.
+//2 blank line denotes each new lesson.
+//Cody Bone  10/15/2014
+
+//Rock, Paper, scissors game.
+var userChoice = prompt("Do you choose rock, paper or scissors?");
+var computerChoice = Math.random();
+if (computerChoice < 0.34) {
+	computerChoice = "rock";
+} else if(computerChoice <= 0.67) {
+	computerChoice = "paper";
+} else {
+	computerChoice = "scissors";
+} console.log("Computer: " + computerChoice);
+var compare= function (choice1, choice2){
+    if(choice1===choice2){
+        return "The result is a tie!"
+    }
+    else if(choice1==="rock"){
+        if(choice2==="scissors"){
+            return "rock win";
+        }
+        else{
+            return "paper wins";
+        }
+    }
+    else if(choice1==="paper"){
+        if(choice2==="rock"){
+            return "paper wins";
+        }
+        else{
+            return "scissors wins";
+        }
+    }
+    else if(choice1=="sissors"){
+        if(choice2==="paper"){
+            return "scissors wins";
+        }
+        else{
+            return "rock wins";
+        }
+    }
+}
+compare(userChoice, computerChoice);
+
+
+//for Loops
+// Write five console.log statements.
+console.log(1);
+console.log(2);
+console.log(3);
+console.log(4);
+console.log(5);
+
+
+// Example of a for loop:
+for (var counter = 1; counter < 11; counter++) {
+	console.log(counter);
+}
+
+
+// Change where the for loop starts.
+for (var i = 5; i < 11; i = i + 1){
+	console.log(i);
+}
+
+
+// Edit this for loop
+for (var i = 4; i < 24; i++) {
+	console.log(i);
+}
+
+
+// Edit this for loop!
+for (var i = 5; i <=50; i=i+5) {
+	console.log(i);
+}
+
+
+// Example for loop
+for (var i = 8 ; i < 120; i=i+12) {
+	console.log(i);
+}
+
+
+// Example of infinite loop. THIS WILL CRASH YOUR
+// BROWSER. Don't run the code without changing it!
+for (var i = 10; i >= 0; i--) {
+	console.log(i);
+}
+
+
+// Write your very own for loop!
+for(var i=100; i>0; i=i-5){
+    console.log(i);
+}
+
+
+// You are now declaring an array.
+// Arrays are an awesome data structure!
+var junk=["hi","bye",1,4];
+console.log(junk);
+
+
+// Practice array!
+var junkData = ["Eddie Murphy", 49, "peanuts", 31];
+console.log(junkData[3]);
+
+
+// Let's print out every element of an array using a for loop
+var cities = ["Melbourne", "Amman", "Helsinki", "NYC", "Ames"];
+for (var i = 0; i < cities.length; i++) {
+    console.log("I would like to visit " + cities[i]);
+}
+
+
+// Click on "Stuck? Get a hint!" if you get stuck!
+var names=["Cody","John","Dave","Mark","Ted"];
+for(var i=0; i<names.length; i++){
+    console.log("I know someone called "+names[i]);
+}
+
+
+//Seaching text for my name.
+/*jshint multitr:true */
+var text="This is Cody random Cody text.";
+var myName="Cody";
+var hits=[];
+for(var i=0; i<text.length; i++){
+    if(text[i]===myName[0]){
+        for(var j=i; j<=i+myName.length; j++){
+            hits.push(text[j]);
+        }
+    }
+}
+if(hits.length===0){
+    console.log("Your name wasn't found!");
+}
+else{
+    console.log(hits);
+}
+
+
+var coinFace = Math.floor(Math.random() * 2);
+while(coinFace === 0){
+	console.log("Heads! Flipping again...");
+	var coinFace = Math.floor(Math.random() * 2);
+}
+console.log("Tails! Done flipping.");
+
+
+var understand = true;
+while( understand  ){
+	console.log("I'm learning while loops!");
+	understand = false;
+}
+
+
+understand = true;
+while(understand){
+	console.log("I'm learning while loops!");
+	//Change the value of 'understand' here!
+	understand=false;
+}
+
+
+var bool = true;
+while(bool){
+    console.log("Less is more!");
+    bool = false;
+}
+
+
+//Remember to set your condition outside the loop!
+var count=0;
+var loop = function(){
+	while(count<3){
+		//Your code goes here!
+		console.log("I'm looping!");
+		count++;
+	}
+};
+loop();
+
+
+//Remember to make your condition true outside the loop!
+var soloLoop = function(){
+  //Your code goes here!
+  var bool=true;
+  while(bool){
+      console.log("Looped once!");
+      bool=false;
+  }
+};
+soloLoop();
+
+
+console.log("for loop.")
+for(var i=0; i<5; i++){
+    console.log("count: "+i);
+}
+console.log("while loop");
+var count=0;
+while(count<5){
+    console.log("count: "+count);
+    count++;
+}
+
+
+var loopCondition = false;
+do {
+	console.log("I'm gonna stop looping 'cause my condition is " + loopCondition + "!");	
+} while (loopCondition);
+
+
+var getToDaChoppa = function(){
+  // Write your do/while loop here!
+  var bool=false;
+  do{
+      console.log("Hello, world!");
+  }while(bool);
+};
+getToDaChoppa();
+
+
+// Write your code below!
+console.log("for loop.");
+for(var i=0; i<5; i++){
+    console.log("count: "+i);
+}
+console.log("while loop");
+var count=0;
+while(count<5){
+    console.log("count: "+count);
+    count++;
+}
+console.log("do/while loop");
+var count2=0;
+do{
+    console.log("count: "+count2);
+    count2++;
+}while(count2<5);
+
+
+//Dragon slaying game.
+var slaying=true;
+var youHit=Math.floor(Math.random()*2);
+var damageThisRound=Math.floor(Math.random()*5 + 1);
+var totalDamage=totalDamage+damageThisRound;
+while(slaying){
+    if(youHit){
+        console.log("You hit the dragon.");
+        if(totalDamage>=4){
+            console.log("You slew the dragon");
+            slaying=false;
+        }
+    }
+    else{
+        console.log("The dragon defeated you.");
+    }
+    slaying=false;
+}
+
+
+var isEven = function(number) {
+  // Your code goes here!
+  if(number%2===0){
+      return true;
+  }
+  else{
+      return false;
+  }
+};
+
+
+var isEven = function(number) {
+  // Your code goes here!
+  if(number%2===0){
+      return true;
+  }
+  else if(isNaN(number)){
+      return "This is not a number.";
+  }
+  else{
+      return false;
+  }
+};
+
+
+// Write your loop below!
+for(var i=0; i<25; i++){
+    console.log(i);
+}
+
+
+var color = prompt("What's your favorite primary color?","Type your favorite color here");
+switch(color) {
+  case 'red':
+    console.log("Red's a good color!");
+    break;
+  case 'blue':
+    console.log("That's my favorite color, too!");
+    break;
+  //Add your case here!
+  case 'yellow':
+      console.log("Yellow is ok.");
+      break;
+  default:
+    console.log("I don't think that's a primary color!");
+}
+
+
+var candy = prompt("What's your favorite candy?","Type your favorite candy here.");
+switch(candy) {
+  case 'licorice':
+    console.log("Gross!");
+    break;
+  case 'gum':
+    console.log("I like gum!");
+    break;
+  case 'beets':
+    console.log("...is that even a candy?");
+    break;
+  // Add your code here!
+  default:
+    console.log("I don't like candy.");
+}
+
+
+var answer = prompt("Are you Cody?");
+
+switch(answer) {
+  case 'yes':
+    console.log("Hello Cody.");
+    break;
+  case 'no':
+    console.log("So you are not Cody.");
+    break;
+  default:
+    console.log("So you don't know who you are.");
+    break;
+}
+
+
+
