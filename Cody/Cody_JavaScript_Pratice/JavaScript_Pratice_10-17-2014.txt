@@ -1,0 +1,182 @@
+//This is from my javascript pratice from codecademy.
+//2 blank line denotes each new lesson.
+//Cody Bone  10/17/2014
+
+
+// Write your code below!
+var breakfast=prompt("what are you going to have for breakfast?");
+switch(breakfast){
+    case 'bacon and eggs':
+        console.log("Sounds good.");
+        break;
+    case 'pancakes':
+        console.log("I am Not a big fan of pancakes.");
+        break;
+    case 'pop-tarts':
+        console.log("Running late, huh.");
+        break;
+    default:
+        console.log("So your not really going to have breakfast.");
+        break;
+}
+
+
+// Complete lines 3 and 4!
+var iLoveJavaScript = true ;
+var iLoveLearning = true;
+if(iLoveJavaScript && iLoveLearning) {
+  // if iLoveJavaScript AND iLoveLearning:
+  console.log("Awesome! Let's keep learning!");
+} else if(!(iLoveJavaScript || iLoveLearning)) {
+  // if NOT iLoveJavaScript OR iLoveLearning:
+  console.log("Let's see if we can change your mind.");
+} else {
+  console.log("You only like one but not the other? We'll work on it.");
+}
+
+
+// Declare your variables here!
+var hungry=true;
+var foodHere=true;
+var eat = function() {
+  if(hungry && foodHere){
+      return true;
+  }
+  else{
+      return false;
+  }
+};
+
+
+// Declare your variables here!
+var tired=true;
+var bored=false;
+var nap = function() {
+  // Add your if/else statement here!
+  if(tired || bored){
+      return true;
+  }
+  else{
+      return false;
+  }
+};
+
+
+// Declare your variables here!
+var programming=false;
+var happy = function() {
+  // Add your if/else statement here!
+  if(!programming){
+      return true;
+  }
+  else{
+      return false;
+  }
+};
+
+
+var list=[1,2,3];
+
+
+var languages = ["HTML", "CSS", "JavaScript", "Python", "Ruby"];
+console.log(languages[2]);
+
+
+var languages = ["HTML", "CSS", "JavaScript", "Python", "Ruby"];
+console.log(languages[2]);
+
+
+var languages = ["HTML", "CSS", "JavaScript", "Python", "Ruby"];
+for(var i=0; i<languages.length; i++){
+    console.log(languages[i]);
+}
+
+
+var myArray=[1, true, "Cody"];
+
+
+var newArray=[[1,2,3],[4,5,6],[7,8,9]];
+
+
+var jagged=[[1,2,3],[4,5],[6,7,8,9]];
+
+
+var me={
+    name: "Cody",
+    age: 29,
+}
+
+
+var me=new Object();
+me.name="Cody";
+me.age=29;
+
+
+var object1=new Object();
+object1.name="Cody";
+var object2={
+    name: "John",
+}
+var object3=new Object();
+object3.name="James";
+
+
+var myObject=new Object();
+myObject.name="John";
+var myArray=[1, true, "Cody", myObject];
+
+
+var myObject=new Object();
+myObject.name="John";
+var newArray=[[1,2],[4,5,6,myObject]];
+
+
+var myObject = {
+  name: 'Eduardo',
+  type: 'Most excellent',
+  // Add your code here!
+  interests: ["paintball", "Game of Thrones", "Sleeping"],
+};
+
+
+var myObject = {
+  name: 'Eduardo',
+  type: 'Most excellent',
+  // Add your code here!
+  interests: ["paintball", "Game of Thrones", "Sleeping"],
+};
+
+
+var friends=new Object();
+friends.bill=new Object();
+friends.steve=new Object();
+friends.john=new Object();
+friends.bill.firstName="Bill";
+friends.bill.lastName="Smith"
+friends.bill.number="(555) 555-5555";
+friends.bill.address=["123 4th st", "des moines", "iowa"];
+friends.steve.firstName="Steve";
+friends.steve.lastName="Williams";
+friends.steve.number="(555) 123-4567";
+friends.steve.address=["567 8th st", "des moines", "iowa"];
+friends.john.firstName="John";
+friends.john.lastName="Doe";
+friends.john.number="(555) 987-6543";
+friends.john.address=["910 11th st", "des moines", "iowa"];
+var list=function(friends){
+    for(var key in friends){
+        var myKey=key;
+        console.log(myKey);
+    }
+}
+var search=function(name){
+    for(var key in friends){
+        if(friends[key].firstName==name){
+           console.log(friends[key]);
+           return friends[key];
+        }
+    }
+}
+
+
+
