@@ -7,7 +7,7 @@ var SQR_SIZE;
 // want 800x800 board? sooo....8 * 100?
 var LIGHT_SQUARE = '#ffce9e';
 var DARK_SQUARE = '#d18b47';
-var WHITE_TURN = true; // false = black, true = white
+var WHITE_TURN = null; // false = black, true = white
 
 
 // This is the order of the png file. Makes sure the pieces 
@@ -46,7 +46,7 @@ function draw() {
         SQR_SIZE = canvas.height / NUM_ROWS;
         
         // white always makes first move.
-        WHOSE_TURN = 1;
+        WHITE_TURN = true;
         
         pieces = new Image();
         pieces.src = 'pieces.png';
@@ -355,30 +355,53 @@ function heard_click(e) {
     // standard get X/Y of click event. 
     var x = e.clientX - canvas.offsetLeft;
     var y = e.clientY - canvas.offsetTop;
+    
     // round down and divide to get row and column of click
-   
     sqr_clicked = { "row": Math.floor(y / SQR_SIZE),
                     "col": Math.floor(x / SQR_SIZE) };
     console.log(x);
     console.log(y);
     
+    // check if player clicked a piece. Otherwise nothing happens.
     player_piece_selection = checkSquareContents(sqr_clicked);
+    
+    // highlight the containing square
+    if(player_piece_selection !== null)
+    {   
+        // Not working at the moment. 
+       // highlightSelected(player_piece_selection);
+    }
 }
 
 function checkSquareContents(sqrClicked)
 {
-    var loop_piece; 
     var i; 
     var pieceToMove = null;
     var cur_color;
-    if(WHITE_TURN) // eval true = white
-        cur_color = json.white;
-    else
-        cur_color = json.black;
+    
+    if(WHITE_TURN ? (cur_color = json.white):(cur_color = json.black)) // eval true = white
     
     for(i = 0; i < cur_color.length; i++)
     {
-        //if(sqr_clicked.col == cur_color[i].col && sqr_clicked.row == cur_color[i].row && cur_color[i].status == UNCAPTURED)
-            
+        if(sqr_clicked.col == cur_color[i].col && sqr_clicked.row == cur_color[i].row && cur_color[i].status == UNCAPTURED)
+            pieceToMove = { "col": sqrClicked.col, "row": sqrClicked.row, "count": i};
     }
+    console.log(pieceToMove);
+    
+    return pieceToMove;
 }
+
+// this works....poorly
+//function highlightSelected(player_piece_selection)
+//{
+//    var startX = (player_piece_selection.col * SQR_SIZE);
+//    var startY = (player_piece_selection.row * SQR_SIZE);
+//    
+//    var grdnt = ctx.createRadialGradient(75,50,5,90,60,100);   
+//    
+//    grdnt.addColorStop(0, "red");
+//    grdnt.addColorStop(1, "white");
+//    
+//    ctx.fillStyle = grdnt;
+//    ctx.fillRect(startX, startY, 100, 100);
+//}
