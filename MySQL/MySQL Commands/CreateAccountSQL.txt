@@ -33,3 +33,12 @@ MODIFY password VARCHAR(20) NOT NULL;
 
 ALTER TABLE Account
 MODIFY email VARCHAR(40) NOT NULL; 
+
+// 10.19.2014 Changes made
+ALTER TABLE Account AUTO_INCREMENT=3;
+
+ALTER TABLE Account
+MODIFY ID int NOT NULL AUTO_INCREMENT;
+
+INSERT INTO Account (name, username, password, email)
+VALUES ('Tyler', 'xedrix1', 'johnston1','tjj@iastate.edu');
