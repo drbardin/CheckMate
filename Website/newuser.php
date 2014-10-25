@@ -1,29 +1,34 @@
 <?php
 
-$con = mysqli_connect("127.0.0.1","untergru_consult","%4KyAHvVGxX%F3*uik", "untergru_consult");
+// Your database info
+$db_host = 'mysql.cs.iastate.edu';
+$db_user = 'u309M13';
+$db_pass = 'T2GWRYDIw';
+$db_name = 'db309M13';
+$tbl_name = 'Account'; 
+
+// Create connection
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
 // Check connection
-if (mysqli_connect_errno()) 
-{
-  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// escape variables for security
-$name 	  = mysqli_real_escape_string($con, $_POST['name']);
-$username = mysqli_real_escape_string($con, $_POST['username']);
-$password = mysqli_real_escape_string($con, $_POST['password']);
-$email    = mysqli_real_escape_string($con, $_POST['email']); 
+//escape variables for security
+$name 	  = $_POST['name'];
+$username = $_POST['username'];
+$password = $_POST['password'];
+$email    = $_POST['email']; 
 
 //Change to match database name and variables
-$sql="INSERT INTO account (ID, name, username, password, email) 
-	VALUES (NULL, '$name', '$username', '$password', '$email')";
+$sql="INSERT INTO Account (name, username, password, email) VALUES ('$name', '$username', '$password', '$email')";
 
-
-if (!mysqli_query($con, $sql)) {
-  die('Error: ' . mysqli_error($con));
+if ($conn->query($sql) === TRUE) {
+    echo "New record created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
 }
-echo "Registration successful. Please Login.";
 
-mysqli_close($con);
-
-?>
+$conn->close();
+?> 
