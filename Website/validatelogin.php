@@ -1,39 +1,50 @@
 <?php
+session_start();
+?>
 
-	session_start();
+<html>
+<body>
+    
+<?php
 
-	// Your database info
-	$db_host = '127.0.0.1';
-	$db_user = 'untergru_consult';
-	$db_pass = '%4KyAHvVGxX%F3*uik';
-	$db_name = 'untergru_consult';
-	$tbl_name = 'account'; 
+	// CheckMate database info
+	$db_host  = 'mysql.cs.iastate.edu';
+	$db_user  = 'u309M13';
+	$db_pass  = 'T2GWRYDIw';
+	$db_name  = 'db309M13';
+	$tbl_name = 'Account'; 
 	
-	$con = mysql_connect($db_host, $db_user, $db_pass, $db_name)or die("Cannot connect");
-	mysql_select_db("$db_name")or die("Cannot select DB"); 
+	//Create connection
+	$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+
+	// Check connection
+	if ($conn->connect_error) {
+ 	   die("Connection failed: " . $conn->connect_error);
+	}
 	
 	$username = $_POST['username'];
 	$password = $_POST['password'];
-
-	$username = stripslashes($username);
-	$password = stripslashes($password);
-	$username = mysql_real_escape_string($username);
-	$password = mysql_real_escape_string($password);
 	
-	$sql="SELECT * FROM $tbl_name WHERE username = '$username' and password = '$password'";
-	$result = mysql_query($sql);
-
-	// Mysql_num_row is counting table row
-	$count = mysql_num_rows($result);
+	$sql      = "SELECT * FROM $tbl_name WHERE username = '$username' and password = '$password'";
+	$result   = $conn->query($sql);
 
 	// If result matched $username and $password, table row must be 1 row
-	if($count==1){
-		// Register $username, $password and redirect to file "player0.php"
-		session_register("username");
-		session_register("password"); 
+	if ($result->num_rows === 1)
+    {
+        echo "successful query";
+        if ($row = $result->fetch_assoc()){
+                    echo "<br> Username: " . $row["username"] . " - Password: " . $row["password"];
+        }
+		// Register $username, and redirect to file "player0.php"
+        $_SESSION["username"]=$username;
 		header("location:player0.php");
-	}
-	else {
+    }
+	else
+    {
 		echo "I'm disabled. Wrong Username or Password. Please retry.";
-	}
+    }
+    $conn->close();
 ?>
+
+</body>
+</html> 
