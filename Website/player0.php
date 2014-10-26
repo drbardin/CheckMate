@@ -1,10 +1,10 @@
-<?php	
+<!--	
 	session_start();
 	if(!session_is_registered(username))
 	{
 		header("location:login.php");
 	}
-?>
+-->
 
 <html lang="en">
 
@@ -26,7 +26,14 @@
 
 		<section>
 
-			<h1 style="text-align:center;font-size: 60px;"><u>Player0</u></h1>
+			<h1 style="text-align:center;font-size: 60px;">
+                <u>
+                    <?php
+                          $player = $_SESSION[player];
+                          print $player->get($username);
+                    ?>
+                </u>
+            </h1>
 
 			<!-- Figure out how to pull from database for username-->
 
@@ -43,17 +50,37 @@
 			<br />
 
 			<ul style="float:left;">
+                <?php
+                    $con = mysqli_connect(
+                ?>
+				<li>Games Played: <?php
+                          $player = $_SESSION[player];
+                          print $player->get($username);
+                    ?></li><br />
 
-				<li>Games Played: 15 </li><br />
+				<li>Games Won: <?php
+                          $player = $_SESSION[player];
+                          print $player->get($username);
+                    ?></li><br />
 
-				<li>Games Won: 6</li><br />
-
-				<li>Games Lost: 9</li><br />
+				<li>Games Lost: <?php
+                          $player = $_SESSION[player];
+                          print $player->get($username);
+                    ?></li><br />
 
 			</ul>
-
+            
+            <br />
+            
 			<br />
 
+			<br />
+                <a href="pvp.php"><button type="PVP" style="height: 50px; width: 200px">PVP</button></a>
+            <br />
+            
+			<br />
+
+			<br />
 		</section>
 
 		<br />

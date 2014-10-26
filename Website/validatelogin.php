@@ -33,10 +33,11 @@ session_start();
     {
         echo "successful query";
         if ($row = $result->fetch_assoc()){
-                    echo "<br> Username: " . $row["username"] . " - Password: " . $row["password"];
+                $id = $row["id"];
+                echo "<br> Username: " . $row["username"] . " - Password: " . $row["password"];
         }
-		// Register $username, and redirect to file "player0.php"
-        $_SESSION["username"]=$username;
+		// Store player's info in the superglobal _SESSION with key "player", and redirect to file "player0.php"
+        $_SESSION["player"]=new Player($row["id"],$row["username"],$row["password"],$row["name"],$row["email"]);
 		header("location:player0.php");
     }
 	else
