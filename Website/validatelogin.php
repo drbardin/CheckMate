@@ -36,8 +36,10 @@ session_start();
                 $id = $row["id"];
                 echo "<br> Username: " . $row["username"] . " - Password: " . $row["password"];
         }
-		// Store player's info in the superglobal _SESSION with key "player", and redirect to file "player0.php"
-        $_SESSION["player"]=new Player($row["id"],$row["username"],$row["password"],$row["name"],$row["email"]);
+//        include 'classplayer.php';
+	
+        // Store player's info in the superglobal _SESSION with key "player", and redirect to file "player0.php"
+ //       $_SESSION["player"]=new Player($row["id"],$row["username"],$row["password"],$row["name"],$row["email"]);
 		header("location:player0.php");
     }
 	else
