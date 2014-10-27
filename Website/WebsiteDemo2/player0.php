@@ -1,8 +1,17 @@
+<?php
+    include "classPlayer.php";
+    session_start();
+?>
+
 <html lang="en">
 
 	<head>
 
-		<title>Player0 | Checkmate</title>
+		<title><?php
+                $username = $_SESSION["player"]->getUsername();
+                echo $username;
+            ?> | Checkmate</title>
+        
 		<style>  
 			div.padded {  
 				text-align: center;
@@ -22,15 +31,20 @@
 
 		<section>
 
-			<!--<h1 style="text-align:center;font-size: 60px;"><u><?php echo $_session['username']; ?></u></h1>-->
-			<h1 style="text-align:center;font-size: 60px;"><u>Player0</u></h1>
+			<h1 style="text-align:center;font-size: 60px;"><u><?php
+                $username = $_SESSION["player"]->getUsername();
+                echo $username;?></u></h1>
+            
+			
 			<!-- Figure out how to pull from database for username-->
 
 			<br />
 
 			<br />
-	
-			<h2 style="float:left;">Player's Statistics </h2>			
+			<h2 style="float:left;"><?php
+                $username = $_SESSION["player"]->getUsername();
+                echo $username;
+            ?>'s Statistics </h2>			
 
 			<br />
 
