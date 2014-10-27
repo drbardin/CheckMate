@@ -4,9 +4,8 @@ session_start();
 
 <html>
 <body>
-    
+ 
 <?php
-
 	// CheckMate database info
 	$db_host  = 'mysql.cs.iastate.edu';
 	$db_user  = 'u309M13';
@@ -31,20 +30,17 @@ session_start();
 	// If result matched $username and $password, table row must be 1 row
 	if ($result->num_rows === 1)
     {
-        echo "successful query";
-        if ($row = $result->fetch_assoc()){
-                $id = $row["id"];
-                echo "<br> Username: " . $row["username"] . " - Password: " . $row["password"];
+        if ($row = $result->fetch_assoc())
+        {
+            // Store player's info in the superglobal $_SESSION with key "player", and redirect to file "player0.php"
+            $player = new Player($row["ID"],$row["username"],$row["password"],$row["name"],$row["email"]);
+            $_SESSION["player"]=$player;
+ 	        header("location:player0.php");
         }
-//        include 'classplayer.php';
-	
-        // Store player's info in the superglobal _SESSION with key "player", and redirect to file "player0.php"
- //       $_SESSION["player"]=new Player($row["id"],$row["username"],$row["password"],$row["name"],$row["email"]);
-		header("location:player0.php");
     }
 	else
     {
-		echo "I'm disabled. Wrong Username or Password. Please retry.";
+		echo "Wrong Username or Password. Please press the back button.";
     }
     $conn->close();
 ?>
