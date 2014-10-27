@@ -1,4 +1,5 @@
 <?php
+include "classPlayer.php";
 session_start();
 ?>
 
