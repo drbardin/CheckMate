@@ -148,6 +148,25 @@ $("canvas#gameCanvas").click(function(e) {
         
         // json for outgoing click
         var data = { "row": row_clicked, "col": col_clicked };
-       
+           
+        data = JSON.stringify(data);
+        console.log(" "+data);
+    
+        $.ajax({
+            type: "POST",
+            url: "loader.php",
+            data: data,
+//          dataType: "json",
+        
+            success: function(data, textStatus, jqXHR) {
+                console.log(textStatus);
+                console.log(data);
+                console.log("Heard reply from loader.php"+" "+data);
+            },
+             error:function(xhr, desc, err) 
+             {
+                console.log("No reply from loader.php");
+             }
+        });
     });
 });
