@@ -149,10 +149,11 @@ $("canvas#gameCanvas").click(function(e) {
         // json for outgoing click
         JSONObj = new Array();
         JSONObj = { "row": row_clicked, "col": col_clicked };
+
         var JSONStr = JSON.stringify(JSONObj);
 
         console.log(JSONStr);
-        $.ajax({
+/*        $.ajax({
             type: "POST",
             url: "loader.php",
             data: JSONStr,
@@ -161,7 +162,25 @@ $("canvas#gameCanvas").click(function(e) {
             success: function(data, textStatus, jqXHR) {
                 console.log(textStatus);
                 console.log(data);
-                console.log("row: " + data.row + " " + "col: " + data.col);
+                console.log(JSON.stringify(data));
+                console.log("Heard reply from loader.php");
+            },
+             error:function(xhr, desc, err) 
+             {
+                console.log("No reply from loader.php");
+             }
+        });*/
+    
+        $.ajax({
+            type: 'POST',
+            url: 'loader.php',
+            data: {'data' : JSONStr},
+            ContentType: "application/json; charset=utf-8",
+            //dataType: "json",
+            success: function(data, textStatus, jqXHR) {
+                console.log(textStatus);
+                console.log(data);
+                console.log(JSON.stringify(data));
                 console.log("Heard reply from loader.php");
             },
              error:function(xhr, desc, err) 
