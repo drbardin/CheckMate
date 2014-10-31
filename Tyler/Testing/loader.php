@@ -1,18 +1,18 @@
 <?php
-//Test the POST: Result is emptyness
-    var_dump( $_POST['data']);
+//Test the POST: finally is working?
+    var_dump(json_decode($_POST['data'], true));
 
 //Test the JSON return: Result is a correct JSON with null property values
 /*    $myJson = json_decode($_POST['data'], true);
     $myJson->row;
     $myJson->col;
     $newarray = array(
-        "row" => $myJson->row,
-        "col" => $myJson->col
+        "row" => $row,
+        "col" => $col
     );
     header('Content-Type: application/json');
-    echo json_encode($newarray);
-*/
+    echo json_encode($newarray);*/
+
 
 
 
