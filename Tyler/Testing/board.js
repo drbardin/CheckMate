@@ -145,23 +145,24 @@ $("canvas#gameCanvas").click(function(e) {
                        (row_clicked * SQR_SIZE) + 3,
                         SQR_SIZE - (3 * 2),
                         SQR_SIZE - (3 * 2));
-        
-        // json for outgoing click
-        var data = { "row": row_clicked, "col": col_clicked };
-           
-        data = JSON.stringify(data);
-        console.log(" "+data);
     
+        // json for outgoing click
+        JSONObj = new Array();
+        JSONObj = { "row": row_clicked, "col": col_clicked };
+        var JSONStr = JSON.stringify(JSONObj);
+
+        console.log(JSONStr);
         $.ajax({
             type: "POST",
             url: "loader.php",
-            data: data,
-//          dataType: "json",
-        
+            data: JSONStr,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
             success: function(data, textStatus, jqXHR) {
                 console.log(textStatus);
                 console.log(data);
-                console.log("Heard reply from loader.php"+" "+data);
+                console.log("row: " + data.row + " " + "col: " + data.col);
+                console.log("Heard reply from loader.php");
             },
              error:function(xhr, desc, err) 
              {
