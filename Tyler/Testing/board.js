@@ -146,37 +146,21 @@ $("canvas#gameCanvas").click(function(e) {
                         SQR_SIZE - (3 * 2),
                         SQR_SIZE - (3 * 2));
     
-        // json for outgoing click
-        JSONObj = new Array();
+        // JSON for outgoing click
         JSONObj = { "row": row_clicked, "col": col_clicked };
-
+        // Turns JSONObj into a JSONStr. 
         var JSONStr = JSON.stringify(JSONObj);
-
         console.log(JSONStr);
-/*        $.ajax({
-            type: "POST",
-            url: "loader.php",
-            data: JSONStr,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function(data, textStatus, jqXHR) {
-                console.log(textStatus);
-                console.log(data);
-                console.log(JSON.stringify(data));
-                console.log("Heard reply from loader.php");
-            },
-             error:function(xhr, desc, err) 
-             {
-                console.log("No reply from loader.php");
-             }
-        });*/
     
+        // As of now, loader.php just decodes the JSON recieved, and then encodes and             // echoes back the same JSON. 
         $.ajax({
             type: 'POST',
             url: 'loader.php',
+            // If I try to pass the JSON to 'data' in a different way, I get null json               //properties echoed back.
             data: {'data' : JSONStr},
+            // If ContentType is lower-case, causes null json properties to be echoed                 // back.
             ContentType: "application/json; charset=utf-8",
-            //dataType: "json",
+            dataType: "json",
             success: function(data, textStatus, jqXHR) {
                 console.log(textStatus);
                 console.log(data);
