@@ -1,7 +1,21 @@
 <?php
-//Test the POST: finally is working?
-    var_dump(json_decode($_POST['data'], true));
+$myJson = json_decode($_POST['data'], true);
+$r = $myJson['row'];
+$c = $myJson['col'];
+$newArray = array(
+    "row" => $r,
+    "col" => $c
+);
+header('Content-Type: application/json');
+echo json_encode($newArray);
 
+//Test the POST: finally is working?
+/*ob_start();
+var_dump(json_decode($_POST['data'], true));
+$myJson = ob_get_clean();
+echo $myJson;*/
+              
+        
 //Test the JSON return: Result is a correct JSON with null property values
 /*    $myJson = json_decode($_POST['data'], true);
     $myJson->row;
