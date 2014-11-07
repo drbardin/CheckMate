@@ -9,3 +9,7 @@ CREATE TABLE Game (
     black_username varchar(15),
 	PRIMARY KEY(match_id)
 );
+
+//added board_json to table.
+ALTER TABLE `db309M13`.`Game` 
+ADD COLUMN `board_json` CHAR NULL AFTER `black_username`;
