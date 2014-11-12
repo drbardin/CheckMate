@@ -19,7 +19,7 @@
 			$this->email=$accountEmail;
 		}
         
-        public function getID()
+        public function get_ID()
         {
             if (isset($this->id))
             {
@@ -31,7 +31,7 @@
             }
             
         }
-        public function getUsername()
+        public function get_Username()
         {
             if (isset($this->username))
             {
@@ -43,7 +43,7 @@
             }
             
         }
-        public function getPassword()
+        public function get_Password()
         {
             if (isset($this->password))
             {
@@ -54,7 +54,7 @@
                 echo "password not set.";
             }
         }
-        public function getName()
+        public function get_Name()
         {
             if (isset($this->name))
             {
@@ -65,7 +65,7 @@
                 echo "name not set.";
             }
         }
-        public function getEmail()
+        public function get_Email()
         {
             if (isset($this->email))
             {

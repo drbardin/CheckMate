@@ -152,13 +152,16 @@ $("canvas#gameCanvas").click(function(e) {
         var JSONStr = JSON.stringify(JSONObj);
         console.log(JSONStr);
     
-        // As of now, loader.php just decodes the JSON recieved, and then encodes and             // echoes back the same JSON. 
+        // As of now, loader.php just decodes the JSON recieved, and then encodes and             
+        // echoes back the same JSON. 
         $.ajax({
             type: 'POST',
             url: 'loader.php',
-            // If I try to pass the JSON to 'data' in a different way, I get null json               //properties echoed back.
+            // If I try to pass the JSON to 'data' in a different way, I get null json         
+            //properties echoed back.
             data: {'data' : JSONStr},
-            // If ContentType is lower-case, causes null json properties to be echoed                 // back.
+            // If ContentType is lower-case, causes null json properties to be echoed                 
+            // back.
             ContentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data, textStatus, jqXHR) {
