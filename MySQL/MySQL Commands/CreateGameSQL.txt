@@ -13,3 +13,7 @@ CREATE TABLE Game (
 //added board_json to table.
 ALTER TABLE `db309M13`.`Game` 
 ADD COLUMN `board_json` CHAR NULL AFTER `black_username`;
+
+//11/11/2014: Changing the name of match_id to game_id. That was an oversight, when the table was originally going to be called 'Match'
+ALTER TABLE `db309M13`.`Game` 
+CHANGE COLUMN `match_id` `game_id` INT(11) NOT NULL AUTO_INCREMENT ;
