@@ -19,7 +19,7 @@
 			$this->email=$accountEmail;
 		}
         
-        public function get_ID()
+        public function get_Id()
         {
             if (isset($this->id))
             {
