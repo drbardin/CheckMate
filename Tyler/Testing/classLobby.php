@@ -18,7 +18,7 @@
         public function __construct()
         {
             $this->player_id = $_SESSION["player"]->get_Id();
-            $this->time_entered = date('Y-m-d G:i:s');
+            // $this->time_entered = date('Y-m-d G:i:s');
         }
         
         /*
@@ -183,7 +183,7 @@
             // Close database connection. 
             $conn->close();
         }
-        }
+        
         public function add_Player()
         {
             
