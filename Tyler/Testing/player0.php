@@ -70,7 +70,7 @@
 			<br />
 			<br />
 			<div class = "padded" >
-                <a href="pvp.php"><button type="PVP" style="height: 50px; width: 200px">Player vs Player</button><br /></a><br />
+                <a href="pre_pvp.php"><button type="PVP" style="height: 50px; width: 200px">Player vs Player</button><br /></a><br />
 				<a href="pvai.php"><button type="PVAI" style="height: 50px; width: 200px">Player vs Computer</button></a><br /><br />
 				<a href="tutorial.php"><button type="Tutorial" style="height: 50px; width: 200px">Start Tutorial</button></a><br /><br />
                 <a href="testing_lobbyHTML.php"><button type="Lobby_Test" style="height: 50px; width: 200px">Test Lobby</button></a><br />

@@ -309,20 +309,22 @@ session_start();
                 $conn->close();
                 return;
             }
-            $conn->close();
-
-            $opponent = $this->get_Oldest_Entry();
-            
-            if ($opponent === -1)
-            {
-                echo "No opponent found." . "<br/>";
-                $this->time_entered = date("Y-m-d H:i:s", time());
-                $this->add_To_Table();
-            }
             else
             {
-                echo "Opponent found. Create game." . "<br/>";
-                $this->create_Game($opponent->get_Player_Id(),$this->player_id);
+                $conn->close();
+                $opponent = $this->get_Oldest_Entry();
+    
+                if ($opponent === -1)
+                {
+                    echo "No opponent found." . "<br/>";
+                    $this->time_entered = date("Y-m-d H:i:s", time());
+                    $this->add_To_Table();
+                }
+                else
+                {
+                    echo "Opponent found. Create game." . "<br/>";
+                    $this->create_Game($opponent->get_Player_Id(),$this->player_id);
+                }
             }
         }
     }
