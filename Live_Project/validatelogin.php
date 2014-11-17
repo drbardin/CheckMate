@@ -1,5 +1,5 @@
 <?php
-include "classPlayer.php";
+include_once "classPlayer.php";
 session_start();
 ?>
 
@@ -7,8 +7,6 @@ session_start();
 <body>
  
 <?php
-
-    date_default_timezone_set('America/New_York');
     ini_set('display_errors', 'On');
     error_reporting(E_ALL | E_STRICT);
 
@@ -39,7 +37,8 @@ session_start();
         if ($row = $result->fetch_assoc())
         {
             // Store player's info in the superglobal $_SESSION with key "player", and redirect to file "player0.php"
-            $player = new Player($row["ID"],$row["username"],$row["password"],$row["name"],$row["email"]);
+            $player = new Player($row["id"],$row["username"],$row["password"],$row["name"],$row["email"]);
+            echo $player->get_Id();
             $_SESSION["player"]=$player;
  	        header("location:player0.php");
         }
