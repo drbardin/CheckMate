@@ -6,6 +6,11 @@
 
 <?php
 
+    $db_host = 'mysql.cs.iastate.edu';
+    $db_user = 'u309M13';
+    $db_pass = 'T2GWRYDIw';
+    $db_name = 'db309M13';
+
     class Lobby
     {
         private $player_id;
@@ -21,6 +26,8 @@
             // $this->time_entered = date('Y-m-d G:i:s');
         }
         
+        
+        
         /*
             Overloaded Constructor:
                 Sets variable values based upon parameter input.
@@ -32,6 +39,8 @@
             $this->player_id = $id;
             $this->time_entered = $time;
         }
+        
+        
         
         /*
             Getter for player_id:
@@ -71,11 +80,6 @@
         */
         public function get_Oldest_Entry()
         {
-            // Database info
-            $db_host = 'mysql.cs.iastate.edu';
-            $db_user = 'u309M13';
-            $db_pass = 'T2GWRYDIw';
-            $db_name = 'db309M13';
             $tbl_name = 'Lobby';
             
             // Create connection
@@ -119,18 +123,13 @@
         */
         public function add_To_Table()
         {
-            // Database info
-            $db_host = 'mysql.cs.iastate.edu';
-            $db_user = 'u309M13';
-            $db_pass = 'T2GWRYDIw';
-            $db_name = 'db309M13';
             $tbl_name = 'Lobby';
             
             // Create connection
             $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
             
             // Define INSERT statement.
-            $sql = "INSERT INTO $tbl_name (player_id, time_entered)                             VALUES ('$this->player_id', '$this->time_entered')";
+            $sql = "INSERT INTO $tbl_name (player_id, time_entered) VALUES ('$this->player_id', '$this->time_entered')";
             
             // Query the database with our statement. 
             if ($conn->query($sql) === TRUE) 
@@ -145,23 +144,13 @@
             // Close database connection. 
             $conn->close();
         }
-        
-        public function create_Game($id_first, $id_second)
-        {
-            
-        }
-        
+          
         /*
             Deletes specified player from Lobby table.
                 No return value.
         */
         public function remove_Player($id)
         {
-            // Database info
-            $db_host = 'mysql.cs.iastate.edu';
-            $db_user = 'u309M13';
-            $db_pass = 'T2GWRYDIw';
-            $db_name = 'db309M13';
             $tbl_name = 'Lobby';
             
             // Create connection
@@ -184,7 +173,82 @@
             $conn->close();
         }
         
+        /*
+            Creates an entry in the Game table. Removes both players from the Lobby.
+                No return value.
+        */
+        public function create_Game($id_first, $id_second)
+        {
+            $tbl_name = 'Game';
+            
+            //Parameter error checking
+            if ($id_first === $id_second)
+            {
+                // Throw error, id parameters must be different. 
+                echo "create_Game() Error: Paramters are identical. Must have two different account ids to create a game."; 
+            }
+            // Check for matching account on first id.
+            $white = get_Player($id_first);
+            if ($white === -1)
+            {
+                // Throw error, first parameter is not a valid account id.
+                echo "create_Game() Error: First parameter is not a valid account id.";
+            }
+            // Check for matching account on second id. 
+            $black = get_Player($id_second);
+            if ($black === -1)
+            {
+                // Throw error, second parameter is not a valid account id.
+                echo "create_Game() Error: First parameter is not a valid account id.";
+            }
+
+            // Create connection
+            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+            
+            // Define INSERT statement.
+            $sql = "INSERT INTO $tbl_name (white_id, black_id, turn_num, white_in, black_in, white_username, black_username, board_json) VALUES ("$white->get_Id()", "$black->get_Id()", "0", "0","0","$white->get_Username()", "$black->get_Username()")";
+            
+            // Query the database with our statement. 
+            if ($conn->query($sql) === TRUE) 
+            {
+                echo "Game successfully created.";
+            }
+            else
+            {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            
+            // Close database connection. 
+            $conn->close();
+            
+            // Remove both players from the lobby.
+            remove_Player($first_id);
+            remove_Player($second_id);
+        }
+        
+        
+        /*
+            Attempts to add the player to the Lobby, but first checks if theres an person waiting in the lobby.
+            Will create a game if opponent is found. Otherwise, adds player to lobby.
+                No return value.
+        */
         public function add_Player()
         {
+            $tbl_name = 'Lobby';
+
+            $opponent = $this->get_Oldest_Entry();
             
+            if ($opponent === -1)
+            {
+                echo "No opponent found.";
+                $this->time_entered = date('Y-m-d G:i:s');
+                $this->add_To_Table();
+            }
+            else
+            {
+                echo "Opponent found. Create game.";
+                $this->create_Game($opponent->get_Player_Id(),$this->player_Id);
+            }
         }
+    };
+?>

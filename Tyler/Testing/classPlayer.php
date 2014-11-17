@@ -9,7 +9,8 @@
 		private  $password;
 		private  $name;
 		private  $email;
-
+        
+        
 		public function __construct($accountID, $accountUsername, $accountPassword, $accountName, $accountEmail)
 		{
 			$this->id=$accountID;
@@ -77,6 +78,53 @@
             }
         }
 	}
+
+    function get_Player($account_Id)
+    {
+        // Database info
+        $db_host = 'mysql.cs.iastate.edu';
+        $db_user = 'u309M13';
+        $db_pass = 'T2GWRYDIw';
+        $db_name = 'db309M13';
+        $tbl_name = 'Account';
+        
+        // Create a connection
+        $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+        
+        // Define a SELECT statement.
+        $sql = "SELECT * FROM $tbl_name WHERE id = $account_Id";
+        
+        // Store the result of the query.
+        $result = $conn->query($sql);
+        
+        // Check if no match was found. Return -1 if no match.
+        // Otherwise, store row data and return an instance of the Player class.
+        if ($result->num_rows < 1)
+        {
+            $conn->close;
+            return -1   
+        }
+        // Otherwise, store row data and return an instance of the Player class.
+        else if ($result->num_rows === 1)
+        {
+            if ($row = $result->fetch_assoc())
+            {
+                $player = new Player($row["id"],$row["username"],$row["password"],$row["name"],$row["email"]);
+                conn->close;
+                return $lobby;
+            }
+            else
+            {
+                echo "Error: Unable to fetch result.";
+            }
+        }
+        else
+        {
+                echo "Error: Too many rows returned.";
+        }
+        //Close the connection
+        $conn->close();
+    }
 
     function __autoload($class_name) {
         include 'class' . $class_name . '.php';
