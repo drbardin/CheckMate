@@ -1,26 +1,27 @@
-
-
+<?php	
+	session_start();
+?>
 <html lang="en">
 
 	<head>
-        <!-- <link rel="stylesheet" type="text/css" href="chessboard.css"> -->
         <link rel="stylesheet" type="text/css" href="board_canvas.css">
 		<title>PVP | Checkmate</title>
-
 	</head>
 
 	<body id = "pvpbody">
 
-		<header style="text-align:center";>
-			<h1><a href="index.php"><img src="logo.png" alt="Checkmate"></a></h1>
+		<header id = "header";>
+			<h1><img src="logo.png" alt="Checkmate"></h1>
 		</header>
+
+		<br />
+
+		<br />
 
 		<br />
         
 		<br />
-
-		<br />
-        <div id = "leftcapturedcontainer"><img src = "Container_img.png" alt = "Container img" width: "700" height = "390"> </div>
+   <div id = "leftcapturedcontainer"><img src = "Container_img.png" alt = "Container img" width: "700" height = "390"> </div>
 		<br />
         
 		<br />
@@ -32,11 +33,12 @@
         </div>
         <div id = "rightcapturedcontainer"><img src = "Container_img.png" alt = "Container img" width: "700" height = "390"> </div>
 		<br />
+
         
 		<br />
 
 		<br />
-        <a href="player0.php"><button type="Player0 Return" style="height: 50px; width: 200px">Return to Dashboard</button><br /></a><br />
+        <a href="player0.php"><button type="Player0 Return" style="height: 50px; width: 200px">Return to Dashboard</button><br /></a>           <br />
 		<br />
 
 		<br />

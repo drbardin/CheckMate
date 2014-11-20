@@ -15,7 +15,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-//Store $_POST values. 
+//escape variables for security
 $name 	  = $_POST['name'];
 $username = $_POST['username'];
 $password = $_POST['password'];
@@ -25,7 +25,12 @@ $email    = $_POST['email'];
 $sql="INSERT INTO Account (name, username, password, email) VALUES ('$name', '$username', '$password', '$email')";
 
 if ($conn->query($sql) === TRUE) {
-    echo "Player successfully registered.";
+    
+    echo '<script type = "text/javascript">'; 
+    echo 'alert("Registration successful! Please login.")';
+    echo '</script>';
+    header("refresh: 0.5; url = login.php");
+    
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }

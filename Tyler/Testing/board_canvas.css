@@ -2,7 +2,17 @@
 #pvaibody{text-align: center;background: #33A5C1;}
 #tutorialbody{text-align: center;background: #956B95;}
 
+html {
+    min-width: 1500px;
+    position: relative;
+}
+
 .displayed{position:absolute;z-index:1;}
+
+#header{
+    text-align: center; 
+    padding: 5px;
+}
 
 #container{
     display:inline-block;
@@ -20,7 +30,7 @@
     position: absolute;
     right: 120px;
     left: auto; 
-    top: 210px;
+    top: 260px;
     background: black; 
     width:175px; 
     height:390px;
@@ -31,7 +41,7 @@
 #rightcapturedcontainer{
     position: absolute;
     left: 120px;
-    top: 610px;
+    top: 665px;
     background: black; 
     width:175px; 
     height:390px;

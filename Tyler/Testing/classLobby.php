@@ -111,7 +111,7 @@ session_start();
             if ($result->num_rows < 1)
             {
                 echo "get_Oldest_Entry(): Less than 1 row in result" . "<br/>";
-                $conn->close;
+                $conn->close();
                 return -1;
             }
             else if ($result->num_rows === 1)
@@ -121,7 +121,7 @@ session_start();
                     $lobby = new Lobby($row["player_id"],$row["time_entered"]);
                     
                     // Returns an instance of the Lobby class
-                    $conn->close;
+                    $conn->close();
                     return $lobby;
                 }
             }
