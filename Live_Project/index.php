@@ -4,25 +4,23 @@
 		<title>Checkmate</title>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 	</head>
-	<body>
+	<body class = "mainpage">
+        
 		<header style="text-align:center";>
-			<h1><a href="index.php"><img src="logo.png" alt="Checkmate"></h1></a>
+            <link rel="stylesheet" type="text/css" href="website.css">
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+			<h1><img src="logo.png" alt="Checkmate"></a>
 		</header>
 		<br />
 		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<section style="text-align:center";>
-			<a href="register.php"><button type="register" style="height: 50px; width: 200px">Register</button></a> <a href="login.php"><button type="Login" style="height: 50px; width: 200px">Login</button></a>
-		</section>
-		<br />
-		<br />
+        <div class = "login">
+                <a href="login.php"><input type="index" value="Login"></a>
+                <a href = "register.php"><input type="index" value="Registration"></a>
+        </div>
 		<br />
 		<br />
 		<br />

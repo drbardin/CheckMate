@@ -1,10 +1,6 @@
-<!--	
+<?php	
 	session_start();
-	if(!session_is_registered(username))
-	{
-		header("location:login.php");
-	}
--->
+?>
 <html lang="en">
 
 	<head>
@@ -15,7 +11,7 @@
 	<body id = "pvpbody">
 
 		<header id = "header";>
-			<h1><a href="index.php"><img src="logo.png" alt="Checkmate"></a></h1>
+			<h1><img src="logo.png" alt="Checkmate"></h1>
 		</header>
 
 		<br />

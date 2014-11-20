@@ -1,12 +1,14 @@
 <?php
-include_once "classPlayer.php";
-session_start();
+    include "classPlayer.php";
+    session_start();
 ?>
 
 <html>
 <body>
  
 <?php
+
+    date_default_timezone_set('America/New_York');
     ini_set('display_errors', 'On');
     error_reporting(E_ALL | E_STRICT);
 
@@ -38,14 +40,17 @@ session_start();
         {
             // Store player's info in the superglobal $_SESSION with key "player", and redirect to file "player0.php"
             $player = new Player($row["id"],$row["username"],$row["password"],$row["name"],$row["email"]);
-            echo $player->get_Id();
             $_SESSION["player"]=$player;
+            $_SESSION["login"] = "1";
  	        header("location:player0.php");
         }
     }
 	else
     {
-		echo "Wrong Username or Password. Please press the back button.";
+        echo '<script type = "text/javascript">'; 
+        echo 'alert("Username and password do not match. Try again.")';
+        echo '</script>';
+		header("refresh: 0.5; url = login.php");
     }
     $conn->close();
 ?>
