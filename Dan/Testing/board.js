@@ -29,7 +29,7 @@ $(document).ready(function () {
     var pieces = null;
     var json = null;
     var JSONObj = null;
-
+    var debug = null;
     // This acts as main method
     function draw() {
         // white always makes first move.
