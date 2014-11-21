@@ -38,24 +38,24 @@ if(!function_exists('getPotentialMoves'))
     {
         $game = new Game();
         
-        // Boards haven't been 
-        if ($game->getTurnNum == 0)
+        // on turn_num === 0, need to upload a board to MySQL Game table
+        // do that here. 
         
         $clr = $game->getCurColor();
         $board = $game->getBoardRep(); // full set of pieces
         $color_set; // black or white array of pieces. 
-        $switch_var = "PAWN"; 
+        $switch_var = null;
         
         if($clr == "b")
-            $color_set = $board['black'];
+            $color_set = $black;
         else
-            $color_set = $board['white'];
+            $color_set = $white;
         
         var_dump($color_set);
         
         for($i = 0; $i < count($color_set); $i++)
         {
-            if($color_set[$i]['row'] == $r && $color_set[$i]['col'] == $c)
+            if($color_set[$i]['row'] === $r && $color_set[$i]['col'] === $c)
             {
                 // we found the clicked piece. 
                 // now pass it to switch to route to the logic function.
@@ -64,7 +64,6 @@ if(!function_exists('getPotentialMoves'))
         }
   
         $highlight_arr;
-
         switch($switch_var)
         {
             case "PAWN" :
@@ -86,14 +85,15 @@ if(!function_exists('getPotentialMoves'))
                 $highlight_arr = moveKing($r, $c, $clr, $board);
                 break;
             default :
-                $highlight_arr[0] = array();
-                push_array($highligh_arr[0], $r, $c); 
+                $highlight_arr[0]['row'] = $r;
+                $highlight_arr[0]['col'] = $c;
+              
         }
         return $highlight_arr;    
     }
 }
     // SHORT CIRCUITED OUT FOR THE MOMENT
-    public function validateMove($r, $c) {
+    function validateMove($r, $c) {
         $move_list = getPotentialMoves();
         
         for($i = 0; $i < count($move_list); $i++)

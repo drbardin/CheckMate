@@ -13,6 +13,5 @@ $black = $myJson['black'];
 $white = $myJson['white'];
 
 $newArray = getPotentialMoves($r, $c, $black, $white);
-
 //header('Content-Type: application/json');
 echo json_encode($newArray);
