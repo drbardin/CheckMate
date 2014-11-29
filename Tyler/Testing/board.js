@@ -29,7 +29,7 @@ $(document).ready(function () {
     var pieces = null;
     var json = null;
     var JSONObj = null;
-    var debug = null;
+
     // This acts as main method
     function draw() {
         // white always makes first move.
@@ -215,15 +215,10 @@ $(document).ready(function () {
                     console.log(data);
                     console.log(JSON.stringify(data));
                     console.log("Heard reply from from_click.php");
-                    
-                    //Tylers Test:
-                    data = JSON.stringify(data);
-                    var tj_obj = JSON.parse(data);
-                    var square_arr = new Array();
-                    square_arr[0]=tj_obj;
-                    
+
                     // call process return data function
-                    highlight_squares(square_arr);
+
+                    highlight_squares(data);
                     prev_click.col = col_clicked;
                     prev_click.row = row_clicked;
                 },

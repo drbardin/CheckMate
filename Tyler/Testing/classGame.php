@@ -1,6 +1,7 @@
 <?php
 include_once "classPlayer.php";
 include_once "engine.php";
+session_start();
 ?>
 <?php
 // game object definition
@@ -54,24 +55,27 @@ class Game
                 $this->turn_num = $row["turn_num"];
                 $this->white_username = $row[" "];
                 $this->black_username = $row[" "];
-                // $this->board_rep = $row["board_json"];
+               // $this->board_rep = $row["board_json"];
                 $this->white_id = $row["white_id"];
                 $this->black_id = $row["black_id"];
                 $this->cur_color = $row["cur_color"];
                 $this->black_json = $row["black_json"];
-                $this->white_json = $row["white_json"];
+                $this->white_json = $row["white_json"]
                 
-                if ($client_id === $row["white_id"])
+                if ($client_id == $row["white_id"])
                 {
                     $this->cur_color='w';
-                    if ($this->turn_num % 2 === 0) {
+                    if ($this->turn_num % 2 === 0)
+                    {
                         $this->my_turn = FALSE;
-                    } 
+                    }
+                    
                 }
-                else if ($client_id === $row["black_id"])
+                else if ($client_id == $row["black_id"])
                 { 
                     $this->cur_color='b';
-                    if ($this->turn_num % 2 === 0) {
+                    if ($this->turn_num % 2 === 0)
+                    {
                         $this->my_turn = TRUE;
                     }
                 }
