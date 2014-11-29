@@ -5,27 +5,37 @@ session_start();
 ?>
 <?php
 // game object definition
-class Game
-{
+class Game {
+    
+// Game Table Values
+    // This player's game id.
     private $game_id;
+    // Each color's player id.
     private $white_id;
     private $black_id;
+    // The username associated with each color.
     private $white_username;
     private $black_username;
+    // Denotes whether that colored player is currently on the game screen.
+    private $white_in;
+    private $black_in;
+    // Current turn number.
     private $turn_num;
+    // 2D Array containing black_pieces and white_pieces. Is to be encoded to client as a JSON
+    private $board_rep = array(array());
+    // Color-specific array that is ready to be encoded to client as a JSON.
     private $black_pieces;
     private $white_pieces;
+    
+// Session_Specific Values
     private $cur_color; // either "w" or "b"
-    private $my_turn; //true/false
-    private $board_rep = array(array());
+    private $my_turn; // either true or false
     public  $potential_moves = array();
 
+// Default constructor
     public function __constructor()
     {
-        // TODO -> where are we storing array of player objects? 
-        // TYLER: Why do we need an array of player objects?
-        // DAN: We don't disregard that statement. 
-        
+        // Get's the client's id. 
         $client_id = $_SESSION["player"]->get_Id();
         
         $db_host = 'mysql.cs.iastate.edu';
@@ -53,9 +63,9 @@ class Game
             {
                 $this->game_id = $row["game_id"];
                 $this->turn_num = $row["turn_num"];
-                $this->white_username = $row[" "];
-                $this->black_username = $row[" "];
-               // $this->board_rep = $row["board_json"];
+                $this->white_username = $row["white_username"];
+                $this->black_username = $row["black_username"];
+                $this->board_rep = $row["board_json"];
                 $this->white_id = $row["white_id"];
                 $this->black_id = $row["black_id"];
                 $this->cur_color = $row["cur_color"];
@@ -79,7 +89,7 @@ class Game
                         $this->my_turn = TRUE;
                     }
                 }
-                // Returns an instance of the Lobby class
+                
                 $conn->close;
             }
         }
@@ -106,53 +116,70 @@ class Game
         $init_moves = 0;
         setPotentialMoves();
     }
-    
-    public function getGameID(){
-        return $this->gameID;
+// Game Table Value Getters
+    public function get_Game_Id() {
+        return $this->game_id;
     }
-    public function getWhitePlayer() {
+    public function get_Id_White() {
+        return $this->white_id;
+    }
+    public function get_Id_Black() {
+        return $this->black_id;   
+    }
+    public function get_Username_White() {
         return $this->white_username;
     }
-    public function getBlackPlayer() {
+    public function get_Username_Black() {
         return $this->black_username;
     }
-    public function getTurnNum() {
-        return $this->turn_num;
+    public function get_Turn_Number() {
+        return $this->turn_number;
     }
-    public function incrementTurnNum() {
-        $this->turn_num++;
+    public function get_Board_Representation() {
+        return $this->board_rep;   
     }
-    public function getCurColor(){
-        return $this->cur_color;
-    }
-    public function setCurColor(){
-        if($this->cur_color == 'b')
-            $this->cur_color = 'w';
-        else
-            $this->cur_color = 'b';
-    }
-    public function getBoardRep(){
-        return $this->board_rep;
-    }
-    public function setPotentialMoves($pot_moves){
-        $this->potential_moves = $pot_moves;
-    }
-    public function getPotentialMoves(){
-        return $this->potential_moves; 
-    }
-    public function getWhiteJSON(){
+    // NOTE: Do we want a similar pair of functions that act as: "get_My_Pieces() and get_Opponent_Pieces()?"
+    public function get_Pieces_White() {
         return $this->white_pieces;
     }
-    public function getBlackJSON(){
-        return $this->black_json;
-    }
-    public function setWhiteJSON($white_arr){
-        $this->white_json = $white_arr;
-    }
-    public function setBlackJSON($black_arr){
-        $this->black_json = $black_arr;
+    public function get_Pieces_Black() {
+        return $this->black_pieces;
     }
     
+// Session-specific Getters
+    public function get_Current_Color() {
+        return $this->cur_color;
+    }
+    public function is_My_Turn() {
+       return $this->my_turn;
+    }
+    public function get_Potential_Moves() {
+        return $this->potential_moves;
+    }
+    
+// Setters
+    public function increment_Turn_Number() {
+        $this->turn_num++;
+    }
+    public function set_Potential_Moves($pot_moves) {
+        $this->potential_moves = $pot_moves;
+    }
+    public function set_White_Pieces($white_json){
+        $this->white_pieces = $white_json;
+    }
+    public function set_Black_Pieces($black_json){
+        $this->black_pieces = $black_json;
+    }
+    
+// Updaters
+    public function update_Game()
+    {
+        
+    }
+    public function end_Game()
+    {
+        
+    }
 //    public function initNewBoard(){
 //            
 //           $PAWN = 0;
