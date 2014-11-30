@@ -1,8 +1,12 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 'On');
 include_once "classPlayer.php";
-include_once "engine.php";
+//include_once "engine.php";
 session_start();
 ?>
+<html>
+<body>
 <?php
 // game object definition
 class Game {
@@ -30,9 +34,9 @@ class Game {
 // Session_Specific Values
     private $cur_color; // either "w" or "b"
     private $my_turn; // either true or false
-    public  $potential_moves = array();
-
-// Default constructor
+    private $potential_moves = array();
+    
+/*// Default constructor
     public function __constructor()
     {
         // Get's the client's id. 
@@ -62,15 +66,18 @@ class Game {
             if ($row = $result->fetch_assoc())
             {
                 $this->game_id = $row["game_id"];
+                $this->white_id = $row["white_id"];
+                $this->black_id = $row["black_id"];
                 $this->turn_num = $row["turn_num"];
+                $this->white_in = $row["white_in"];
+                $this->black_in = $row["black_in"];
                 $this->white_username = $row["white_username"];
                 $this->black_username = $row["black_username"];
                 $this->board_rep = $row["board_json"];
-                $this->white_id = $row["white_id"];
-                $this->black_id = $row["black_id"];
-                $this->cur_color = $row["cur_color"];
-                $this->black_json = $row["black_json"];
-                $this->white_json = $row["white_json"]
+                
+ //              $this->cur_color = $row["cur_color"];
+ //              $this->black_json = $row["black_json"];
+ //              $this->white_json = $row["white_json"];
                 
                 if ($client_id == $row["white_id"])
                 {
@@ -106,8 +113,9 @@ class Game {
         }
         $conn->close();
         
-        if($this->turn_num == null)
+        if($this->turn_num === null){
             $this->turn_num = 0;
+        }
         
 //        // if we have a null board, initiate a fresh board. 
 //        if($this->board_rep == null)
@@ -174,11 +182,66 @@ class Game {
 // Updaters
     public function update_Game()
     {
+        $db_host = 'mysql.cs.iastate.edu';
+        $db_user = 'u309M13';
+        $db_pass = 'T2GWRYDIw';
+        $db_name = 'db309M13';
+        $tbl_name = 'Game';
+
+        //Create connection
+        $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);        
         
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        
+        $sql = "UPDATE $tbl_name 
+                SET turn_num = '$this->turn_num' ,
+                    white_in = '$this->white_in' ,
+                    black_in = '$this->black_in' ,
+                    board_json = '$this->board_rep'
+                WHERE game_id = '$this->game_id'";
+        
+        // Query the database with our statement. 
+        if ($conn->query($sql) === TRUE) 
+        {
+            echo "Game successfully updated." . "<br/>";
+        }
+        else
+        {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+        
+        //Close the database connection
+        conn->close();
     }
     public function end_Game()
     {
-        
+            $db_host = 'mysql.cs.iastate.edu';
+            $db_user = 'u309M13';
+            $db_pass = 'T2GWRYDIw';
+            $db_name = 'db309M13';           
+            $tbl_name = 'Game';
+            
+            // Create connection
+            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+            
+            // Define DELETE statement.
+            $sql = "DELETE FROM $tbl_name WHERE game_id = '$this->game_id'";
+            
+            // Query the database with our statement. 
+            if ($conn->query($sql) === TRUE) 
+            {
+                echo "Game successfully ended." . "<br/>";
+            }
+            else
+            {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            
+            // Close database connection. 
+            $conn->close();        
     }
 //    public function initNewBoard(){
 //            
@@ -224,7 +287,7 @@ class Game {
 //
 //        $this->board_rep = json_decode($json, true);
 //        var_dump($this->board_rep);
-//    }
+//    }*/
 }
-
 ?>
+    </body></html>
