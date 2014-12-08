@@ -9,3 +9,14 @@ CREATE TABLE `db309M13`.`Lobby` (
     REFERENCES `db309M13`.`Account` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
+//Nov-17-2014
+ALTER TABLE `db309M13`.`Lobby` 
+ENGINE = InnoDB ;
+
+ALTER TABLE `db309M13`.`Lobby` 
+ADD CONSTRAINT `player_id`
+  FOREIGN KEY (`player_id`)
+  REFERENCES `db309M13`.`Account` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;

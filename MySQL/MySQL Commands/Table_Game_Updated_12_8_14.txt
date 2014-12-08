@@ -1,0 +1,2 @@
+ALTER TABLE `db309M13`.`Game` 
+CHANGE COLUMN `board_json` `board_json` VARCHAR(10000) NULL DEFAULT NULL ;

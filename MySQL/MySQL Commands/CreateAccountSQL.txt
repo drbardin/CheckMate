@@ -42,3 +42,6 @@ MODIFY ID int NOT NULL AUTO_INCREMENT;
 
 INSERT INTO Account (name, username, password, email)
 VALUES ('Tyler', 'xedrix1', 'johnston1','tjj@iastate.edu');
+
+ALTER TABLE `db309M13`.`Account` 
+ENGINE = InnoDB ;
