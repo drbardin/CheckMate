@@ -1,5 +1,9 @@
 html { height: 100% }
 
+.tutorialbody{ 
+    background: #956B95;
+}
+
 .mainpage{
     background-color: #ADB4C2;
 }
@@ -16,11 +20,99 @@ html { height: 100% }
     float: left;
 }
 
+.chessboard{
+    height: 550px;
+    width:  550px;
+    
+    position:absolute;
+    left:0; right:0;
+    top:600; bottom:0;
+    margin:auto;
+
+    max-width:100%;
+    max-height:100%;
+    overflow:auto;
+}
+
+.pawn{
+
+    width: 200px; 
+    height: 300px; 
+    
+    position:absolute;
+    left:0; right:0;
+    top:200; bottom:0;
+    margin:auto;
+
+    max-width:100%;
+    max-height:100%;
+    overflow:auto;
+}
+
+.chesspawnbox{
+    height: 70px;
+    width: 620px;
+    font-family: "Arial", "Helvetica", sans-serif;
+    
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    position:absolute;
+    left:0; right:0;
+    top:-100; bottom:0;
+    margin:auto;
+
+    max-width:100%;
+    max-height:100%;
+    overflow:auto;
+
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
+.piecebox{
+    height: 250px;
+    width: 450px;
+    font-family: "Arial", "Helvetica", sans-serif;
+    
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    position:absolute;
+    left:0; right:0;
+    top:780; bottom:0;
+    margin:auto;
+
+    max-width:100%;
+    max-height:100%;
+    overflow:auto;
+
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
 #usertop{
     text-shadow: 2px 2px black;
     text-align: center;
     color: #fff;
     font-size: 45px;
+    font-family: arial; 
+}
+
+#subtop{
+    text-shadow: 2px 2px black;
+    text-align: center;
+    color: #fff;
+    font-size: 25px;
     font-family: arial; 
 }
 
@@ -31,6 +123,16 @@ html { height: 100% }
     font-size: 50px;
     font-family: arial; 
     line-height: 100px;
+}
+
+.contact {
+  background: #eceeee;
+  border: 1px solid #42464b;
+  border-radius: 6px;
+  height: 257px;
+  margin: 20px auto 0;
+  width: 298px;
+  box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
 }
 
 .login {
@@ -65,6 +167,42 @@ html { height: 100% }
   box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
 }
 
+.chesspawntutorial{
+  text-align: center;
+  background: #F0E0F0;
+  border: 1px solid #42464b;
+  border-radius: 10px;
+  padding-left: 50px;
+  height: 800px;
+  margin: 20px auto 0;
+  width: 600px;
+  box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
+}
+
+.piecetutorial{
+  text-align: center;
+  background: #F0E0F0;
+  border: 1px solid #42464b;
+  border-radius: 10px;
+  padding-left: 50px;
+  height: 800px;
+  margin: 20px auto 0;
+  width: 450px;
+  box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
+}
+
+.usertutorial{
+  text-align: center;
+  background: #F0E0F0;
+  border: 1px solid #42464b;
+  border-radius: 10px;
+  padding-left: 50px;
+  height: 335px;
+  margin: 20px auto 0;
+  width: 450px;
+  box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
+}
+
 input[type="password"], input[type="username"],input[type="email"],input[type="name"] {
   border: 1px solid #a1a3a3;
   border-radius: 4px;
@@ -83,6 +221,58 @@ input[type="password"], input[type="username"],input[type="email"],input[type="n
   height: 16px;
   margin: 26px 0 0 28px;
   width: 87px;
+}
+
+input[type="tutorialforback"]
+{  
+    width: 200px;
+    height: 50px; 
+    
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-size:24px;
+    font-weight:bold;
+    color:#fff;
+    text-decoration:none;
+    text-align:center;
+    
+    left:-20; right:0;
+    top:670; bottom:0;
+    margin:auto;
+
+    max-width:100%;
+    max-height:100%;
+    overflow:auto;
+
+    position:relative;
+    cursor:pointer;
+    border: none;  
+    
+    background-color: #956B95;
+    border-radius: 30px;
+    box-shadow: inset 0px 1px 0px #CC99FF, 0px 5px 0px 0px #686C74, 0px 10px 5px #999;
+}
+
+input[type="tutorialpage"]
+{    
+    width: 400px;
+    height: 50px; 
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-size:24px;
+    font-weight:bold;
+    color:#fff;
+    text-decoration:none;
+    text-align:center;
+    padding-top:6px;
+    margin: 29px 0 0 0px;
+    position:relative;
+    cursor:pointer;
+    border: none;  
+    background-color: #956B95;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius:5px;
+    box-shadow: inset 0px 1px 0px #CC99FF, 0px 5px 0px 0px #686C74, 0px 10px 5px #999;
 }
 
 input[type="user"]
@@ -196,6 +386,16 @@ input[type="submit"] {
     width: 399px; 
 }
 
+.buttondescription_tutorial{
+    position: absolute;
+    margin-left: 120px;
+    background: #686C74; 
+    color: #FFF; 
+    
+    visibility: hidden;
+    opacity: 0;
+}
+
 .buttondescription{
     position: absolute;
     margin-left: 30px;
@@ -204,6 +404,11 @@ input[type="submit"] {
     
     visibility: hidden;
     opacity: 0;
+}
+
+.buttonwrap:hover .buttondescription_tutorial{
+    visibility: visible;
+    opacity: 0.75;
 }
 
 .buttonwrap:hover .buttondescription{

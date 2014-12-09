@@ -25,7 +25,12 @@ $email    = $_POST['email'];
 $sql="INSERT INTO Account (name, username, password, email) VALUES ('$name', '$username', '$password', '$email')";
 
 if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
+    
+    echo '<script type = "text/javascript">'; 
+    echo 'alert("Registration successful! Please login.")';
+    echo '</script>';
+    header("refresh: 0.5; url = login.php");
+    
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }

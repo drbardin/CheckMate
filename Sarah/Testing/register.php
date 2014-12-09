@@ -1,7 +1,6 @@
 <?php
     session_start();
 
-
 if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 {
     ?>
@@ -46,7 +45,6 @@ if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 		</header>
 		<section>
 			<h2 id = "top">Registration</h2>
-            <!--<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>-->
             
 			<form name = "validatereg" action="newuser.php" onsubmit="return validateForm()" method="post">
                 <div class="register">
@@ -69,7 +67,7 @@ if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 		<br />
 		<br />
 		<footer style="float:right;">
-			<a href="help.php"><img src="help.png"></a> <a href="contact.php"><img src="contact.png"></a> <a href="options.php"><img src="options.png"></a>
+			<a href="options.php"><img src="options.png"></a>
 		</footer>
 	</body>
 </html>

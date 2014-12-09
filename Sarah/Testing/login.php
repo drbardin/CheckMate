@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+    session_start();
 
 if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 {
@@ -10,6 +10,21 @@ if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 <html lang="en">
 	<head>
 		<title>Login | Checkmate</title>
+        <script>
+            function validateForm() {
+                var username = document.forms["validatelogin"]["username"].value;
+                var password = document.forms["validatelogin"]["password"].value;
+                
+                if (username ==null || username =="") {
+                    alert("Username must be filled out");
+                    return false;
+                }
+                if (password ==null || password =="") {
+                    alert("Password must be filled out");
+                    return false;
+                }
+            }
+        </script>
 	</head>
 	<body>
 		<header style="text-align:center";>
@@ -19,7 +34,7 @@ if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 		<br />
 		<section>
 			<h2 id = "top" >Login</h2>
-			<form method="POST" action="validatelogin.php">
+			<form name = "validatelogin" method="POST" action="validatelogin.php" onsubmit="return validateForm()">
 			<div class="login">
                 <input type="username" name = "username" placeholder="Username" id="username">  
                 <input type="password" name = "password" placeholder="Password" id="password">  
@@ -37,7 +52,7 @@ if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 		<br />
 		<footer>
             <div class = "footerbuttons">
-			<a href="help.php"><img src="help.png"></a> <a href="contact.php"><img src="contact.png"></a><a href="options.php"><img src="options.png"></a>
+			     <a href="options.php"><img src="options.png"></a>
             </div>                                                                            
 		</footer>
 	</body>

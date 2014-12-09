@@ -53,7 +53,7 @@ if($_SESSION["login"])
                         <p class = "buttondescription">This chess mode will create a match with the computer</p>
                 </div>
                 <div class = "buttonwrap">
-                    <a href="tutorial.php"><input type="user" value="Start Tutorial"></a>
+                    <a href="pre_tutorial.php"><input type="user" value="Start Tutorial"></a>
                         <p class = "buttondescription">This chess mode will bring you to the Chess tutorial</p>
                 </div>
             </div>
@@ -91,7 +91,7 @@ if($_SESSION["login"])
 
 		<footer>
             <div class = "footerbuttons">
-                <a href="help.php"><img src="help.png"></a> <a href="contact.php"><img src="contact.png"></a> <a href="options.php"><img src="options.png"></a>
+               <a href="options.php"><img src="options.png"></a>
             </div>
             <div class = "logoutbutton">
                  <a href = "logout.php"><input type="logout" value="Logout"></a>

@@ -47,7 +47,10 @@
     }
 	else
     {
-		echo "Wrong Username or Password. Please press the back button.";
+        echo '<script type = "text/javascript">'; 
+        echo 'alert("Username and password do not match. Try again.")';
+        echo '</script>';
+		header("refresh: 0.5; url = login.php");
     }
     $conn->close();
 ?>
