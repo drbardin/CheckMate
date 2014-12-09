@@ -40,7 +40,7 @@ class Game {
     // Denotes the color that is associated with 
     private $my_color; // either "w" or "b"
     // Tells whether or not it is this client's turn.
-    private $my_turn = FALSE; // either true or false
+    private $clients_turn = FALSE; // either true or false
     private $potential_moves = array();
     
     // Default constructor
@@ -106,7 +106,7 @@ class Game {
                     $this->my_color='b';
                 }
                 
-                if ($this->my_color == $this->cur_color) $this->my_turn=TRUE;
+                if ($this->my_color == $this->cur_color) $this->clients_turn=TRUE;
                 $conn->close();
             }
         }
@@ -132,7 +132,7 @@ class Game {
 //        if($this->board_rep == null)
 //            initNewBoard();
             
-        $init_moves = 0;
+//        $init_moves = 0;
         // setPotentialMoves();
     }
 // Game Table Value Getters
@@ -179,8 +179,8 @@ class Game {
     public function get_Current_Color() {
         return $this->cur_color;
     }
-    public function is_My_Turn() {
-       return $this->my_turn;
+    public function is_Clients_Turn() {
+       return $this->clients_turn;
     }
     public function get_Potential_Moves() {
         return $this->potential_moves;
@@ -200,7 +200,7 @@ class Game {
         $this->black_pieces = $black_json;
     }
     
-/*// Updaters
+// Updaters
     public function update_Game()
     {
         $db_host = 'mysql.cs.iastate.edu';
@@ -235,8 +235,8 @@ class Game {
         }
         
         //Close the database connection
-        conn->close();
-    }*/
+        $conn->close();
+    }
     
 /*    public function end_Game()
     {
