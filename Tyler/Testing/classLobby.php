@@ -22,7 +22,7 @@ session_start();
             // $this->time_entered = date('Y-m-d G:i:s');
         }*/
         
-        function __construct()
+        public function __construct()
         {
             $args = func_get_args();
             $num_args = func_num_args();
@@ -202,9 +202,6 @@ session_start();
             // Close database connection. 
             $conn->close();
         }
-        
-        
-        
         
         
         /*

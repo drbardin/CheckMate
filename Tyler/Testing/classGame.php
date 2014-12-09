@@ -29,7 +29,7 @@ class Game {
     // 2D Array containing black_pieces and white_pieces. Is to be encoded to client as a JSON
     private $board_rep = array(array());
     
-// Calculateable Values
+// Calculable Values
     // Color-specific array that is ready to be encoded to client as a JSON. (A subset of $board_rep)
     private $black_pieces;
     private $white_pieces;
@@ -171,17 +171,19 @@ class Game {
         return $this->board_rep;   
     }
     // NOTE: Do we want a similar pair of functions that act as: "get_My_Pieces() and get_Opponent_Pieces()?"
+    
+// Calculable Value Getters
     public function get_Pieces_White() {
         return $this->white_pieces;
     }
     public function get_Pieces_Black() {
         return $this->black_pieces;
     }
-    
-// Session-specific Getters
     public function get_Current_Color() {
         return $this->cur_color;
     }
+    
+// Session-Specific Getters
     public function get_Client_Color() {
         return $this->client_color;
     }
@@ -279,7 +281,8 @@ class Game {
             }
             
             // Close database connection. 
-            $conn->close();        
+            $conn->close();
+            header("location:player0.php");
     }
     
 /*    public function initNewBoard(){
