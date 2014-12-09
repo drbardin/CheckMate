@@ -84,4 +84,5 @@ session_start();
     echo "Actual: " . $this_Game->get_Board_Representation() . "<br/>";
     echo "<br/>";
     $this_Game->update_Game();
+    $this_Game->end_Game();
 ?>

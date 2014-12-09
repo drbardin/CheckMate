@@ -254,7 +254,7 @@ class Game {
         $conn->close();
     }
     
-/*    public function end_Game()
+    public function end_Game()
     {
             $db_host = 'mysql.cs.iastate.edu';
             $db_user = 'u309M13';
@@ -280,7 +280,7 @@ class Game {
             
             // Close database connection. 
             $conn->close();        
-    }*/
+    }
     
 /*    public function initNewBoard(){
             
