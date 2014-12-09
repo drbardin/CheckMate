@@ -9,11 +9,16 @@ session_start();
     $client_username;
     $client_color;
     $opponent_username;
+    // Updating once here so that if client color is black, they are able to update and signify that they are in_game as well, without updating the turn number to 0. 
+    $values->update_Game();
+
     $if ($values->get_Client_Color()=='w')
     {
         $client_username = $values->get_Username_White();
         $client_color = 'w';
         $opponent_username = $values->get_Username_Black();
+        $values->increment_Turn_Number()
+        $values->update_Game();
     }
     else if ($values->get_Client_Color()=='b')
     {
