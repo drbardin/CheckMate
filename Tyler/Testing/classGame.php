@@ -38,9 +38,9 @@ class Game {
     
 // Session_Specific Values
     // Denotes the color that is associated with 
-    private $my_color; // either "w" or "b"
+    private $client_color; // either "w" or "b"
     // Tells whether or not it is this client's turn.
-    private $clients_turn = FALSE; // either true or false
+    private $clients_turn = 0; // either true or false
     private $potential_moves = array();
     
     // Default constructor
@@ -97,16 +97,19 @@ class Game {
                 // Set values denoting the client's color, and update that the client's color is in the game.
                 if ($this->client_id == $row["white_id"])
                 {
-                    $this->white_in = TRUE;
-                    $this->my_color = 'w';
+                    $this->white_in = 1;
+                    $this->client_color = 'w';
                 }
                 else if ($this->client_id == $row["black_id"])
                 { 
-                    $this->black_in = TRUE;
-                    $this->my_color='b';
+                    $this->black_in = 1;
+                    $this->client_color='b';
                 }
                 
-                if ($this->my_color == $this->cur_color) $this->clients_turn=TRUE;
+                if ($this->client_color == $this->cur_color)
+                {
+                    $this->clients_turn=1;
+                }
                 $conn->close();
             }
         }
@@ -179,6 +182,9 @@ class Game {
     public function get_Current_Color() {
         return $this->cur_color;
     }
+    public function get_Client_Color() {
+        return $this->client_color;
+    }
     public function is_Clients_Turn() {
        return $this->clients_turn;
     }
@@ -216,13 +222,23 @@ class Game {
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        
-        $sql = "UPDATE $tbl_name 
-                SET turn_num = '$this->turn_num' ,
-                    white_in = '$this->white_in' ,
-                    black_in = '$this->black_in' ,
-                    board_json = '$this->board_rep'
-                WHERE game_id = '$this->game_id'";
+        $sql;
+        if ($this->client_color == 'w')
+        {
+            $sql = "UPDATE $tbl_name 
+                    SET turn_num = '$this->turn_num' ,
+                        white_in = '$this->white_in' ,
+                        board_json = '$this->board_rep'
+                    WHERE game_id = '$this->game_id'";
+        }
+        else if ($this->client_color == 'b')
+        {
+            $sql = "UPDATE $tbl_name 
+                    SET turn_num = '$this->turn_num' ,
+                        black_in = '$this->black_in' ,
+                        board_json = '$this->board_rep'
+                    WHERE game_id = '$this->game_id'";
+        }
         
         // Query the database with our statement. 
         if ($conn->query($sql) === TRUE) 
