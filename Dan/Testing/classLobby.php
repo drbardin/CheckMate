@@ -22,7 +22,7 @@ session_start();
             // $this->time_entered = date('Y-m-d G:i:s');
         }*/
         
-        function __construct()
+        public function __construct()
         {
             $args = func_get_args();
             $num_args = func_num_args();
@@ -204,9 +204,6 @@ session_start();
         }
         
         
-        
-        
-        
         /*
             Creates an entry in the Game table. Removes both players from the Lobby.
                 No return value.
@@ -251,9 +248,40 @@ session_start();
             $bId = $black->get_Id();
             $wUsername = $white->get_Username();
             $bUsername = $black->get_Username();
-            
+            $board_json = ' "black":  [{ "piece": ROOK,  "row": 0, "col": 0, "status": UNCAPTURED },
+                                { "piece": KNIGHT,"row": 0, "col": 1, "status": UNCAPTURED },
+                                { "piece": BISHOP,"row": 0, "col": 2, "status": UNCAPTURED },
+                                { "piece": KING,  "row": 0, "col": 3, "status": UNCAPTURED },
+                                { "piece": QUEEN, "row": 0, "col": 4, "status": UNCAPTURED },
+                                { "piece": BISHOP,"row": 0, "col": 5, "status": UNCAPTURED },
+                                { "piece": KNIGHT,"row": 0, "col": 6, "status": UNCAPTURED },
+                                { "piece": ROOK,  "row": 0, "col": 7, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 1, "col": 0, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 1, "col": 1, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 1, "col": 2, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 1, "col": 3, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 1, "col": 4, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 1, "col": 5, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 1, "col": 6, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 1, "col": 7, "status": UNCAPTURED }, ],
+                            "white": [ { "piece": ROOK,  "row": 7, "col": 0, "status": UNCAPTURED },
+                                { "piece": KNIGHT,"row": 7, "col": 1, "status": UNCAPTURED },
+                                { "piece": BISHOP,"row": 7, "col": 2, "status": UNCAPTURED },
+                                { "piece": KING,  "row": 7, "col": 3, "status": UNCAPTURED },
+                                { "piece": QUEEN, "row": 7, "col": 4, "status": UNCAPTURED },
+                                { "piece": BISHOP,"row": 7, "col": 5, "status": UNCAPTURED },
+                                { "piece": KNIGHT,"row": 7, "col": 6, "status": UNCAPTURED },
+                                { "piece": ROOK,  "row": 7, "col": 7, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 6, "col": 0, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 6, "col": 1, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 6, "col": 2, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 6, "col": 3, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 6, "col": 4, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 6, "col": 5, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 6, "col": 6, "status": UNCAPTURED },
+                                { "piece": PAWN,  "row": 6, "col": 7, "status": UNCAPTURED }, ]';
             // Define INSERT statement.
-            $sql = "INSERT INTO $tbl_name (white_id, black_id, turn_num, white_in, black_in, white_username, black_username) VALUES ('$wId', '$bId', 0, 0, 0,'$wUsername', '$bUsername')";
+            $sql = "INSERT INTO $tbl_name (white_id, black_id, turn_num, white_in, black_in, white_username, black_username, board_json) VALUES ('$wId', '$bId', 0, 0, 0,'$wUsername', '$bUsername','$board_json')";
             
             // Query the database with our statement. 
             if ($conn->query($sql) === TRUE) 
@@ -272,6 +300,9 @@ session_start();
             $this->remove_Player($id_first);
             $this->remove_Player($id_second);
         }
+        
+        
+        
         
         /*
             Attempts to add the player to the Lobby, but first checks if theres an person waiting in the lobby.
@@ -325,4 +356,4 @@ session_start();
             }
         }
     }
-?>1
+?>

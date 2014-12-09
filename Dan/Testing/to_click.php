@@ -11,13 +11,12 @@ $myJson = json_decode($_POST['data'], true);
 $r = $myJson['row'];
 $c = $myJson['col'];
     
-$outgoing; 
-if(processMove($r, $c)){
+$outgoing;
+if (processMove($r, $c)){
     $outgoing = 'true';
 }
 else {
     $outgoing = 'false';
 }
-
 echo json_encode($outgoing);
 ?>

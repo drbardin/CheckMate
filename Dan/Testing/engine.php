@@ -2,7 +2,7 @@
     error_reporting(E_ALL);
     ini_set('display_errors', 'On');
     include_once "classGame.php";
-//    session_start();
+//  session_start();
 ?> 
 
 <?php
@@ -15,43 +15,27 @@ if (!function_exists('processMove'))
         $game = new Game();
         
         // ask validate move function if destination click is valid. 
-        //$isGoodMove = validateMove($r, $c);
+        // $isGoodMove = validateMove($r, $c);
         // short circuit above.
         $isGoodMove = true;
 
         if($isGoodMove){
-
             $game->incrementTurnNum();// update turn
             $game->setCurColor(); // flip color
             // update object array here
             return true; // tell AJAX this move is good, to_click can draw move. 
         }
+        return false;
     }
 }
 
 if(!function_exists('getPotentialMoves'))
 {
-   // pass the initial board if turn_num == 0 
-    
+    // pass the initial board if turn_num == 0 
     // this will process an initial click and get valid moves, and return highlights. 
-    function getPotentialMoves($r, $c, $black, $white)
+    function getPotentialMoves($r, $c)
     {
         $game = new Game();
-        
-        // on turn_num === 0, need to upload a board to MySQL Game table
-        // do that here. 
-        
-        $clr = $game->getCurColor();
-        $board = $game->getBoardRep(); // full set of pieces
-        $color_set; // black or white array of pieces. 
-        $switch_var = null;
-        
-        if($clr == "b")
-            $color_set = $black;
-        else
-            $color_set = $white;
-        
-        var_dump($color_set);
         
         for($i = 0; $i < count($color_set); $i++)
         {
@@ -60,41 +44,44 @@ if(!function_exists('getPotentialMoves'))
                 // we found the clicked piece. 
                 // now pass it to switch to route to the logic function.
                 $switch_var = $color_set[$i]['piece'];
+                break;
             }
         }
   
-        $highlight_arr;
+        $highlight_arr = array(array());
         switch($switch_var)
         {
-            case "PAWN" :
-                $highlight_arr = movePawn($r, $c, $clr, $board);
+            case "PAWN":
+                $highlight_arr = movePawn($r, $c, $cur_color,   $black, $white);
                 break;
-            case "ROOK" :
-                $highlight_arr = moveRook($r, $c, $clr, $board);
+            case "ROOK":
+                $highlight_arr = moveRook($r, $c, $cur_color,   $black, $white);
                 break;
-            case "KNIGHT" :
-                $highlight_arr = moveKnight($r, $c, $clr, $board);
+            case "KNIGHT":
+                $highlight_arr = moveKnight($r, $c, $cur_color, $black, $white);
                 break;
-            case "BISHOP" :
-                $highlight_arr = moveBishop($r, $c, $clr, $board);
+            case "BISHOP":
+                $highlight_arr = moveBishop($r, $c, $cur_color, $black, $white);
                 break;
-            case "QUEEN" :
-                $highlight_arr = moveQueen($r, $c, $clr, $board);
+            case "QUEEN":
+                $highlight_arr = moveQueen($r, $c, $cur_color,  $black, $white);
                 break;
-            case "KING" :
-                $highlight_arr = moveKing($r, $c, $clr, $board);
+            case "KING":
+                $highlight_arr = moveKing($r, $c, $cur_color,   $black, $white);
                 break;
             default :
                 $highlight_arr[0]['row'] = $r;
                 $highlight_arr[0]['col'] = $c;
-              
         }
         return $highlight_arr;    
     }
 }
-    // SHORT CIRCUITED OUT FOR THE MOMENT
-    function validateMove($r, $c) {
-        $move_list = getPotentialMoves();
+
+// SHORT CIRCUITED OUT FOR THE MOMENT
+if(!function_exists('validateMove')){
+
+    function validateMove($r, $c, $game) {
+        $move_list  = $game->getPotentialMoves();
         
         for($i = 0; $i < count($move_list); $i++)
         {
@@ -103,46 +90,95 @@ if(!function_exists('getPotentialMoves'))
         }
         return false; //selected move not available.
     }
+}
     
 if(!function_exists('movePawn'))
 {
-    function movePawn($r, $c, $color, $cur_board){
+    function movePawn($r, $c, $color, $black, $white)
+    {
+        // 2d array to hold potential moves. 
+        // always highlight this.piece 
+        $moves = array(array('row'=>$r, 'col'=>$c));
         
-        // Quick and dirty for demo. 
-        $moves = array();
-        $moves[0] = array();
-        $moves[1] = array();
-        $moves[2] = array();
+        // boolean flag if next position forward is empty. 
+        $fwd_1_open = TRUE;
+        $fwd_2_open = FALSE;
         
-        array_push($moves[0], $r, $c);
-        
-        if($color == "b")
-        {
-            array_push($moves[1], $r-1, $c);
-            array_push($moves[2], $r-2, $c);
-        }
-        else
-        {
-            array_push($moves[1], $r+1, $c);
-            array_push($moves[2], $r+2, $c);
-        }
-
-        return $moves;
-        
-        if($color == "b")
-            $color_set = $board['black'];
-        else
-            $color_set = $board['white'];
-        
-        for($i = 0; $i < count($color_set); $i++)
-        {
-            if($color_set[$i]['row'] == $r && $color_set[$i]['col'] == $c)
+        // we need to route for color, 
+        if($color === 'b') 
+        {   
+            // loop through color sets for capture and move ability.
+            for($i = 0; $i < count($black); $i++)
             {
-                // we found the clicked piece. 
-                // now pass it to switch to route to the logic function.
-                $switch_var = $color_set[$i]['piece'];
+                // if pawn is on homerow, check if two forward is occupied.
+                if($r === 6) 
+                {
+                     $fwd_2_open = TRUE;
+                    if($black[$i]['row'] === $r-2 && $black[$i]['col'] === $c)
+                        $fwd_2_open = FALSE;
+                    if($white[$i]['row'] === $r-2 && $white[$i]['col'] === $c)
+                        $fwd_2_open = FALSE;
+                }
+                
+                // if square directly ahead of pawn is occupied, can't move there. 
+                if($black[$i]['row'] === $r-1 && $black[$i]['col'] === $c)
+                    $fwd_1_open = FALSE;
+                if($white[$i]['row'] === $r-1 && $white[$i]['col'] === $c)
+                    $fwd_1_open = FALSE;   
+                
+                // pawn capture left condition
+                if($black[$i]['row'] === $r-1 && $black[$i]['col'] === $c-1){
+                    $l_capture = array('row'=>$r-1, 'col'=>$c-1);
+                    array_push($moves, $l_capture);
+                }
+                
+                // pawn capture right condition
+                if($black[$i]['row'] === $r-1 && $black[$i]['col'] === $c+1){
+                    $r_capture = array('row'=>$r-1, 'col'=>$c-1);
+                    array_push($moves, $r_capture);
+                }
             }
         }
+        else 
+        {
+            // loop through color sets for capture and move ability.
+            for($i = 0; $i < count($white); $i++)
+            {
+                // if pawn is on homerow, check if two forward is occupied.
+                if($r === 1) 
+                {
+                    $fwd_2_open = TRUE;
+                    if($black[$i]['row'] === $r+2 && $black[$i]['col'] === $c)
+                        $fwd_2_open = FALSE;
+                    if($white[$i]['row'] === $r+2 && $white[$i]['col'] === $c)
+                        $fwd_2_open = FALSE;
+                }
+                
+                // if square directly ahead of pawn is occupied, can't move there. 
+                if($black[$i]['row'] === $r+1 && $black[$i]['col'] === $c)
+                    $fwd_1_open = FALSE;
+                if($white[$i]['row'] === $r+1 && $white[$i]['col'] === $c)
+                    $fwd_1_open = FALSE;   
+                
+                // pawn capture left condition
+                if($black[$i]['row'] === $r+1 && $black[$i]['col'] === $c-1){
+                    $l_capture = array('row'=>$r-1, 'col'=>$c-1);
+                    array_push($moves, $l_capture);
+                }
+                
+                // pawn capture right condition
+                if($black[$i]['row'] === $r+1 && $black[$i]['col'] === $c+1){
+                    $r_capture = array('row'=>$r-1, 'col'=>$c-1);
+                    array_push($moves, $r_capture);
+                }
+            }
+            // can pawn move forward? 
+            if($fwd_1_open){
+                $upone = array('row'=>$r-1, 'col'=>$c);
+                array_push($moves, $upone);
+            }
+        }
+        return $moves;
     }
 }
 
@@ -157,23 +193,13 @@ if(!function_exists('moveKnight'))
 {
     function moveKnight($r, $c, $color, $cur_board) {
       
-        // Quick and dirty for demo. 
-        $moves = array();
-        $moves[0] = array();
-        $moves[1] = array();
-        $moves[2] = array();
+        $moves;
         
-        array_push($moves[0], $r, $c);
-        
-        if($color == "b")
-        {
-            array_push($moves[1], $r-2, $c-1);
-            array_push($moves[2], $r-2, $c+1);
+        if($color === 'w'){
+            $moves = array(array('row'=>$r, 'col'=>$c),array('row'=>$r-1, 'col'=>$c),array('row'=>$r-2, 'col'=>$c)); 
         }
-        else
-        {
-            array_push($moves[1], $r+2, $c-1);
-            array_push($moves[2], $r+2, $c+1);
+        else{
+            $moves = array(array('row'=>$r, 'col'=>$c),array('row'=>$r+1, 'col'=>$c),array('row'=>$r+2, 'col'=>$c)); 
         }
 
         return $moves;

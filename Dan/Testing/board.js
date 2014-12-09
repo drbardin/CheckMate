@@ -4,7 +4,7 @@ $(document).ready(function () {
     var ctx = canvas.getContext("2d");
     var w = $("canvas#gameCanvas").width();
     var h = $("canvas#gameCanvas").height();
-
+    
     // value id for piece location in pieces.png. 
     // used for cropping method. 
     var PAWN = 0;
@@ -15,21 +15,23 @@ $(document).ready(function () {
     var KING = 5;
 
     var NUM_ROWS;
-    var CAPTURED;
-    var UNCAPTURED;
     var SQR_SIZE = h / 8;
     var WHITE_TURN;
 
-    var click_counter = 0; 
-    var prev_click = {row: null, col: null};
-    var sqrs_with_highlight = new Array();   // array of (r,c) objects currently highlighted. 
-    var before_highlight_imgs = new Array(); // array of image object before highlighting. 
-
+    var click_counter = 0;  
+    
+    var selected_valid_destination = false;   // to_click flag for selecting valid destination
+   
     // object declarations
     var pieces = null;
     var json = null;
     var JSONObj = null;
-    var debug = null;
+    var prev_click = {row: null, col: null};  // hold the last click successfully handleded by ajax. 
+    var before_highlight_imgs = new Array();  // array of image object before highlighting. 
+    var sqrs_to_highlight = new Array();      // array to hold the (row, col) pairs to highlight. 
+    var new_capture = {};                     // hold the array position of a captured piece
+
+
     // This acts as main method
     function draw() {
         // white always makes first move.
@@ -38,6 +40,10 @@ $(document).ready(function () {
         pieces = new Image();
         pieces.src = 'pieces.png';
         pieces.onload = drawPieces;
+        
+        // query server
+        // GET: client username, client color, opponent username
+        
 
         // call method to set up fresh chessboard
         setNewBoard();
@@ -48,50 +54,52 @@ $(document).ready(function () {
    function setNewBoard() {
         // two arrays, one black, one white. Their positions are 0-15. 
         json = {
-            "black": [ { 'piece': ROOK,  'row': 0, 'col': 0, 'status': UNCAPTURED },
-                       { 'piece': KNIGHT,'row': 0, 'col': 1, 'status': UNCAPTURED },
-                       { 'piece': BISHOP,'row': 0, 'col': 2, 'status': UNCAPTURED },
-                       { 'piece': KING,  'row': 0, 'col': 3, 'status': UNCAPTURED },
-                       { 'piece': QUEEN, 'row': 0, 'col': 4, 'status': UNCAPTURED },
-                       { 'piece': BISHOP,'row': 0, 'col': 5, 'status': UNCAPTURED },
-                       { 'piece': KNIGHT,'row': 0, 'col': 6, 'status': UNCAPTURED },
-                       { 'piece': ROOK,  'row': 0, 'col': 7, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 1, 'col': 0, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 1, 'col': 1, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 1, 'col': 2, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 1, 'col': 3, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 1, 'col': 4, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 1, 'col': 5, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 1, 'col': 6, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 1, 'col': 7, 'status': UNCAPTURED },
+            "black": [ { 'piece': ROOK,  'row': 0, 'col': 0, 'status': true},
+                       { 'piece': KNIGHT,'row': 0, 'col': 1, 'status': true},
+                       { 'piece': BISHOP,'row': 0, 'col': 2, 'status': true},
+                       { 'piece': KING,  'row': 0, 'col': 3, 'status': true},
+                       { 'piece': QUEEN, 'row': 0, 'col': 4, 'status': true},
+                       { 'piece': BISHOP,'row': 0, 'col': 5, 'status': true},
+                       { 'piece': KNIGHT,'row': 0, 'col': 6, 'status': true},
+                       { 'piece': ROOK,  'row': 0, 'col': 7, 'status': true},
+                       { 'piece': PAWN,  'row': 1, 'col': 0, 'status': true},
+                       { 'piece': PAWN,  'row': 1, 'col': 1, 'status': true},
+                       { 'piece': PAWN,  'row': 1, 'col': 2, 'status': true},
+                       { 'piece': PAWN,  'row': 1, 'col': 3, 'status': true},
+                       { 'piece': PAWN,  'row': 1, 'col': 4, 'status': true},
+                       { 'piece': PAWN,  'row': 1, 'col': 5, 'status': true},
+                       { 'piece': PAWN,  'row': 1, 'col': 6, 'status': true},
+                       { 'piece': PAWN,  'row': 1, 'col': 7, 'status': true},
                      ],
-            "white": [ { 'piece': ROOK,  'row': 7, 'col': 0, 'status': UNCAPTURED },
-                       { 'piece': KNIGHT,'row': 7, 'col': 1, 'status': UNCAPTURED },
-                       { 'piece': BISHOP,'row': 7, 'col': 2, 'status': UNCAPTURED },
-                       { 'piece': KING,  'row': 7, 'col': 3, 'status': UNCAPTURED },
-                       { 'piece': QUEEN, 'row': 7, 'col': 4, 'status': UNCAPTURED },
-                       { 'piece': BISHOP,'row': 7, 'col': 5, 'status': UNCAPTURED },
-                       { 'piece': KNIGHT,'row': 7, 'col': 6, 'status': UNCAPTURED },
-                       { 'piece': ROOK,  'row': 7, 'col': 7, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 6, 'col': 0, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 6, 'col': 1, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 6, 'col': 2, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 6, 'col': 3, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 6, 'col': 4, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 6, 'col': 5, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 6, 'col': 6, 'status': UNCAPTURED },
-                       { 'piece': PAWN,  'row': 6, 'col': 7, 'status': UNCAPTURED },
-                      ]
-        };
+            "white": [ { 'piece': ROOK,  'row': 7, 'col': 0, 'status': true},
+                       { 'piece': KNIGHT,'row': 7, 'col': 1, 'status': true},
+                       { 'piece': BISHOP,'row': 7, 'col': 2, 'status': true},
+                       { 'piece': KING,  'row': 7, 'col': 3, 'status': true},
+                       { 'piece': QUEEN, 'row': 7, 'col': 4, 'status': true},
+                       { 'piece': BISHOP,'row': 7, 'col': 5, 'status': true},
+                       { 'piece': KNIGHT,'row': 7, 'col': 6, 'status': true},
+                       { 'piece': ROOK,  'row': 7, 'col': 7, 'status': true},
+                       { 'piece': PAWN,  'row': 6, 'col': 0, 'status': true},
+                       { 'piece': PAWN,  'row': 6, 'col': 1, 'status': true},
+                       { 'piece': PAWN,  'row': 6, 'col': 2, 'status': true},
+                       { 'piece': PAWN,  'row': 6, 'col': 3, 'status': true},
+                       { 'piece': PAWN,  'row': 6, 'col': 4, 'status': true},
+                       { 'piece': PAWN,  'row': 6, 'col': 5, 'status': true},
+                       { 'piece': PAWN,  'row': 6, 'col': 6, 'status': true},
+                       { 'piece': PAWN,  'row': 6, 'col': 7, 'status': true},
+                     ]
+            };
     }
-    ///////////////////////////////
-    //   DRAW PIECES FUNCTIONS   //
-    ///////////////////////////////
+    //////////////////////////////////////
+    //   INIT & DRAW PIECES FUNCTIONS   //
+    //////////////////////////////////////
     function drawPieces() {
         //Send white team to be drawn, then black team. 
         drawAllPieces(json.white, false);
         drawAllPieces(json.black, true);
     }
+    
+    
     // This send all pieces to be drawn in their base position.
     function drawAllPieces(fullColorSet, isBlackTeam) {
         var piece_index;
@@ -101,11 +109,16 @@ $(document).ready(function () {
             drawThisPiece(curImage, isBlackTeam);
         }
     }
+    
+    
     // Draws the specified piece. 
     function drawThisPiece(pieceToDraw, isBlackTeam) {
+        
         var thisXY = getCoordinates(pieceToDraw.piece, isBlackTeam);
+        
         ctx.drawImage(pieces, thisXY.x, thisXY.y, SQR_SIZE, SQR_SIZE, pieceToDraw.col * SQR_SIZE, pieceToDraw.row * SQR_SIZE, SQR_SIZE, SQR_SIZE);
     }
+    
     // this chops out a 100x100 square from the pieces.png. Hopefully it'll be the right color and rank. 
     function getCoordinates(thisPiece, isBlackTeam) {
         // x is the column, so send the number of the current piece (e.g., ROOK = 3), multiply by size of piece images.
@@ -116,50 +129,74 @@ $(document).ready(function () {
         };
         return im_coordinates;
     }
-
+    //////////////////////////////////////////
+    //  END  INIT/DRAW PIECES FUNCTIONS   //
+    //////////////////////////////////////////
+    
+    
+    // After successful source square click, game engine returns 
+    // an array of (row, col) pairs representing the locations the clicked piece
+    // can legally move to. 
+    // Array contains the clicked piece at arr[0]. 
     function highlight_squares(sqrs_to_highlight) {
-        for (var i = 0; i < sqrs_to_highlight.length; i++) {
+        
+        for (var i = 0; i < sqrs_to_highlight.length; i++) 
+        {
             var r = sqrs_to_highlight[i].row;
             var c = sqrs_to_highlight[i].col;
-
-            // add a row and col to array holding highlight coords.
-            sqrs_with_highlight.push(new Object());
-            sqrs_with_highlight[i].row = r;
-            sqrs_with_highlight[i].col = c;
-
+            
             // add un-highlighted image to array. 
-            before_highlight_imgs[i] = ctx.getImageData(c * 100, r * 100, 100, 100);
+            var temp = ctx.getImageData((c * 100), (r * 100), 100, 100);
+            before_highlight_imgs.push(temp);
 
             // draw highlight box around clicked square in red, potential moves in green
             ctx.outlineWidth = 5;
-            if (i === 0) // clicked box
+            if (i === 0) // clicked piece
                 ctx.strokeStyle = "#FF0000"; // red
             else
                 ctx.strokeStyle = "#66FF00"; // green
+            
             ctx.strokeRect((c * 100) + 3, (r * 100) + 3, 100 - (3 * 2), 100 - (3 * 2));
         }
     }
 
+    
+    // This will remove all highlights from the game board. 
     function remove_highlights() {
-        for (var i = 0; i < sqrs_with_highlight.length; i++) {
-            var r = sqrs_with_highlight[i].row;
-            var c = sqrs_with_highlight[i].col;
-
-            ctx.putImageData(before_highlight_imgs[i], c * 100, r * 100);
+        
+        for (var i = 0; i < sqrs_to_highlight.length; i++) {
+        
+            var r = sqrs_to_highlight[i].row;
+            var c = sqrs_to_highlight[i].col;
+            
+            var temp = ctx.createImageData(before_highlight_imgs[i]);
+            ctx.putImageData(temp, c * 100, r * 100);
         }
     }
-
-    function update_json(move_to_click) {
+    
+    // After success FROM and TO clicks, update the local gamestate. 
+    function update_json(to_click) {
+        
+        // container for black or white json. 
         var cur_color;
-        var r = move_to_click.row;
-        var c = move_to_click.col;
+        
+        // Which color is playing. 
         if (WHITE_TURN ? cur_color = json.white : cur_color = json.black);
-
-        for (var i = 0; i < cur_color.length; i++) {
-            if (cur_color[i].row === prev_click.row && cur_color[i].col === prev_click.col) {
-                // update the json to reflect new position.
-                cur_color[i].row = r;
-                cur_color[i].col = c;
+        
+        cur_color[moved_arrpos].col = to_click.col;
+        cur_color[moved_arrpos].row = to_click.row;
+        
+        // Now we want the opposing set, see if a piece lives in the space.
+        if(WHITE_TURN ? cur_color = json.black : cur_color = json.white)
+        
+        var i;
+        for(i = 0; i < cur_color.length; i++)
+        {
+            if(cur_color[i].col === to_click.col && cur_color[i].row === to_click.row){
+                new_capture = true;
+                cur_color[captured_arrpos].row = -1;
+                cur_color[captured_arrpos].col = -1;
+                cur_color[captured_arrpos].inPlay = false; 
             }
         }
     }
@@ -167,9 +204,6 @@ $(document).ready(function () {
     // Click handler 
     // Listen for button click
     $("canvas#gameCanvas").click(function (e) {
-
-        // increment click counter
-        click_counter++;
 
         // Get (x,y) of mouse click ( pageX works best in this situation. )
         // NOTE: (0,0) is top-left corner of canvas. 
@@ -181,92 +215,129 @@ $(document).ready(function () {
         //  col = X val / 100 and then rounded down. This will also give a num 0-7
         var row_clicked = Math.floor(y / SQR_SIZE);
         var col_clicked = Math.floor(x / SQR_SIZE);
-
-
+        
         // JSON for outgoing click
         var JSONObj = {
             "row": row_clicked,
             "col": col_clicked,
-            "black": json.black,
-            "white": json.white,
         };
 
         // Turns JSONObj into a JSONStr. 
         var JSONStr = JSON.stringify(JSONObj);
-        console.log(JSONStr);
-
+        
         // FROM_CLICK condition
-        if (click_counter % 2 !== 0) {
-
+        if (click_counter === parseFloat(click_counter) && !(click_counter % 2)) 
+        {
             $.ajax({
                 type: 'POST',
                 url: 'from_click.php',
-                // If I try to pass the JSON to 'data' in a different way, I get null json               
-                //properties echoed back.
-                data: {
-                    'data': JSONStr
-                },
-
+                data: {'data': JSONStr},
                 // If ContentType is lower-case, causes null json properties to be echoed back.
                 ContentType: "application/json; charset=utf-8",
-                dataType: "json",
+                //dataType: "json",
                 success: function (data, textStatus, jqXHR) {
-                    console.log(textStatus);
-                    console.log(data);
-                    console.log(JSON.stringify(data));
                     console.log("Heard reply from from_click.php");
-
+                    
+                    //var updated_data = JSON.stringify(data);
+                    sqrs_to_highlight = JSON.parse(data);
+                    
                     // call process return data function
-
-                    highlight_squares(data);
+                    highlight_squares(sqrs_to_highlight);
+                    
+                    // store the user's click
                     prev_click.col = col_clicked;
                     prev_click.row = row_clicked;
+                    
+                    // increment click counter
+                    click_counter++;
                 },
                 error: function (xhr, desc, err) {
                     console.log("No reply from from_click.php");
-                }
-            });
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: 'to_click.php',
-                // If I try to pass the JSON to 'data' in a different way, I get null json               
-                //properties echoed back.
-                data: {
-                    'data': JSONStr
+                    console.log(desc);
+                    console.log(err);  
                 },
-
-                // If ContentType is lower-case, causes null json properties to be echoed back.
-                ContentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data, textStatus, jqXHR) {
-                    console.log(textStatus);
-                    console.log(data);
-                    console.log(JSON.stringify(data));
-                    console.log("Heard reply from to_click.php");
-
-                    // undo highlighted squares
-                    remove_highlights();
-
-                    // move piece
-                    ctx.clearRect(prev_click.col * 100, prev_click.row * 100, 100, 100);
-                    ctx.putImageData(before_highlight_imgs[0], col_clicked * 100, row_clicked * 100);
-
-                    sqrs_with_highlight = new Array(); // clear this turns array
-                    before_highlight_imgs = new Array(); // clear 
-                    prev_click = {
-                        "row": null,
-                        "col": null
-                    };
-
-                    if (WHITE_TURN ? WHITE_TURN = false : WHITE_TURN = true);
-                },
-                error: function (xhr, desc, err) {
-                    console.log("No reply from to_click.php");
-                }
             });
-        }
-    });
+        } 
+        else 
+        {
+            // UNDO CLICK condition, reset logic to FROM_CLICK game status.
+            if(row_clicked === prev_click.row && col_clicked === prev_click.col)
+            {
+                remove_highlights(); // remove board highlights
+                click_counter--;     // now listening for "from_click"
+                prev_click.row = null;
+                prev_click.col = null;
+            }
+            else 
+            {
+                                        
+             if(selected_valid_destination) 
+             {
+                $.ajax({
+                    type: 'POST',
+                    url: 'to_click.php',
+                    data: {'data': JSONStr},
+
+                    // If ContentType is lower-case, causes null json properties to be echoed back.
+                    ContentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data, textStatus, jqXHR) {
+                        console.log("Heard reply from to_click.php");
+
+                        // undo highlighted squares
+                        remove_highlights();
+
+                        // move piece
+                        ctx.clearRect(prev_click.col * 100, prev_click.row * 100, 100, 100);
+                        ctx.putImageData(before_highlight_imgs[0], col_clicked * 100, row_clicked * 100);
+
+                        var toClick = {row: row_clicked, col: col_clicked};
+                        // update local json
+                        update_json(toClick);
+
+                        // clear the highlight array. 
+                        before_highlight_imgs = [];
+                        // this can also work to clear the array
+                        // before_highlight_imgs.length = 0;
+
+                        prev_click = {
+                            "row": null,
+                            "col": null
+                        };
+
+                        if (WHITE_TURN ? WHITE_TURN = false : WHITE_TURN = true);
+
+                        // $("canvas#gameCanvas").bind("click");
+
+                        // increment click counter
+                        click_counter++;
+                    },
+                    error: function (xhr, desc, err) {
+                        console.log("No reply from to_click.php");
+                    },
+                }); // end .ajaxTO
+                 
+             } // end if (selected_valid_destination)
+                
+//           else
+//           {
+//                // Show message for Invalid Destination
+//           }
+                
+                
+            } // end ajaxTO else undo move condition
+            
+        } // end if(from || to)
+    
+    }); // end click handler .ajax
+    
+}); // end canvas#gameCanvas
+    
+
+
+
+
+
     // getUpdate();
     //    function getUpdate() {
     //        var update_ping = $.ajax( {
@@ -288,8 +359,4 @@ $(document).ready(function () {
     //        update_ping.fail(function(jqXHR, textStatus) {
     //           alert("Ping failed: " + textStatus);
     //        });
-    //    }
-
- });
-    
-                                
+    //    }                                
