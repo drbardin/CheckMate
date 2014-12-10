@@ -17,36 +17,64 @@ $(document).ready(function () {
     var NUM_ROWS;
     var SQR_SIZE = h / 8;
     var WHITE_TURN;
-
-    var click_counter = 0;  
     
+    var CLIENT_UNAME;  // this client's username
+    var CLIENT_COLOR;  // this client's color
+    var OPPO_UNAME;    // this client's opponent
+    
+    var click_counter = 0;  
     var selected_valid_destination = false;   // to_click flag for selecting valid destination
    
     // object declarations
-    var pieces = null;
+    var pieces = new Image();
     var json = null;
     var JSONObj = null;
     var prev_click = {row: null, col: null};  // hold the last click successfully handleded by ajax. 
     var before_highlight_imgs = new Array();  // array of image object before highlighting. 
     var sqrs_to_highlight = new Array();      // array to hold the (row, col) pairs to highlight. 
+    var sqrs_to_hlgt_len = 0;                 // get count of keys returned from ajax query.
     var new_capture = {};                     // hold the array position of a captured piece
-
+    
 
     // This acts as main method
     function draw() {
         // white always makes first move.
         WHITE_TURN = true;
-        // load chess piece images, draw them.
-        pieces = new Image();
+        // load piece image resource.
         pieces.src = 'pieces.png';
+        
         pieces.onload = drawPieces;
         
-        // query server
-        // GET: client username, client color, opponent username
-        
-
         // call method to set up fresh chessboard
         setNewBoard();
+        
+        // query server for player names, this.color
+        // GET: client username, client color, opponent username
+        $.ajax({
+            type: 'GET',
+            url: 'init_draw_ajax.php',
+            ContentType: "application/json; charset=utf-8",
+            //dataType: "json",
+            success: function (data, textStatus, jqXHR) {
+                console.log("Heard reply from init_draw_ajax.php");
+
+                var updated_data = JSON.stringify(data);
+                var p_data = JSON.parse(updated_data);
+
+                // Set the globals
+                CLIENT_UNAME = p_data[0];
+                CLIENT_COLOR = p_data[1];
+                OPPO_UNAME   = p_data[2];
+
+            },
+            error: function (xhr, desc, err) {
+                console.log("No reply from init_draw_ajax.php");
+                console.log(desc);
+                console.log(err);  
+            },
+        });
+
+
     }
     draw();
 
@@ -182,14 +210,20 @@ $(document).ready(function () {
         
         // Which color is playing. 
         if (WHITE_TURN ? cur_color = json.white : cur_color = json.black);
-        
-        cur_color[moved_arrpos].col = to_click.col;
-        cur_color[moved_arrpos].row = to_click.row;
+        var i;
+        // Find the piece and update it to its new location. 
+        for(i = 0; i < cur_color.length; i++) {
+            
+            if(cur_color[i].col === to_click.col && cur_color[i].row === to_click.row){
+            
+                cur_color[i].col = to_click.col;
+                cur_color[i].row = to_click.row;
+            }
+        }
         
         // Now we want the opposing set, see if a piece lives in the space.
         if(WHITE_TURN ? cur_color = json.black : cur_color = json.white)
         
-        var i;
         for(i = 0; i < cur_color.length; i++)
         {
             if(cur_color[i].col === to_click.col && cur_color[i].row === to_click.row){
@@ -240,6 +274,8 @@ $(document).ready(function () {
                     
                     //var updated_data = JSON.stringify(data);
                     sqrs_to_highlight = JSON.parse(data);
+                    // get number of keys in new obj. 
+                    // sqrs_to_hlgt_len = Object.keys(sqrs_to_highlight).length;
                     
                     // call process return data function
                     highlight_squares(sqrs_to_highlight);
@@ -270,59 +306,66 @@ $(document).ready(function () {
             }
             else 
             {
-                                        
-             if(selected_valid_destination) 
-             {
-                $.ajax({
-                    type: 'POST',
-                    url: 'to_click.php',
-                    data: {'data': JSONStr},
-
-                    // If ContentType is lower-case, causes null json properties to be echoed back.
-                    ContentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (data, textStatus, jqXHR) {
-                        console.log("Heard reply from to_click.php");
-
-                        // undo highlighted squares
-                        remove_highlights();
-
-                        // move piece
-                        ctx.clearRect(prev_click.col * 100, prev_click.row * 100, 100, 100);
-                        ctx.putImageData(before_highlight_imgs[0], col_clicked * 100, row_clicked * 100);
-
-                        var toClick = {row: row_clicked, col: col_clicked};
-                        // update local json
-                        update_json(toClick);
-
-                        // clear the highlight array. 
-                        before_highlight_imgs = [];
-                        // this can also work to clear the array
-                        // before_highlight_imgs.length = 0;
-
-                        prev_click = {
-                            "row": null,
-                            "col": null
-                        };
-
-                        if (WHITE_TURN ? WHITE_TURN = false : WHITE_TURN = true);
-
-                        // $("canvas#gameCanvas").bind("click");
-
-                        // increment click counter
-                        click_counter++;
-                    },
-                    error: function (xhr, desc, err) {
-                        console.log("No reply from to_click.php");
-                    },
-                }); // end .ajaxTO
-                 
-             } // end if (selected_valid_destination)
                 
-//           else
-//           {
-//                // Show message for Invalid Destination
-//           }
+                // Loop through highlighted square, which signify legal moves, and check 
+                // player is going to a valid destination. 
+                for(var i = 0; i < sqrs_to_highlight.length; i++) 
+                {
+                    if(sqrs_to_highlight[i].row === row_clicked && sqrs_to_highlight[i].col === col_clicked){
+                        selected_valid_destination = true;
+                    }
+                }
+                // If it is valid, process the move, otherwise, do nothing and wait for a valid click. 
+                if(selected_valid_destination) 
+                {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'to_click.php',
+                        data: {'data': JSONStr},
+
+                        // If ContentType is lower-case, causes null json properties to be echoed back.
+                        ContentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data, textStatus, jqXHR) {
+                            console.log("Heard reply from to_click.php");
+
+                            // undo highlighted squares
+                            remove_highlights();
+
+                            // move piece
+                            ctx.clearRect(prev_click.col * 100, prev_click.row * 100, 100, 100);
+                            ctx.putImageData(before_highlight_imgs[0], col_clicked * 100, row_clicked * 100);
+
+                            var toClick = {row: row_clicked, col: col_clicked};
+                            // update local json
+                            update_json(toClick);
+
+                            // clear the highlight array. 
+                            before_highlight_imgs = [];
+
+                            // clear prev_click object.
+                            prev_click = { "row": null, "col": null };
+
+                            // Change turn ownership
+                            if (WHITE_TURN ? WHITE_TURN = false : WHITE_TURN = true);
+
+                            // increment click counter
+                            click_counter++;
+
+                            // $("canvas#gameCanvas").bind("click");
+
+                        },
+                        error: function (xhr, desc, err) {
+                            console.log("No reply from to_click.php");
+                        },
+                    }); // end .ajaxTO
+
+                 } // end if (selected_valid_destination)
+
+                            //           else
+                            //           {
+                            //                // Show message for Invalid Destination
+                            //           }
                 
                 
             } // end ajaxTO else undo move condition
@@ -332,9 +375,22 @@ $(document).ready(function () {
     }); // end click handler .ajax
     
 }); // end canvas#gameCanvas
-    
 
 
+//function handleFromClick(){
+//    
+//}
+//    
+//function handleToClick(){
+//    
+//}
+//function processSuccess_FromClick(){
+//    
+//}
+//
+//function processSuccess_ToClick(){
+//    
+//}
 
 
 

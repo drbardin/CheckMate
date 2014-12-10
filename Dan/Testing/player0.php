@@ -3,10 +3,8 @@
     session_start();
 
 if($_SESSION["login"])
-{
-    
-    ?>
-
+{    
+?>
 <html lang="en">
 
 	<head>
