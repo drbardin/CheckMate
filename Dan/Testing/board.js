@@ -66,10 +66,11 @@ $(document).ready(function () {
 
                 // Set the globals
                 CLIENT_UNAME = p_data[0];
-                console.log(CLIENT_UNAME);
                 CLIENT_COLOR = p_data[1];
-                console.log(CLIENT_COLOR);
                 OPPO_UNAME   = p_data[2];
+                
+                console.log(CLIENT_UNAME);
+                console.log(CLIENT_COLOR);
                 console.log(OPPO_UNAME);
 
             },
@@ -79,9 +80,8 @@ $(document).ready(function () {
                 console.log(err);  
             },
         });
-
-
     }
+    
     draw();
 
     // JSON wrapped in function so can be used as a new game initializer.
