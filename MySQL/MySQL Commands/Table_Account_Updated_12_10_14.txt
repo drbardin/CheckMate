@@ -1,0 +1,3 @@
+ALTER TABLE `db309M13`.`Account` 
+ADD UNIQUE INDEX `username_UNIQUE` (`username` ASC),
+ADD UNIQUE INDEX `email_UNIQUE` (`email` ASC);
