@@ -245,15 +245,18 @@ class Game {
         // Query the database with our statement. 
         if ($conn->query($sql) === TRUE) 
         {
-            echo "Game successfully updated." . "<br/>";
+            // echo "Game successfully updated." . "<br/>";
+            
+            //Close the database connection
+            $conn->close();
         }
         else
-        {
+        {      
                 echo "Error: " . $sql . "<br>" . $conn->error;
+            
+                //Close the database connection
+                $conn->close();
         }
-        
-        //Close the database connection
-        $conn->close();
     }
     
     public function end_Game()
@@ -273,16 +276,17 @@ class Game {
             // Query the database with our statement. 
             if ($conn->query($sql) === TRUE) 
             {
-                echo "Game successfully ended." . "<br/>";
+                // echo "Game successfully ended." . "<br/>";
+                
+                // Close database connection. 
+                $conn->close();
+                header("location:player0.php");
             }
             else
             {
                 echo "Error: " . $sql . "<br>" . $conn->error;
+                $conn->close();
             }
-            
-            // Close database connection. 
-            $conn->close();
-            header("location:player0.php");
     }
     
 /*    public function initNewBoard(){

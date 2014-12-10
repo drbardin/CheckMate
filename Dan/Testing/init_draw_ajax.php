@@ -31,5 +31,5 @@ include_once "classGame.php";
         echo "THIS IS NOT RIGHT....BAD CODE!..VERY BAD.";
     }
     $my_array = array($client_username, $client_color, $opponent_username);
-    echo json_encode($my_Array);
+    echo json_encode($my_array);
 ?>

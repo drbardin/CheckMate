@@ -57,14 +57,20 @@ $(document).ready(function () {
             //dataType: "json",
             success: function (data, textStatus, jqXHR) {
                 console.log("Heard reply from init_draw_ajax.php");
+                console.log(data);
+                
+                //var updated_data = JSON.stringify(data);
+                //var p_data = JSON.parse(updated_data);
 
-                var updated_data = JSON.stringify(data);
-                var p_data = JSON.parse(updated_data);
+                var p_data = JSON.parse(data);
 
                 // Set the globals
                 CLIENT_UNAME = p_data[0];
+                console.log(CLIENT_UNAME);
                 CLIENT_COLOR = p_data[1];
+                console.log(CLIENT_COLOR);
                 OPPO_UNAME   = p_data[2];
+                console.log(OPPO_UNAME);
 
             },
             error: function (xhr, desc, err) {

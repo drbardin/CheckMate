@@ -83,7 +83,6 @@ if($_SESSION["login"])
 	</body>
 
 </html>
-
 <?php
 }
 else{
