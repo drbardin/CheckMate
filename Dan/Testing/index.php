@@ -13,7 +13,7 @@
             <br />
             <br />
             <br />
-			<h1><img src="logo.png" alt="Checkmate"></a>
+			<h1><img src="logo.png" alt="Checkmate"></h1>
 		</header>
 		<br />
 		<br />

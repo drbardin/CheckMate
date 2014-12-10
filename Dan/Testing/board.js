@@ -78,7 +78,7 @@ $(document).ready(function () {
                 console.log("No reply from init_draw_ajax.php");
                 console.log(desc);
                 console.log(err);  
-            },
+            }
         });
     }
     
@@ -259,7 +259,7 @@ $(document).ready(function () {
         // JSON for outgoing click
         var JSONObj = {
             "row": row_clicked,
-            "col": col_clicked,
+            "col": col_clicked
         };
 
         // Turns JSONObj into a JSONStr. 
@@ -297,7 +297,7 @@ $(document).ready(function () {
                     console.log("No reply from from_click.php");
                     console.log(desc);
                     console.log(err);  
-                },
+                }
             });
         } 
         else 
@@ -363,7 +363,7 @@ $(document).ready(function () {
                         },
                         error: function (xhr, desc, err) {
                             console.log("No reply from to_click.php");
-                        },
+                        }
                     }); // end .ajaxTO
 
                  } // end if (selected_valid_destination)

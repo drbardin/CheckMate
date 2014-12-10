@@ -6,7 +6,6 @@ session_start();
 ?>
 
 <?php
-
     class Lobby
     {
         private $player_id;

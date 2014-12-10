@@ -4,9 +4,7 @@ ini_set('display_errors', 'On');
 include_once "classPlayer.php";
 //include_once "engine.php";
 session_start();
-?>
-
-<?php
+?><?php
 // game object definition
 class Game {
     
