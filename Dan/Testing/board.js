@@ -58,9 +58,6 @@ $(document).ready(function () {
             success: function (data, textStatus, jqXHR) {
                 console.log("Heard reply from init_draw_ajax.php");
                 console.log(data);
-                
-                //var updated_data = JSON.stringify(data);
-                //var p_data = JSON.parse(updated_data);
 
                 var p_data = JSON.parse(data);
 
@@ -68,6 +65,9 @@ $(document).ready(function () {
                 CLIENT_UNAME = p_data[0];
                 CLIENT_COLOR = p_data[1];
                 OPPO_UNAME   = p_data[2];
+                
+                // call the add client username function.
+                addClientUserName(CLIENT_UNAME, CLIENT_COLOR, OPPO_UNAME);
                 
                 console.log(CLIENT_UNAME);
                 console.log(CLIENT_COLOR);
@@ -239,6 +239,21 @@ $(document).ready(function () {
                 cur_color[captured_arrpos].inPlay = false; 
             }
         }
+    }
+    
+    function addClientUserName(CLIENT_UNAME, CLIENT_COLOR, OPPO_UNAME){
+        
+        if(CLIENT_COLOR === 'w')
+        {
+            $('#leftcapturedcontainer').append("<p>"+OPPO_UNAME+"</p>");
+            $('#rightcapturedcontainer').append("<p>"+CLIENT_UNAME+"</p>");
+        }
+        else
+        {
+            $('#leftcapturedcontainer').append("<p>"+CLIENT_UNAME+"</p>");
+            $('#rightcapturedcontainer').append("<p>"+OPPO_UNAME+"</p>");
+        }
+           
     }
 
     // Click handler 

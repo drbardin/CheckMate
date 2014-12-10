@@ -1,11 +1,8 @@
 <?php
-
     session_start();
-
 if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 {
     ?>
-
     <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -57,12 +54,10 @@ if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 		</footer>
 	</body>
 </html>
-    
-    <?php
+<?php
 }
-
 else{
     header("location:player0.php");
     //header('Location: /player0.php');
 }
-    ?>
+?>
