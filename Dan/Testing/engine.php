@@ -20,8 +20,8 @@ if (!function_exists('processMove'))
         $isGoodMove = true;
 
         if($isGoodMove){
-            $game->incrementTurnNum();// update turn
-            $game->setCurColor(); // flip color
+            // update turn
+            // flip color
             // update object array here
             return true; // tell AJAX this move is good, to_click can draw move. 
         }
@@ -36,20 +36,12 @@ if(!function_exists('getPotentialMoves'))
     function getPotentialMoves($r, $c)
     {
         $game = new Game();
-        $cur_color = game.get_Current_Color();
-        $board = game.get_Board_Representation();
+        $cur_color = $game->get_Current_Color();
+        $board = $game->get_Board_Representation();
 
-        
-        for($i = 0; $i < count($color_set); $i++)
-        {
-            if($color_set[$i]['row'] === $r && $color_set[$i]['col'] === $c)
-            {
-                // we found the clicked piece. 
-                // now pass it to switch to route to the logic function.
-                $switch_var = $color_set[$i]['piece'];
-                break;
-            }
-        }
+        // convert row/col to array index 0-63
+        $sqr_index = ($r * $c) + $r + $c;
+        $switch_var = $board[$sqr_index]->piece;
   
         $highlight_arr = array(array());
         switch($switch_var)
