@@ -71,6 +71,7 @@ $(document).ready(function () {
                 CUR_TURN = p_data[3];
                 CUR_BOARD = p_data[4];
                 
+                console.log(CUR_BOARD[4]);
                 if (CLIENT_COLOR === 'w') {
                     if (CUR_TURN % 2 != 0) { 
                         MY_TURN = true;

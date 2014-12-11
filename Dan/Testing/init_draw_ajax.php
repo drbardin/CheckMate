@@ -29,7 +29,7 @@ include_once "classGame.php";
     else
     {
         echo "THIS IS NOT RIGHT....BAD CODE!..VERY BAD.";
-    }  
+    }
     $my_array = array($client_username, $client_color, $opponent_username, $turn_number, $board_rep);
     echo json_encode($my_array);
 ?>
