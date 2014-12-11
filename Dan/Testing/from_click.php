@@ -11,7 +11,7 @@ require_once "engine.php";
     $c = $myJson['col'];
     
     // call PHP function to produce legal moves for square clicked. 
-   // $newArray = getPotentialMoves($r, $c);
+    // $newArray = getPotentialMoves($r, $c);
     $newArray = array(array('row'=>$r,'col'=>$c));
     $shits_and_gigs = new Game;
     if ($shits_and_gigs->is_Clients_Turn())

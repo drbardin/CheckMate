@@ -7,6 +7,11 @@ html {
     position: relative;
 }
 
+::selection {
+    background:transparent;
+    color:inherit;
+}
+
 .displayed{position:absolute;z-index:1;}
 
 #header{

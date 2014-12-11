@@ -329,35 +329,10 @@ $(document).ready(function () {
         // put the image in the new location.
         ctx.putImageData(piece_moving, to_loc.col * 100, to_loc.row * 100);
     }
-
-    // Click handler 
-    // Listen for button click
-    $("canvas#gameCanvas").click(function (e) {
-
-        // Get (x,y) of mouse click ( pageX works best in this situation. )
-        // NOTE: (0,0) is top-left corner of canvas. 
-        var x = e.pageX - $("canvas#gameCanvas").offset().left;
-        var y = e.pageY - $("canvas#gameCanvas").offset().top;
-
-        //  Find out which square on the canvas was clicked.
-        //  row = Y val / 100 (size of a square) and then rounded down. This will give a num 0-7
-        //  col = X val / 100 and then rounded down. This will also give a num 0-7
-        var row_clicked = Math.floor(y / SQR_SIZE);
-        var col_clicked = Math.floor(x / SQR_SIZE);
-        
-        // JSON for outgoing click
-        var JSONObj = {
-            "row": row_clicked,
-            "col": col_clicked
-        };
-
-        // Turns JSONObj into a JSONStr. 
-        var JSONStr = JSON.stringify(JSONObj);
-        
-        // FROM_CLICK condition
-        if (click_counter === parseFloat(click_counter) && !(click_counter % 2)) 
-        {
-            $.ajax({
+    
+    function handleFromClick(JSONStr)
+    {
+         $.ajax({
                 type: 'POST',
                 url: 'from_click.php',
                 data: {'data': JSONStr},
@@ -386,9 +361,103 @@ $(document).ready(function () {
                     console.log(desc);
                     console.log(err);  
                 }
-            });
+            });    
+    }
+    
+    function handleToClick()
+    {
+            $.ajax({
+                    type: 'POST',
+                    url: 'to_click.php',
+                    data: {'data': JSONStr},
+
+                    // If ContentType is lower-case, causes null json properties to be echoed back.
+                    ContentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data, textStatus, jqXHR) {
+                        console.log("Heard reply from to_click.php");
+
+                        // undo highlighted squares
+                        remove_highlights();
+
+                        // move piece
+                        ctx.clearRect(prev_click.col * 100, prev_click.row * 100, 100, 100);
+                        ctx.putImageData(before_highlight_imgs[0], col_clicked * 100, row_clicked * 100);
+
+                        var toClick = {row: row_clicked, col: col_clicked};
+                        // update local json
+                        update_json(toClick);
+
+                        // clear the highlight array. 
+                        before_highlight_imgs = [];
+
+                        // clear prev_click object.
+                        prev_click = { "row": null, "col": null };
+
+                        // Change turn ownership
+                        if (WHITE_TURN ? WHITE_TURN = false : WHITE_TURN = true);
+
+                        // increment click counter
+                        click_counter++;
+
+                        // $("canvas#gameCanvas").bind("click");
+
+                    },
+                    error: function (xhr, desc, err) {
+                        console.log("No reply from to_click.php");
+                    }
+            }); // end .ajaxTO
+    }
+    
+    // Click handler 
+    // Listen for button click
+    $("canvas#gameCanvas").click(function (e) {
+
+        // Get (x,y) of mouse click ( pageX works best in this situation. )
+        // NOTE: (0,0) is top-left corner of canvas. 
+        var x = e.pageX - $("canvas#gameCanvas").offset().left;
+        var y = e.pageY - $("canvas#gameCanvas").offset().top;
+
+        //  Find out which square on the canvas was clicked.
+        //  row = Y val / 100 (size of a square) and then rounded down. This will give a num 0-7
+        //  col = X val / 100 and then rounded down. This will also give a num 0-7
+        var row_clicked = Math.floor(y / SQR_SIZE);
+        var col_clicked = Math.floor(x / SQR_SIZE);
+        
+        // JSON for outgoing click
+        var JSONObj = {
+            "row": row_clicked,
+            "col": col_clicked
+        };
+
+        // Turns JSONObj into a JSONStr. 
+        var JSONStr = JSON.stringify(JSONObj);
+        
+        // FROM_CLICK condition
+        if (click_counter === parseFloat(click_counter) && !(click_counter % 2)) 
+        {
+            // Now make sure the piece we are moving is one of ours. 
+            var json_color;
+            var good_click = false; 
+            
+            if(CLIENT_COLOR === 'w'? json_color = json.white : json_color = json.black);
+            
+            // loop through client's pieces and check it exists at clicked r/c. 
+            for(var i = 0; i < json_color; i++)
+            {
+                if(json_color[i].col === col_clicked && json_color[i].row === row_clicked)
+                {
+                    // piece is ours, good to process.
+                    good_click = true; 
+                }
+            }
+            // click is good, send to handling function.
+            if(good_click)
+            {
+                handleFromClick(JSONStr);
+            }
         } 
-        else 
+        else // TO_CLICK condition
         {
             // UNDO CLICK condition, reset logic to FROM_CLICK game status.
             if(row_clicked === prev_click.row && col_clicked === prev_click.col)
@@ -399,114 +468,28 @@ $(document).ready(function () {
                 prev_click.col = null;
             }
             else 
-            {
-                
-                // Loop through highlighted square, which signify legal moves, and check 
+            {   
+                // Loop through highlighted squares, which signify legal moves, and check 
                 // player is going to a valid destination. 
-                for(var i = 0; i < sqrs_to_highlight.length; i++) 
+                // Start at i = 1 so the piece can't capture itself.  
+                for(var i = 1; i < sqrs_to_highlight.length; i++) 
                 {
-                    if(sqrs_to_highlight[i].row === row_clicked && sqrs_to_highlight[i].col === col_clicked){
+                    if(sqrs_to_highlight[i].row === row_clicked && sqrs_to_highlight[i].col === col_clicked)
+                    {
                         selected_valid_destination = true;
                     }
+                    
                 }
                 // If it is valid, process the move, otherwise, do nothing and wait for a valid click. 
                 if(selected_valid_destination) 
                 {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'to_click.php',
-                        data: {'data': JSONStr},
-
-                        // If ContentType is lower-case, causes null json properties to be echoed back.
-                        ContentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (data, textStatus, jqXHR) {
-                            console.log("Heard reply from to_click.php");
-
-                            // undo highlighted squares
-                            remove_highlights();
-
-                            // move piece
-                            ctx.clearRect(prev_click.col * 100, prev_click.row * 100, 100, 100);
-                            ctx.putImageData(before_highlight_imgs[0], col_clicked * 100, row_clicked * 100);
-
-                            var toClick = {row: row_clicked, col: col_clicked};
-                            // update local json
-                            update_json(toClick);
-
-                            // clear the highlight array. 
-                            before_highlight_imgs = [];
-
-                            // clear prev_click object.
-                            prev_click = { "row": null, "col": null };
-
-                            // Change turn ownership
-                            if (WHITE_TURN ? WHITE_TURN = false : WHITE_TURN = true);
-
-                            // increment click counter
-                            click_counter++;
-
-                            // $("canvas#gameCanvas").bind("click");
-
-                        },
-                        error: function (xhr, desc, err) {
-                            console.log("No reply from to_click.php");
-                        }
-                    }); // end .ajaxTO
-
-                 } // end if (selected_valid_destination)
-
-                            //           else
-                            //           {
-                            //                // Show message for Invalid Destination
-                            //           }
-                
-                
-            } // end ajaxTO else undo move condition
+                    handleToClick(JSONStr);
+                }
+            }
             
-        } // end if(from || to)
-    
+         }// end to_click condition 
+        
     }); // end click handler .ajax
     
 }); // end canvas#gameCanvas
-
-
-//function handleFromClick(){
-//    
-//}
-//    
-//function handleToClick(){
-//    
-//}
-//function processSuccess_FromClick(){
-//    
-//}
-//
-//function processSuccess_ToClick(){
-//    
-//}
-
-
-
-    // getUpdate();
-    //    function getUpdate() {
-    //        var update_ping = $.ajax( {
-    //           url: "loader.php",
-    //           type: 'GET',
-    //           dataType: "json"
-    //        });
-    //        
-    //        update_ping.done(function(data, textStatus, jqXHR) {
-    //            $.parseJSON(data);
-    //            
-    //            var lrow = data[0].row;
-    //            var lcol = data[0].col;
-    //            console.log("update jquery row: " + lrow);
-    //            console.log("update jquery col: " + lcol);
-    //            // send object to draw function
-    //        });
-    //        
-    //        update_ping.fail(function(jqXHR, textStatus) {
-    //           alert("Ping failed: " + textStatus);
-    //        });
-    //    }                                
+                              
