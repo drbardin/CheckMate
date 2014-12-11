@@ -465,7 +465,6 @@ $(document).ready(function () {
         // FROM_CLICK condition
         if (click_counter === parseFloat(click_counter) && !(click_counter % 2)) 
         {
-<<<<<<< .mine
             $.ajax({
                 type: 'POST',
                 url: 'from_click.php',
@@ -497,8 +496,9 @@ $(document).ready(function () {
                 error: function (xhr, desc, err) {
                     console.log("No reply from from_click.php");
                     console.log(desc);
-                    console.log(err);  
-=======
+                    console.log(err);
+                }
+            });
             // Now make sure the piece we are moving is one of ours. 
             var json_color;
             var good_click = false; 
@@ -512,7 +512,6 @@ $(document).ready(function () {
                 {
                     // piece is ours, good to process.
                     good_click = true; 
->>>>>>> .r132
                 }
             }
             // click is good, send to handling function.
@@ -550,14 +549,8 @@ $(document).ready(function () {
                     handleToClick(JSONStr);
                 }
             }
-            
-<<<<<<< .mine
         } // end if(from || to)
     }// end click
-    
-=======
-         }// end to_click condition 
-        
->>>>>>> .r132
+    // end to_click condition 
 }); // end canvas#gameCanvas
                               
