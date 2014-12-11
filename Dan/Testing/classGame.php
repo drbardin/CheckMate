@@ -210,6 +210,10 @@ class Game {
     public function set_Black_Pieces($black_json){
         $this->black_pieces = $black_json;
     }
+    public function set_Board_Representation($board_json)
+    {
+        $this->board_rep = $board_json;
+    }
     
 // Updaters
     public function update_Game()
