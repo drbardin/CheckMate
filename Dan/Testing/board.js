@@ -71,16 +71,30 @@ $(document).ready(function () {
                 CUR_TURN = p_data[3];
                 CUR_BOARD = p_data[4];
                 
-                //if (CLIENT_COLOR === 'w') ? MY_TURN = true : MY_TURN = false;
-                //MY_TURN ? (CLIENT_COLOR === 'w') : (CLIENT_COLOR === 'b');
-                if (CLIENT_COLOR === 'w')
-                {
-                    MY_TURN = true;
+                if (CLIENT_COLOR === 'w') {
+                    if (CUR_TURN % 2 != 0) { 
+                        MY_TURN = true;
+                        $("canvas#gameCanvas").off("click", clickEvents);
+                        $("canvas#gameCanvas").on("click", clickEvents);
+                    }
+                    else {
+                        MY_TURN = false;
+                        $("canvas#gameCanvas").off("click", clickEvents);
+                    }
                 }
-                else if (CLIENT_COLOR === 'b')
-                {
-                    MY_TURN = false;
+                
+                else if (CLIENT_COLOR === 'b') {
+                    if (CUR_TURN % 2 === 0) {
+                        MY_TURN = true;
+                        $("canvas#gameCanvas").off("click", clickEvents);
+                            $("canvas#gameCanvas").on("click", clickEvents);
+                    }
+                    else {
+                        MY_TURN = false;
+                        $("canvas#gameCanvas").off("click", clickEvents);
+                    }
                 }
+                
                 // call the add client username function.
                 addClientUserName(CLIENT_UNAME, CLIENT_COLOR, OPPO_UNAME);
             },
@@ -94,58 +108,61 @@ $(document).ready(function () {
     draw();
     
     (function waitForTurn() {
-            setTimeout(function(){
-                $.ajax({
-                    type: 'GET',
-                    url: 'check_turn_ajax.php',
-                    ContentType: "application/json; charset=utf-8",
-                    success: function (data, textStatus, jqXHR) {
-                        console.log("Heard reply from check_turn_ajax.php");
-                        //console.log(data);
-                        var p_data = JSON.parse(data);
-                        if (p_data[0])
-                        {
-                            console.log("It's your turn,"+CLIENT_UNAME);
+        setTimeout(function(){
+            $.ajax({
+                type: 'GET',
+                url: 'check_turn_ajax.php',
+                ContentType: "application/json; charset=utf-8",
+                success: function (data, textStatus, jqXHR) {
+                    console.log("Heard reply from check_turn_ajax.php");
+                    //console.log(data);
+                    var p_data = JSON.parse(data);
+                    if (MY_TURN != p_data[0]) {
+                        //update client
+                        function updateClient() {
+                            $.ajax( {
+                                type: 'GET',
+                                url: 'update_client_ajax.php',
+                                ContentType: "application/json; charset=utf-8",
+                                success: function (data, textStatus, jqXHR) {
+                                    console.log("Heard reply from update_client_ajax.php");
+                                    //console.log(data);
+                                    var p_data = JSON.parse(data);
+                                    //console.log(p_data);
+                                    turnChange();
+                                    console.log("The turn is now "+p_data[0]);
+                                },
+                                error: function (xhr, desc, err) {
+                                    console.log("No reply from update_client_ajax.php");
+                                    console.log(desc);
+                                    console.log(err);
+                                }
+                            });
                         }
-                        else
-                        {
-                            console.log("It is my opponent "+OPPO_UNAME+"'s turn.");
-                        }
-                        var before = MY_TURN;
-                        MY_TURN = p_data[0];
-                        if (before != MY_TURN) {
-                            //update client
-                            function updateClient() {
-                                $.ajax( {
-                                        type: 'GET',
-                                        url: 'update_client_ajax.php',
-                                        ContentType: "application/json; charset=utf-8",
-                                        success: function (data, textStatus, jqXHR) {
-                                            console.log("Heard reply from update_client_ajax.php");
-                                            //console.log(data);
-                                            var p_data = JSON.parse(data);
-                                            //console.log(p_data);
-                                            console.log("TURN CHANGE! Now is turn: "+p_data[0]);
-                                        },
-                                        error: function (xhr, desc, err) {
-                                            console.log("No reply from update_client_ajax.php");
-                                            console.log(desc);
-                                            console.log(err);
-                                        }
-                                });
-                            }
-                            updateClient();
-                        }
-                        waitForTurn();
-                    },
-                    error: function (xhr, desc, err) {
-                        console.log("No reply from check_turn_ajax.php");
-                        console.log(desc);
-                        console.log(err);
+                        updateClient();
                     }
-                });
-            }, 15000);
+                    if (MY_TURN)
+                    {
+                        $("canvas#gameCanvas").off("click", clickEvents);
+                        $("canvas#gameCanvas").on("click", clickEvents);
+                        console.log("It's your turn, "+CLIENT_UNAME+".");
+                    }
+                    else
+                    {
+                        $("canvas#gameCanvas").off("click", clickEvents);
+                        console.log("It is my opponent "+OPPO_UNAME+"'s turn.");
+                    }
+                    waitForTurn();
+                },
+                error: function (xhr, desc, err) {
+                    console.log("No reply from check_turn_ajax.php");
+                    console.log(desc);
+                    console.log(err);
+                }
+            });
+        }, 8000);
     })();
+    
     // JSON wrapped in function so can be used as a new game initializer.
    function setNewBoard() {
         // two arrays, one black, one white. Their positions are 0-15. 
@@ -187,6 +204,19 @@ $(document).ready(function () {
             };
     }
    
+    function turnChange()
+    {
+        MY_TURN = !MY_TURN;
+        if (MY_TURN) {
+            $("canvas#gameCanvas").off("click", clickEvents);
+            $("canvas#gameCanvas").on("click", clickEvents);
+            console.log("Turn change: It is now your turn "+CLIENT_UNAME);
+        }
+        else {
+            $("canvas#gameCanvas").off("click", clickEvents);
+            console.log("Turn change: It is now your opponent "+OPPO_UNAME+"'s turn");
+        }
+    }
     //////////////////////////////////////
     //   INIT & DRAW PIECES FUNCTIONS   //
     //////////////////////////////////////
@@ -411,12 +441,11 @@ $(document).ready(function () {
     
     // Click handler 
     // Listen for button click
-    $("canvas#gameCanvas").click(function (e) {
-
+    function clickEvents(event) {
         // Get (x,y) of mouse click ( pageX works best in this situation. )
         // NOTE: (0,0) is top-left corner of canvas. 
-        var x = e.pageX - $("canvas#gameCanvas").offset().left;
-        var y = e.pageY - $("canvas#gameCanvas").offset().top;
+        var x = event.pageX - $("canvas#gameCanvas").offset().left;
+        var y = event.pageY - $("canvas#gameCanvas").offset().top;
 
         //  Find out which square on the canvas was clicked.
         //  row = Y val / 100 (size of a square) and then rounded down. This will give a num 0-7
@@ -436,6 +465,40 @@ $(document).ready(function () {
         // FROM_CLICK condition
         if (click_counter === parseFloat(click_counter) && !(click_counter % 2)) 
         {
+<<<<<<< .mine
+            $.ajax({
+                type: 'POST',
+                url: 'from_click.php',
+                data: {'data': JSONStr},
+                // If ContentType is lower-case, causes null json properties to be echoed back.
+                ContentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data, textStatus, jqXHR) {
+                    console.log("Heard reply from from_click.php");
+                    //var updated_data = JSON.stringify(data);
+                    sqrs_to_highlight = JSON.parse(data);
+                    // get number of keys in new obj. 
+                    // sqrs_to_hlgt_len = Object.keys(sqrs_to_highlight).length;
+                    
+                    // call process return data function
+                    highlight_squares(sqrs_to_highlight);
+                    
+                    // store the user's click
+                    prev_click.col = col_clicked;
+                    prev_click.row = row_clicked;
+                    
+                    // increment click counter
+                    click_counter++;
+                    //TYLER TESTING PURPOSES. DELETE LATER
+                    turnChange();
+                    var next_turn = parseInt(CUR_TURN) + parseInt(1);
+                    console.log("The turn now is "+next_turn+".");
+                },
+                error: function (xhr, desc, err) {
+                    console.log("No reply from from_click.php");
+                    console.log(desc);
+                    console.log(err);  
+=======
             // Now make sure the piece we are moving is one of ours. 
             var json_color;
             var good_click = false; 
@@ -449,6 +512,7 @@ $(document).ready(function () {
                 {
                     // piece is ours, good to process.
                     good_click = true; 
+>>>>>>> .r132
                 }
             }
             // click is good, send to handling function.
@@ -487,9 +551,13 @@ $(document).ready(function () {
                 }
             }
             
+<<<<<<< .mine
+        } // end if(from || to)
+    }// end click
+    
+=======
          }// end to_click condition 
         
-    }); // end click handler .ajax
-    
+>>>>>>> .r132
 }); // end canvas#gameCanvas
                               
