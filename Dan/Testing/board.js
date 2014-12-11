@@ -88,39 +88,39 @@ $(document).ready(function () {
    function setNewBoard() {
         // two arrays, one black, one white. Their positions are 0-15. 
         json = {
-            "black": [ { 'piece': ROOK,  'row': 0, 'col': 0, 'status': true},
-                       { 'piece': KNIGHT,'row': 0, 'col': 1, 'status': true},
-                       { 'piece': BISHOP,'row': 0, 'col': 2, 'status': true},
-                       { 'piece': KING,  'row': 0, 'col': 3, 'status': true},
-                       { 'piece': QUEEN, 'row': 0, 'col': 4, 'status': true},
-                       { 'piece': BISHOP,'row': 0, 'col': 5, 'status': true},
-                       { 'piece': KNIGHT,'row': 0, 'col': 6, 'status': true},
-                       { 'piece': ROOK,  'row': 0, 'col': 7, 'status': true},
-                       { 'piece': PAWN,  'row': 1, 'col': 0, 'status': true},
-                       { 'piece': PAWN,  'row': 1, 'col': 1, 'status': true},
-                       { 'piece': PAWN,  'row': 1, 'col': 2, 'status': true},
-                       { 'piece': PAWN,  'row': 1, 'col': 3, 'status': true},
-                       { 'piece': PAWN,  'row': 1, 'col': 4, 'status': true},
-                       { 'piece': PAWN,  'row': 1, 'col': 5, 'status': true},
-                       { 'piece': PAWN,  'row': 1, 'col': 6, 'status': true},
-                       { 'piece': PAWN,  'row': 1, 'col': 7, 'status': true},
+            "black": [ { 'piece': ROOK,  'row': 0, 'col': 0, 'status': true, 'id':110},
+                       { 'piece': KNIGHT,'row': 0, 'col': 1, 'status': true, 'id':120},
+                       { 'piece': BISHOP,'row': 0, 'col': 2, 'status': true, 'id':130},
+                       { 'piece': KING,  'row': 0, 'col': 3, 'status': true, 'id':140},
+                       { 'piece': QUEEN, 'row': 0, 'col': 4, 'status': true, 'id':150},
+                       { 'piece': BISHOP,'row': 0, 'col': 5, 'status': true, 'id':131},
+                       { 'piece': KNIGHT,'row': 0, 'col': 6, 'status': true, 'id':121},
+                       { 'piece': ROOK,  'row': 0, 'col': 7, 'status': true, 'id':111},
+                       { 'piece': PAWN,  'row': 1, 'col': 0, 'status': true, 'id':100},
+                       { 'piece': PAWN,  'row': 1, 'col': 1, 'status': true, 'id':101},
+                       { 'piece': PAWN,  'row': 1, 'col': 2, 'status': true, 'id':102},
+                       { 'piece': PAWN,  'row': 1, 'col': 3, 'status': true, 'id':103},
+                       { 'piece': PAWN,  'row': 1, 'col': 4, 'status': true, 'id':104},
+                       { 'piece': PAWN,  'row': 1, 'col': 5, 'status': true, 'id':105},
+                       { 'piece': PAWN,  'row': 1, 'col': 6, 'status': true, 'id':106},
+                       { 'piece': PAWN,  'row': 1, 'col': 7, 'status': true, 'id':107},
                      ],
-            "white": [ { 'piece': ROOK,  'row': 7, 'col': 0, 'status': true},
-                       { 'piece': KNIGHT,'row': 7, 'col': 1, 'status': true},
-                       { 'piece': BISHOP,'row': 7, 'col': 2, 'status': true},
-                       { 'piece': KING,  'row': 7, 'col': 3, 'status': true},
-                       { 'piece': QUEEN, 'row': 7, 'col': 4, 'status': true},
-                       { 'piece': BISHOP,'row': 7, 'col': 5, 'status': true},
-                       { 'piece': KNIGHT,'row': 7, 'col': 6, 'status': true},
-                       { 'piece': ROOK,  'row': 7, 'col': 7, 'status': true},
-                       { 'piece': PAWN,  'row': 6, 'col': 0, 'status': true},
-                       { 'piece': PAWN,  'row': 6, 'col': 1, 'status': true},
-                       { 'piece': PAWN,  'row': 6, 'col': 2, 'status': true},
-                       { 'piece': PAWN,  'row': 6, 'col': 3, 'status': true},
-                       { 'piece': PAWN,  'row': 6, 'col': 4, 'status': true},
-                       { 'piece': PAWN,  'row': 6, 'col': 5, 'status': true},
-                       { 'piece': PAWN,  'row': 6, 'col': 6, 'status': true},
-                       { 'piece': PAWN,  'row': 6, 'col': 7, 'status': true},
+            "white": [ { 'piece': ROOK,  'row': 7, 'col': 0, 'status': true'id':210},
+                       { 'piece': KNIGHT,'row': 7, 'col': 1, 'status': true'id':220},
+                       { 'piece': BISHOP,'row': 7, 'col': 2, 'status': true'id':230},
+                       { 'piece': KING,  'row': 7, 'col': 3, 'status': true'id':240},
+                       { 'piece': QUEEN, 'row': 7, 'col': 4, 'status': true'id':250},
+                       { 'piece': BISHOP,'row': 7, 'col': 5, 'status': true'id':231},
+                       { 'piece': KNIGHT,'row': 7, 'col': 6, 'status': true'id':221},
+                       { 'piece': ROOK,  'row': 7, 'col': 7, 'status': true'id':211},
+                       { 'piece': PAWN,  'row': 6, 'col': 0, 'status': true'id':200},
+                       { 'piece': PAWN,  'row': 6, 'col': 1, 'status': true'id':201},
+                       { 'piece': PAWN,  'row': 6, 'col': 2, 'status': true'id':202},
+                       { 'piece': PAWN,  'row': 6, 'col': 3, 'status': true'id':203},
+                       { 'piece': PAWN,  'row': 6, 'col': 4, 'status': true'id':204},
+                       { 'piece': PAWN,  'row': 6, 'col': 5, 'status': true'id':205},
+                       { 'piece': PAWN,  'row': 6, 'col': 6, 'status': true'id':206},
+                       { 'piece': PAWN,  'row': 6, 'col': 7, 'status': true'id':207},
                      ]
             };
     }
@@ -254,6 +254,18 @@ $(document).ready(function () {
             $('#rightcapturedcontainer').append("<p>"+OPPO_UNAME+"</p>");
         }
            
+    }
+
+    function movePiece(from_loc, to_loc){
+
+        // grab the piece image.
+        var piece_moving = ctx.getImageData((c * 100), (r * 100), 100, 100);
+
+        // remove image from current location
+        ctx.clearRect(from_loc.col * 100, from_loc.row * 100, 100, 100);
+
+        // put the image in the new location.
+        ctx.putImageData(piece_moving, to_loc.col * 100, to_loc.row * 100);
     }
 
     // Click handler 
