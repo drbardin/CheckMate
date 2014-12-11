@@ -9,6 +9,8 @@ include_once "classGame.php";
     $client_username;
     $client_color;
     $opponent_username;
+    $turn_number = $values->get_Turn_Number();
+    $board_rep = $values->get_Board_Representation();
 
     if ($values->get_Client_Color()=='w')
     {
@@ -27,7 +29,7 @@ include_once "classGame.php";
     else
     {
         echo "THIS IS NOT RIGHT....BAD CODE!..VERY BAD.";
-    }
-    $my_array = array($client_username, $client_color, $opponent_username);
+    }  
+    $my_array = array($client_username, $client_color, $opponent_username, $turn_number, $board_rep);
     echo json_encode($my_array);
 ?>

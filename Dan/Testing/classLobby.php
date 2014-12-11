@@ -310,7 +310,7 @@ session_start();
                                 { "piece": QUEEN, "row": 7, "col": 4, "status": true, "id":250 },
                                 { "piece": BISHOP,"row": 7, "col": 5, "status": true, "id":231 },
                                 { "piece": KNIGHT,"row": 7, "col": 6, "status": true, "id":221 },
-                                { "piece": ROOK,  "row": 7, "col": 7, "status": true, "id":211 },]';
+                                { "piece": ROOK,  "row": 7, "col": 7, "status": true, "id":211 }]';
             // Define INSERT statement.
             $sql = "INSERT INTO $tbl_name (white_id, black_id, turn_num, white_in, black_in, white_username, black_username, board_json) VALUES ('$wId', '$bId', 0, 0, 0,'$wUsername', '$bUsername','$board_json')";
             

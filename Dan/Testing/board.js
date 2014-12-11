@@ -23,8 +23,8 @@ $(document).ready(function () {
     var OPPO_UNAME=" ";    // this client's opponent
     var MY_TURN=false;    // bool client's turn
     
-    var CUR_TURN=1; // current turn #
-    
+    var CUR_TURN; // current turn #
+    var CUR_BOARD;
     var click_counter = 0;  
     var selected_valid_destination = false;   // to_click flag for selecting valid destination
    
@@ -52,7 +52,7 @@ $(document).ready(function () {
         setNewBoard();
         
         // query server for player names, this.color
-        // GET: client username, client color, opponent username
+        // GET: client username, client color, opponent username, turn_number, board_rep
         $.ajax({
             type: 'GET',
             url: 'init_draw_ajax.php',
@@ -60,7 +60,7 @@ $(document).ready(function () {
             //dataType: "json",
             success: function (data, textStatus, jqXHR) {
                 console.log("Heard reply from init_draw_ajax.php");
-                console.log(data);
+                //console.log(data);
 
                 var p_data = JSON.parse(data);
 
@@ -68,6 +68,11 @@ $(document).ready(function () {
                 CLIENT_UNAME = p_data[0];
                 CLIENT_COLOR = p_data[1];
                 OPPO_UNAME   = p_data[2];
+                CUR_TURN = p_data[3];
+                CUR_BOARD = p_data[4];
+                
+                console.log(CUR_BOARD);
+                //console.log(JSON.parse(CUR_BOARD));
                 
                 //if (CLIENT_COLOR === 'w') ? MY_TURN = true : MY_TURN = false;
                 //MY_TURN ? (CLIENT_COLOR === 'w') : (CLIENT_COLOR === 'b');
@@ -81,11 +86,6 @@ $(document).ready(function () {
                 }
                 // call the add client username function.
                 addClientUserName(CLIENT_UNAME, CLIENT_COLOR, OPPO_UNAME);
-                
-                console.log(CLIENT_UNAME);
-                console.log(CLIENT_COLOR);
-                console.log(OPPO_UNAME);
-
             },
             error: function (xhr, desc, err) {
                 console.log("No reply from init_draw_ajax.php");
@@ -104,15 +104,21 @@ $(document).ready(function () {
                     ContentType: "application/json; charset=utf-8",
                     success: function (data, textStatus, jqXHR) {
                         console.log("Heard reply from check_turn_ajax.php");
-                        console.log(data);
+                        //console.log(data);
                         var p_data = JSON.parse(data);
+                        if (p_data[0])
+                        {
+                            console.log("It's your turn,"+CLIENT_UNAME);
+                        }
+                        else
+                        {
+                            console.log("It is my opponent "+OPPO_UNAME+"'s turn.");
+                        }
                         var before = MY_TURN;
                         MY_TURN = p_data[0];
-                        var after = MY_TURN;
-                        if (before != after) {
+                        if (before != MY_TURN) {
                             //update client
                             function updateClient() {
-                                console.log("can you hear me in here?");
                                 $.ajax( {
                                         type: 'GET',
                                         url: 'update_client_ajax.php',
@@ -121,7 +127,7 @@ $(document).ready(function () {
                                             console.log("Heard reply from update_client_ajax.php");
                                             console.log(data);
                                             var p_data = JSON.parse(data);
-                                            console.log(data);
+                                            console.log(p_data);
                                         },
                                         error: function (xhr, desc, err) {
                                             console.log("No reply from update_client_ajax.php");
@@ -362,7 +368,6 @@ $(document).ready(function () {
                 //dataType: "json",
                 success: function (data, textStatus, jqXHR) {
                     console.log("Heard reply from from_click.php");
-                    
                     //var updated_data = JSON.stringify(data);
                     sqrs_to_highlight = JSON.parse(data);
                     // get number of keys in new obj. 
