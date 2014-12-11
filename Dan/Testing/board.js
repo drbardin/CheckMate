@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    
     var canvas = $("canvas#gameCanvas")[0];
     var ctx = canvas.getContext("2d");
     var w = $("canvas#gameCanvas").width();
@@ -18,9 +18,12 @@ $(document).ready(function () {
     var SQR_SIZE = h / 8;
     var WHITE_TURN;
     
-    var CLIENT_UNAME;  // this client's username
-    var CLIENT_COLOR;  // this client's color
-    var OPPO_UNAME;    // this client's opponent
+    var CLIENT_UNAME=" ";  // this client's username
+    var CLIENT_COLOR=" ";  // this client's color
+    var OPPO_UNAME=" ";    // this client's opponent
+    var MY_TURN=false;    // bool client's turn
+    
+    var CUR_TURN=1; // current turn #
     
     var click_counter = 0;  
     var selected_valid_destination = false;   // to_click flag for selecting valid destination
@@ -66,6 +69,16 @@ $(document).ready(function () {
                 CLIENT_COLOR = p_data[1];
                 OPPO_UNAME   = p_data[2];
                 
+                //if (CLIENT_COLOR === 'w') ? MY_TURN = true : MY_TURN = false;
+                //MY_TURN ? (CLIENT_COLOR === 'w') : (CLIENT_COLOR === 'b');
+                if (CLIENT_COLOR === 'w')
+                {
+                    MY_TURN = true;
+                }
+                else if (CLIENT_COLOR === 'b')
+                {
+                    MY_TURN = false;
+                }
                 // call the add client username function.
                 addClientUserName(CLIENT_UNAME, CLIENT_COLOR, OPPO_UNAME);
                 
@@ -81,9 +94,54 @@ $(document).ready(function () {
             }
         });
     }
-    
     draw();
-
+    
+    (function waitForTurn() {
+            setTimeout(function(){
+                $.ajax({
+                    type: 'GET',
+                    url: 'check_turn_ajax.php',
+                    ContentType: "application/json; charset=utf-8",
+                    success: function (data, textStatus, jqXHR) {
+                        console.log("Heard reply from check_turn_ajax.php");
+                        console.log(data);
+                        var p_data = JSON.parse(data);
+                        var before = MY_TURN;
+                        MY_TURN = p_data[0];
+                        var after = MY_TURN;
+                        if (before != after) {
+                            //update client
+                            function updateClient() {
+                                console.log("can you hear me in here?");
+                                $.ajax( {
+                                        type: 'GET',
+                                        url: 'update_client_ajax.php',
+                                        ContentType: "application/json; charset=utf-8",
+                                        success: function (data, textStatus, jqXHR) {
+                                            console.log("Heard reply from update_client_ajax.php");
+                                            console.log(data);
+                                            var p_data = JSON.parse(data);
+                                            console.log(data);
+                                        },
+                                        error: function (xhr, desc, err) {
+                                            console.log("No reply from update_client_ajax.php");
+                                            console.log(desc);
+                                            console.log(err);
+                                        }
+                                });
+                            }
+                            updateClient();
+                        }
+                        waitForTurn();
+                    },
+                    error: function (xhr, desc, err) {
+                        console.log("No reply from check_turn_ajax.php");
+                        console.log(desc);
+                        console.log(err);
+                    }
+                });
+            }, 15000);
+    })();
     // JSON wrapped in function so can be used as a new game initializer.
    function setNewBoard() {
         // two arrays, one black, one white. Their positions are 0-15. 

@@ -26,6 +26,8 @@ class Game {
     private $turn_num;
     // 2D Array containing black_pieces and white_pieces. Is to be encoded to client as a JSON
     private $board_rep = array(array());
+    // 2D Array a pair of clicks that together represent the last move made. 
+    private $last_move = array(array());
     
 // Calculable Values
     // Color-specific array that is ready to be encoded to client as a JSON. (A subset of $board_rep)
@@ -77,7 +79,7 @@ class Game {
                 $this->white_username = $row["white_username"];
                 $this->black_username = $row["black_username"];
                 $this->board_rep = $row["board_json"];
-                
+                $this->last_move = $row["last_move"];
  //              $this->cur_color = $row["cur_color"];
  //              $this->black_json = $row["black_json"];
  //              $this->white_json = $row["white_json"];
@@ -167,6 +169,9 @@ class Game {
     }
     public function get_Board_Representation() {
         return $this->board_rep;   
+    }
+    public function get_Last_Move() {
+        return $this->last_move;
     }
     // NOTE: Do we want a similar pair of functions that act as: "get_My_Pieces() and get_Opponent_Pieces()?"
     
