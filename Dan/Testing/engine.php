@@ -40,8 +40,8 @@ if(!function_exists('getPotentialMoves'))
         $board = $game->get_Board_Representation();
 
         // convert row/col to array index 0-63
-        $sqr_index = ($r * $c) + $r + $c;
-        $switch_var = $board[$sqr_index]->piece;
+        $sqr_index = ($r * 7) + $r + $c;
+        $switch_var = $board[$sqr_index]['piece'];
   
         $highlight_arr = array(array());
         switch($switch_var)

@@ -182,6 +182,7 @@ $(document).ready(function () {
                      ]
             };
     }
+   
     //////////////////////////////////////
     //   INIT & DRAW PIECES FUNCTIONS   //
     //////////////////////////////////////
@@ -202,12 +203,11 @@ $(document).ready(function () {
         }
     }
     
-    
     // Draws the specified piece. 
     function drawThisPiece(pieceToDraw, isBlackTeam) {
         
         var thisXY = getCoordinates(pieceToDraw.piece, isBlackTeam);
-        
+        //          ( image , clip at x, clip at y, w clip amt, h clip amt, canvas draw at x, canvas draw at y, width to draw, height to draw)   
         ctx.drawImage(pieces, thisXY.x, thisXY.y, SQR_SIZE, SQR_SIZE, pieceToDraw.col * SQR_SIZE, pieceToDraw.row * SQR_SIZE, SQR_SIZE, SQR_SIZE);
     }
     
