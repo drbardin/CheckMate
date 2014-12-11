@@ -71,9 +71,6 @@ $(document).ready(function () {
                 CUR_TURN = p_data[3];
                 CUR_BOARD = p_data[4];
                 
-                console.log(CUR_BOARD);
-                //console.log(JSON.parse(CUR_BOARD));
-                
                 //if (CLIENT_COLOR === 'w') ? MY_TURN = true : MY_TURN = false;
                 //MY_TURN ? (CLIENT_COLOR === 'w') : (CLIENT_COLOR === 'b');
                 if (CLIENT_COLOR === 'w')
