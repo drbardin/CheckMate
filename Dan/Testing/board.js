@@ -122,9 +122,10 @@ $(document).ready(function () {
                                         ContentType: "application/json; charset=utf-8",
                                         success: function (data, textStatus, jqXHR) {
                                             console.log("Heard reply from update_client_ajax.php");
-                                            console.log(data);
+                                            //console.log(data);
                                             var p_data = JSON.parse(data);
-                                            console.log(p_data);
+                                            //console.log(p_data);
+                                            console.log("TURN CHANGE! Now is turn: "+p_data[0]);
                                         },
                                         error: function (xhr, desc, err) {
                                             console.log("No reply from update_client_ajax.php");
