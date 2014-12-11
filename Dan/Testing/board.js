@@ -23,7 +23,7 @@ $(document).ready(function () {
     var OPPO_UNAME=" ";    // this client's opponent
     var MY_TURN=false;    // bool client's turn
     
-    var CUR_TURN; // current turn #
+    var CUR_TURN=1; // current turn #
     var CUR_BOARD;
     var click_counter = 0;  
     var selected_valid_destination = false;   // to_click flag for selecting valid destination
@@ -87,7 +87,7 @@ $(document).ready(function () {
                     if (CUR_TURN % 2 === 0) {
                         MY_TURN = true;
                         $("canvas#gameCanvas").off("click", clickEvents);
-                            $("canvas#gameCanvas").on("click", clickEvents);
+                        $("canvas#gameCanvas").on("click", clickEvents);
                     }
                     else {
                         MY_TURN = false;
@@ -128,9 +128,10 @@ $(document).ready(function () {
                                     console.log("Heard reply from update_client_ajax.php");
                                     //console.log(data);
                                     var p_data = JSON.parse(data);
+                                    CUR_TURN = p_data[0];
                                     //console.log(p_data);
                                     turnChange();
-                                    console.log("The turn is now "+p_data[0]);
+                                    console.log("The turn is now "+CUR_TURN);
                                 },
                                 error: function (xhr, desc, err) {
                                     console.log("No reply from update_client_ajax.php");
