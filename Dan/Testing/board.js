@@ -361,7 +361,7 @@ $(document).ready(function () {
         ctx.putImageData(piece_moving, to_loc.col * 100, to_loc.row * 100);
     }
     
-    function handleFromClick(JSONStr)
+    function handleFromClick(JSONStr, row_click, col_click)
     {
          $.ajax({
                 type: 'POST',
@@ -395,7 +395,7 @@ $(document).ready(function () {
             });    
     }
     
-    function handleToClick()
+    function handleToClick(JSONStr, row_click, col_click)
     {
             $.ajax({
                     type: 'POST',
@@ -466,40 +466,7 @@ $(document).ready(function () {
         // FROM_CLICK condition
         if (click_counter === parseFloat(click_counter) && !(click_counter % 2)) 
         {
-            $.ajax({
-                type: 'POST',
-                url: 'from_click.php',
-                data: {'data': JSONStr},
-                // If ContentType is lower-case, causes null json properties to be echoed back.
-                ContentType: "application/json; charset=utf-8",
-                //dataType: "json",
-                success: function (data, textStatus, jqXHR) {
-                    console.log("Heard reply from from_click.php");
-                    //var updated_data = JSON.stringify(data);
-                    sqrs_to_highlight = JSON.parse(data);
-                    // get number of keys in new obj. 
-                    // sqrs_to_hlgt_len = Object.keys(sqrs_to_highlight).length;
-                    
-                    // call process return data function
-                    highlight_squares(sqrs_to_highlight);
-                    
-                    // store the user's click
-                    prev_click.col = col_clicked;
-                    prev_click.row = row_clicked;
-                    
-                    // increment click counter
-                    click_counter++;
-                    //TYLER TESTING PURPOSES. DELETE LATER
-                    turnChange();
-                    var next_turn = parseInt(CUR_TURN) + parseInt(1);
-                    console.log("The turn now is "+next_turn+".");
-                },
-                error: function (xhr, desc, err) {
-                    console.log("No reply from from_click.php");
-                    console.log(desc);
-                    console.log(err);
-                }
-            });
+
             // Now make sure the piece we are moving is one of ours. 
             var json_color;
             var good_click = false; 
@@ -518,7 +485,7 @@ $(document).ready(function () {
             // click is good, send to handling function.
             if(good_click)
             {
-                handleFromClick(JSONStr);
+                handleFromClick(JSONStr, row_clicked, col_clicked);
             }
         } 
         else // TO_CLICK condition
@@ -547,7 +514,7 @@ $(document).ready(function () {
                 // If it is valid, process the move, otherwise, do nothing and wait for a valid click. 
                 if(selected_valid_destination) 
                 {
-                    handleToClick(JSONStr);
+                    handleToClick(JSONStr, row_clicked, col_clicked);
                 }
             }
         } // end if(from || to)
