@@ -22,8 +22,8 @@ session_start();
         $game_id;
 
         //in this case, row, col, and id are all in respect to the target
-		$potential_moves = array("to"=>array(array("row"=>,"col"=>,"id"=>)));
-        //$potential_moves = array(array());
+		//$potential_moves = array("to"=>array(array("row"=>,"col"=>,"id"=>)));
+        $potential_moves = array(array());
 
             function __construct($piece_row, $piece_col) {
                 
@@ -78,7 +78,7 @@ session_start();
                 while ($row = $result2->fetch_association())
                 {
                         $temp = array("row"=>$row["to_row"],"col"=>$row["to_col"],"id"=>$row["target_id"]);
-                        $this->potential_moves['to'].push($temp);
+                        $this->potential_moves["to"].push($temp);
                 }
                 $conn->close();
 			}
@@ -109,7 +109,7 @@ session_start();
                 for ($i = 0; $i < $this->potential_moves->length;$i++)
                 {
                     $sql = "INSERT INTO Moves (game_id, piece_id, to_row, to_col, from_row, from_col) 
-                            VALUES ('$this->game_id', '$this->id,'$this->potential_moves['to'][$i]['row']','$this->potential_moves['to'][$i]['row']','$this->row','$this->col')";
+                            VALUES ('$this->game_id', '$this->id,'$this->potential_moves["to"][$i]["row"]','$this->potential_moves["to"][$i]["row"]','$this->row','$this->col')";
                     $conn->query($sql);
                     $conn->close();
                 }

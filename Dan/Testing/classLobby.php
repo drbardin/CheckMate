@@ -302,6 +302,8 @@ session_start();
                                          array(array( "piece"=>1, "row"=>7, "col"=>6, "status"=> true, "id"=>221 )),
                                          array(array( "piece"=>3,  "row"=>7, "col"=> 7, "status"=> true, "id"=>211 )));
             
+            
+                  
             $board_json = serialize($board_json);
 
             // Define INSERT statement.
