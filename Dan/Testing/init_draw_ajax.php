@@ -96,14 +96,14 @@ include_once "classPiece.php";
                                 array(array( "piece"=>1, "row"=>7, "col"=>6, "status"=> true, "id"=>221 )),
                                 array(array( "piece"=>3,  "row"=>7, "col"=> 7, "status"=> true, "id"=>211 )));*/
     $board_rep = unserialize($board_rep);
-    $db_host = 'mysql.cs.iastate.edu';
+/*    $db_host = 'mysql.cs.iastate.edu';
     $db_user = 'u309M13';
     $db_pass = 'T2GWRYDIw';
     $db_name = 'db309M13';
 
     //Create connection
     $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);  
-    for ($i = 0; $i < $board_rep->length;$i++)
+    for ($i = 0; $i < count($board_rep);$i++)
     {
         $sql1 = "INSERT INTO Square (row, col, enumeration, occupied_by, game_id)
                 VALUES ('$board_rep["board"][$i]["row"]', '$board_rep["board"][$i]["col"]','$board_rep["board"][$i]["piece"]','$board_rep["board"][$i]["id"]','$values->get_Id_Game()')";
@@ -114,18 +114,18 @@ include_once "classPiece.php";
     }
     $sql3 = "SELECT * 
              FROM Piece
-             WHERE piece_id >= 200";
+             WHERE piece_id > 199";
     $result = $conn->query($sql3);
     while ($row = $result->fetch_association())
     {
         $temp = getPotentialMoves($row["row"],$row["col"]);
-        for($j = 0; $j < $temp->length; $j++)
+        for($j = 0; $j < count($temp); $j++)
         {
             $sql4 = "INSERT INTO Moves(game_id, piece_id, to_row, to_col, occupied_by, from_row, from_col)
                      VALUES ('$values->get_Id_Game()','$row["piece_id"]','$temp["to"][$j]["to_row"], '$temp["to"][$j]["to_col"]', '$temp["to"][$j]["id"]','$row["row"]','$row["col"]')";
         }
     }
-    $conn->close();
+    $conn->close();*/
     $my_array = array($client_username, $client_color, $opponent_username, $turn_number, $board_rep);
     echo json_encode($my_array);
 ?>
