@@ -106,7 +106,7 @@ session_start();
                 // Create connection
                 $conn = new mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
                 
-                for ($i = 0; $i < $this->potential_moves.length;$i++)
+                for ($i = 0; $i < $this->potential_moves->length;$i++)
                 {
                     $sql = "INSERT INTO Moves (game_id, piece_id, to_row, to_col, from_row, from_col) 
                             VALUES ('$this->game_id', '$this->id,'$this->potential_moves['to'][$i]['row']','$this->potential_moves['to'][$i]['row']','$this->row','$this->col')";
