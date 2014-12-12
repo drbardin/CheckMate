@@ -302,7 +302,7 @@ session_start();
                                 array(array( "piece"=>1, "row"=>7, "col"=>6, "status"=> true, "id"=>221 )),
                                 array(array( "piece"=>3,  "row"=>7, "col"=> 7, "status"=> true, "id"=>211 )));
             
-            $board_json = serialize($board_rep);
+            $board_json = serialize($board_json);
 
             // Define INSERT statement.
             $sql = "INSERT INTO $tbl_name (white_id, black_id, turn_num, white_in, black_in, white_username, black_username, board_json) VALUES ('$wId', '$bId', 0, 0, 0,'$wUsername', '$bUsername','$board_json')";
