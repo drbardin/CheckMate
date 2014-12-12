@@ -2,6 +2,7 @@
 //error_reporting(E_ALL);
 //ini_set('display_errors', 'On');
 include_once "classPlayer.php";
+include_once "classGame.php";
 session_start();
 ?>
 <?php
@@ -28,7 +29,7 @@ session_start();
                 
                 // Create connection
                 $conn = new mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
-                $client_id = $_SESSION['player'].get_Id();
+                $client_id = $_SESSION["player"].get_Id();
                 //---------------------------------------------------------------------------------
                 // Get game_id
                 $sql0 = "SELECT game_id 
@@ -95,7 +96,7 @@ session_start();
                 return $this->col;
             }
             public function get_Color(){
-                return $this->
+                return $this->color;
             }
 			public function get_Potential_Moves(){
                 return $this->potential_moves;
@@ -189,6 +190,11 @@ session_start();
                 $conn->close();
                 $this->update_Tables($to_row, $to_col, $this->enum, $row1);
             }
+        private function set_Potential_Moves($moves_arr)
+        {
+            $this->potential_moves = $moves_arr;
+            $this->set_Moves();
+        }
     }
 /*// These functions need to belong to a different class. Perhaps Game or Lobby?
 			public function clear_Tables() {
