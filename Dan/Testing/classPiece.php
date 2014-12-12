@@ -69,7 +69,10 @@ session_start();
                 }
                 else {/*This should throw an error! At least/Only one row expected in the result*/}
                 //--------------------------------------------------------------------------------------
-                $sql2 = "SELECT * FROM Moves WHERE piece_id = '$this->id' AND game_id = '$this->game_id'";
+                $sql2 = "SELECT * 
+                         FROM Moves
+                         WHERE piece_id = '$this->id' 
+                         AND game_id = '$this->game_id'";
                 $result2 = $conn->query($sql2);
                 while ($row = $result2->fetch_association())
                 {
@@ -111,20 +114,21 @@ session_start();
                 }
             }
             // Potential Moves for this piece will need to be re-evaluated.
-            private function update_Square($row, $col, $enum, $occupier_id) 
+            private function update_Tables($row, $col, $enum, $occupier_id) 
             {
                 // Create connection
                 $conn = new mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
                 
                 clear_Moves();
-                // If taking a piece, Update opponent's piece.
+                // If taking a piece, Update 0pponent's Piece.
                 if ($occupier_id != 0)
                 {
                     $sql0 = "UPDATE Piece
                              SET row = -1
                                  col = -1
                             WHERE piece_id = '$occupier_id'
-                            AND game_id = '$this->game_id'"
+                            AND game_id = '$this->game_id'";
+                    $conn->query($sql0);
                 }
                 //Update My Piece
                 $sql1 = "UPDATE Piece
@@ -182,20 +186,11 @@ session_start();
                          AND game_id = '$this->game_id'";
                 $result1 = $conn->query($sql);
                 $row1 = $result1->fetch_association();
-                if ($row1 === 0)
-                {
-                    
-                }
-                
-                // Condition 1.a) If Square is empty
-                    
-                // Condition 1.b) Else Square is occupied
-                    // if (((occupied_id >= 200) && (($this->id >= 200)))||((occupied_id < 200) && (($this->id < 200)))
-                        //then error...can't move here. 
-                    // Delete piece
+                $conn->close();
+                $this->update_Tables($to_row, $to_col, $this->enum, $row1);
             }
     }
-// These functions need to belong to a different class. Perhaps Game or Lobby?
+/*// These functions need to belong to a different class. Perhaps Game or Lobby?
 			public function clear_Tables() {
 				// Important: Do in this order:
 					// Clear all pieces w/ this $game_id from Moves Table
@@ -213,5 +208,5 @@ session_start();
             public function get_Enum_Square($row, $col)
             {
                 
-            }
+            }*/
 ?>
