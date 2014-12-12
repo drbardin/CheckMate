@@ -26,7 +26,7 @@
         
 		<br />
         <div id="container">
-            <img class="displayed" src="chessboard_image.png" alt="Chessboard image" width:"800"; height:"800">
+            <img class="displayed" src="chessboard_image.png" alt="Chessboard image" width:"800"; height:"800" >
             <canvas id="gameCanvas" width="800" height="800"></canvas>
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" ></script>
             <script type="text/javascript" src="board.js"></script>

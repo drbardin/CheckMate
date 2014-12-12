@@ -1,4 +1,11 @@
-html { height: 100% }
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body{
+    overflow-x: hidden;
+}
 
 .tutorialbody{ 
     background: #956B95;
@@ -12,6 +19,10 @@ html { height: 100% }
     background-color: #ADB4C2;
 }
 
+.buttons{
+    display: inline-block;
+}
+
 .footerbuttons{
     float: right;
 }
@@ -20,36 +31,117 @@ html { height: 100% }
     float: left;
 }
 
+/* CHESS INTRO TUTORIAL IMAGES */
 .chessboard{
     height: 550px;
     width:  550px;
-    
-    position:absolute;
-    left:0; right:0;
-    top:600; bottom:0;
-    margin:auto;
-
-    max-width:100%;
-    max-height:100%;
-    overflow:auto;
+    z-index: 2; 
+    position: absolute;
+    left:70;
+    top:100;
 }
 
-.pawn{
-
-    width: 200px; 
+.queen{
+    width: 300px; 
     height: 300px; 
     
     position:absolute;
-    left:0; right:0;
-    top:200; bottom:0;
-    margin:auto;
+    left:120;
+    top:50;
+}
 
-    max-width:100%;
-    max-height:100%;
-    overflow:auto;
+.knight{
+    width: 300px; 
+    height: 350px; 
+    
+    position:absolute;
+    left:125; 
+}
+
+.rook{
+    width: 300px; 
+    height: 450px; 
+    
+    position: absolute; 
+    left: 130; 
+    top: -20; 
+}
+
+.pawn{
+    max-width: 300px; 
+    max-height: 300px; 
+    position: absolute; 
+    left: 150; 
+}
+
+/*  CHESS INTRO TUTORIAL CONTAINERS  */
+.piecebox{
+    height: 250px;
+    width: 450px;
+    
+    position: absolute; 
+    top: 400; 
+    left: 40; 
+    
+    padding: 25px 5px 5px 5px; 
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
 }
 
 .chesspawnbox{
+    height: 65px;
+    width: 620px;
+    font-family: "Arial", "Helvetica", sans-serif;
+    
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    position:absolute;
+    
+    left:30; right:0;
+    top:20; bottom:0;
+
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
+.chessqueenbox{
+    height: 55px;
+    width: 620px;
+    
+    font-family: "Arial", "Helvetica", sans-serif;
+    
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    position:absolute;
+    
+    left:30; right:0;
+    top:20; bottom:0;
+
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
+.chessbishopbox{
     height: 70px;
     width: 620px;
     font-family: "Arial", "Helvetica", sans-serif;
@@ -59,13 +151,9 @@ html { height: 100% }
     color: #FFF;
     
     position:absolute;
-    left:0; right:0;
-    top:-100; bottom:0;
-    margin:auto;
-
-    max-width:100%;
-    max-height:100%;
-    overflow:auto;
+    
+    left:30; right:0;
+    top:20; bottom:0;
 
     text-align: center;
     background: #956B95;
@@ -75,30 +163,69 @@ html { height: 100% }
     box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
 }
 
-.piecebox{
-    height: 250px;
+.queenbox{
+    height: 150px;
     width: 450px;
-    font-family: "Arial", "Helvetica", sans-serif;
     
+    position: absolute; 
+    top: 400; 
+    left: 40; 
+    
+    padding: 5px 5px 5px 5px; 
+    font-family: "Arial", "Helvetica", sans-serif;
     font-weight:bold;
     font-size: 16px;
     color: #FFF;
-    position:absolute;
-    left:0; right:0;
-    top:780; bottom:0;
-    margin:auto;
-
-    max-width:100%;
-    max-height:100%;
-    overflow:auto;
-
+    
     text-align: center;
     background: #956B95;
     border: 1px solid #FFF;
     border-radius: 30px;
-
     box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
 }
+
+.bishopbox{
+    height: 200px;
+    width: 450px;
+    
+    position: absolute; 
+    top: 420; 
+    left: 40; 
+    
+    padding: 25px 5px 5px 5px; 
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
+.knightbox{
+    height: 285px;
+    width: 450px;
+    
+    position: absolute; 
+    top: 400; 
+    left: 40; 
+    
+    padding: 2px 5px 5px 5px; 
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
 
 #usertop{
     text-shadow: 2px 2px black;
@@ -129,9 +256,9 @@ html { height: 100% }
   background: #eceeee;
   border: 1px solid #42464b;
   border-radius: 6px;
-  height: 257px;
-  margin: 20px auto 0;
-  width: 298px;
+  height: 450px;
+  margin: 40px auto 0;
+  width: 350px;
   box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
 }
 
@@ -167,39 +294,72 @@ html { height: 100% }
   box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
 }
 
+/* Chess Intro Tutorial Containers*/
 .chesspawntutorial{
+  height: 650px;
+  width: 600px;
+    
+  position: relative; 
+  margin: 20px auto 0;
+
   text-align: center;
   background: #F0E0F0;
   border: 1px solid #42464b;
   border-radius: 10px;
-  padding-left: 50px;
-  height: 800px;
-  margin: 20px auto 0;
-  width: 600px;
   box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
+
+  padding: 50px 50px 50px 50px;
+  display: -webkit-flex; 
+  display: flex;
 }
 
 .piecetutorial{
+  height: 700px;
+  width: 450px;
+    
+  position: relative; 
+  margin: 20px auto 0;
+
   text-align: center;
   background: #F0E0F0;
   border: 1px solid #42464b;
   border-radius: 10px;
-  padding-left: 50px;
-  height: 800px;
-  margin: 20px auto 0;
-  width: 450px;
   box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
+
+  padding: 50px 50px 50px 50px;
+  display: -webkit-flex; 
+  display: flex;
 }
 
+/* Entry and Exit Page for Tutorials */
+.endusertutorial{
+    width: 450px;
+    height: 200px;
+  
+    position: relative; 
+    margin: 30px auto 0;
+    
+    text-align: center;
+    background: #F0E0F0;
+    border: 1px solid #42464b;
+    border-radius: 10px;
+    padding: 50px 0px 0px 50px;
+  
+  box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
+}
 .usertutorial{
-  text-align: center;
-  background: #F0E0F0;
-  border: 1px solid #42464b;
-  border-radius: 10px;
-  padding-left: 50px;
-  height: 335px;
-  margin: 20px auto 0;
-  width: 450px;
+    width: 450px;
+    height: 335px;
+  
+    position: relative; 
+    margin: 30px auto 0;
+    
+    text-align: center;
+    background: #F0E0F0;
+    border: 1px solid #42464b;
+    border-radius: 10px;
+    padding: 50px 0px 0px 50px;
+  
   box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
 }
 
@@ -223,55 +383,99 @@ input[type="password"], input[type="username"],input[type="email"],input[type="n
   width: 87px;
 }
 
-input[type="tutorialforback"]
+
+/*  CHESS INTRO TUTORIAL BUTTONS */
+.inline{
+    display: inline; 
+    position: absolute; 
+}
+
+input[type="imgforback"]
 {  
     width: 200px;
     height: 50px; 
     
+    margin-top: 650px;
+    margin-left: 15px; 
+        
     font-family: "Arial", "Helvetica", sans-serif;
     font-size:24px;
     font-weight:bold;
+    
     color:#fff;
     text-decoration:none;
     text-align:center;
     
-    left:-20; right:0;
-    top:670; bottom:0;
-    margin:auto;
-
-    max-width:100%;
-    max-height:100%;
-    overflow:auto;
-
-    position:relative;
     cursor:pointer;
     border: none;  
-    
     background-color: #956B95;
     border-radius: 30px;
     box-shadow: inset 0px 1px 0px #CC99FF, 0px 5px 0px 0px #686C74, 0px 10px 5px #999;
 }
 
-input[type="tutorialpage"]
-{    
-    width: 400px;
+
+input[type="tutorialforback"]
+{  
+    width: 200px;
     height: 50px; 
+    
+    margin-top: 575px; 
+    margin-left: 55px; 
     font-family: "Arial", "Helvetica", sans-serif;
     font-size:24px;
     font-weight:bold;
+    
     color:#fff;
     text-decoration:none;
     text-align:center;
-    padding-top:6px;
-    margin: 29px 0 0 0px;
-    position:relative;
+    
     cursor:pointer;
     border: none;  
     background-color: #956B95;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius:5px;
+    border-radius: 30px;
+    box-shadow: inset 0px 1px 0px #CC99FF, 0px 5px 0px 0px #686C74, 0px 10px 5px #999;
+} /* END TUTORIAL RELATED BUTTONS */
+
+input[type="posttutorialpage"]{
+    width: 400px;
+    height: 50px; 
+    
+    display: inline-block; 
+    margin-left: -50px;
+    
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-size:24px;
+    font-weight:bold;
+    
+    color:#fff;
+    text-decoration:none;
+    text-align:center;
+    
+    cursor:pointer;
+    border: none;  
+    background-color: #956B95;
+    border-radius: 30px;
+    box-shadow: inset 0px 1px 0px #CC99FF, 0px 5px 0px 0px #686C74, 0px 10px 5px #999;
+}
+
+input[type="tutorialpage"]{
+    width: 400px;
+    height: 50px; 
+    
+    display: inline-block; 
+    
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-size:24px;
+    font-weight:bold;
+    
+    color:#fff;
+    text-decoration:none;
+    text-align:center;
+    
+    cursor:pointer;
+    border: none;  
+    background-color: #956B95;
+    border-radius: 30px;
     box-shadow: inset 0px 1px 0px #CC99FF, 0px 5px 0px 0px #686C74, 0px 10px 5px #999;
 }
 
@@ -348,20 +552,24 @@ input[type="index"]
 input[type="submit"] {
   width:240px;
   height:35px;
+    
   display:block;
   font-family:Arial, "Helvetica", sans-serif;
   font-size:16px;
   font-weight:bold;
   color:#fff;
+    
   text-decoration:none;
   text-transform:uppercase;
   text-align:center;
   text-shadow:1px 1px 0px #ADB4C2;
   padding-top:6px;
+    
   margin: 29px 0 0 29px;
   position:relative;
   cursor:pointer;
   border: none;  
+    
   background-color: #ADB4C2;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
