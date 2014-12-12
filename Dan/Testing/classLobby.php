@@ -161,6 +161,7 @@ session_start();
 //                echo "Error: " . $sql . "<br>" . $conn->error;
 //            }
 //            
+            $conn->query($sql);
             // Close database connection. 
             $conn->close();
         }
