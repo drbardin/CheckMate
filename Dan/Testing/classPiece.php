@@ -22,8 +22,8 @@ session_start();
         $game_id;
 
         //in this case, row, col, and id are all in respect to the target
-		//$potential_moves = array("to"=>array("row"=>,"col"=>,"id"=>));
-        $potential_moves = array(array());
+		$potential_moves = array("to"=>array(array("row"=>,"col"=>,"id"=>)));
+        //$potential_moves = array(array());
 
             function __construct($piece_row, $piece_col) {
                 
@@ -109,14 +109,15 @@ session_start();
                 for ($i = 0; $i < $this->potential_moves.length;$i++)
                 {
                     $sql = "INSERT INTO Moves (game_id, piece_id, to_row, to_col, from_row, from_col) 
-                            VALUES ('$this->game_id', '$this->id,$this->potential_moves['to'][i]['row']','$this->potential_moves['to'][i]['row']','$this->row','$this->col')";
+                            VALUES ('$this->game_id', '$this->id,'$this->potential_moves['to'][$i]['row']','$this->potential_moves['to'][$i]['row']','$this->row','$this->col')";
                     $conn->query($sql);
                     $conn->close();
                 }
             }
             // Potential Moves for this piece will need to be re-evaluated.
-            private function update_Tables($row, $col, $enum, $occupier_id) 
+            private function update_Tables($row, $col, $target_enum, $occupier_id) 
             {
+                $isEmpty = true;
                 // Create connection
                 $conn = new mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
                 
@@ -124,6 +125,7 @@ session_start();
                 // If taking a piece, Update 0pponent's Piece.
                 if ($occupier_id != 0)
                 {
+                    isEmpty = false;
                     $sql0 = "UPDATE Piece
                              SET row = -1
                                  col = -1
@@ -141,8 +143,8 @@ session_start();
                 
                 //Update New Square 
                 $sql2 = "UPDATE Square 
-                        SET enumeration = '$enum',
-                            occupier_id = '$occupier_id'
+                        SET enumeration = '$this->enumeration',
+                            occupier_id = '$this->id'
                         WHERE row = '$row'
                         AND col = '$col'
                         AND game_id = '$this->game_id'";
@@ -158,6 +160,23 @@ session_start();
                         AND game_id = '$this->game_id'";
                 $conn->query($sql3);
                 $conn->close();
+                
+                $game = new Game;
+                $board_rep = $game->get_Board_Representation();
+                $board_rep = unserialize($board_rep);
+                //$old_piece;
+                if (!$isEmpty) {
+                     // $old_piece = array("piece"=>$target_enumeration, "row"=>-1, "col"=>-1, "status"=>false, "id"=>$occupier_id);
+                }
+                $empty_square = array("piece"=>-1, "row"=>$row, "col"=>$col, "status"=>true, "id"=>0);
+                $old_index = ($this->row * 7) + $this->row + $this->col;
+                $new_index = ($row * 7) + $row + $col;
+                $new_piece = array("piece"=>$this->enumeration, "row"=>$row, "col"=>$col, "status"=>true, "id"=>$this->id);
+                $board_rep["board"][$old_index] = $empty_square;
+                $board_rep["board"][$new_index] = $new_piece;
+                $board_rep = serialize($board_rep);
+                $game->set_Board_Representation($board_rep);
+                $game->update_Game();
             }      
             private function clear_Moves()
             {
@@ -165,7 +184,10 @@ session_start();
                 
                 // Create connection
                 $conn = new mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
-                $sql = "DELETE * FROM Moves WHERE piece_id = '$this->id' AND game_id = '$this->game_id'";
+                $sql = "DELETE * 
+                        FROM Moves 
+                        WHERE piece_id = '$this->id' 
+                        AND game_id = '$this->game_id'";
                 $conn->query($sql);
                 $conn->close();
             }
@@ -188,7 +210,7 @@ session_start();
                 $result1 = $conn->query($sql);
                 $row1 = $result1->fetch_association();
                 $conn->close();
-                $this->update_Tables($to_row, $to_col, $this->enum, $row1);
+                $this->update_Tables($to_row, $to_col, $this->enumeration, $row1);
             }
         private function set_Potential_Moves($moves_arr)
         {
