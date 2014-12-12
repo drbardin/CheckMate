@@ -3,8 +3,7 @@
 
 if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 {
-    ?>
-    
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -74,8 +73,5 @@ if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 
 <?php
 }
-else{    
-    header('Location: /player0.php');
-}
-
+else{header('Location: /player0.php');}
 ?>

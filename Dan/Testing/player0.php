@@ -23,19 +23,6 @@ if($_SESSION["login"])
 			<h1 style="text-align:center; font-size: 60px;">Welcome, <?php
                 $username = $_SESSION["player"]->get_Username();
                 echo $username;?>!</h1>
-			
-            <!-- Statistics code here
-			<h2 style="float:left;"><?php
-                $username = $_SESSION["player"]->get_Username();
-                echo $username;
-            ?>'s Statistics </h2>			
-			<ul style="float:left;">
-				<li>Games Played: 15 </li><br />
-				<li>Games Won: 6</li><br />
-				<li>Games Lost: 9</li><br />
-			</ul>
-            -->
-            
 			<h2 id = "usertop" >Choose a Chess mode:</h2>
 			<div class = "useropt" >
                 <div class = "buttonwrap">

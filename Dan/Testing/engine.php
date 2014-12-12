@@ -3,8 +3,7 @@
     ini_set('display_errors', 'On');
     include_once "classGame.php";
 //  session_start();
-?> 
-
+?>
 <?php
 
 if (!function_exists('processMove'))
@@ -37,36 +36,40 @@ if(!function_exists('getPotentialMoves'))
     {
         $game = new Game();
         $cur_color = $game->get_Current_Color();
-        $board = $game->get_Board_Representation();
-
+        $incoming_board = $game->get_Board_Representation();
+        $board = unserialize($incoming_board);
+        
         // convert (row,col) to array index 0-63
         $sqr_index = ($r * 7) + $r + $c;
         $switch_var = $board[$sqr_index]['piece'];
+
+        var_dump("row: " . $r );
   
         $highlight_arr = array(array());
         switch($switch_var)
         {
-            case "PAWN":
-                $highlight_arr = movePawn($r, $c, $cur_color, $board);
+            case 0: //pawn
+                $highlight_arr = movePawn($r, $c, $sqr_index, $cur_color, $board);
                 break;
-            case "ROOK":
-                $highlight_arr = moveRook($r, $c, $cur_color, $board);
+            case 3: //rook
+                $highlight_arr = moveRook($r, $c, $sqr_index, $cur_color, $board);
                 break;
-            case "KNIGHT":
-                $highlight_arr = moveKnight($r, $c, $cur_color, $board);
+            case 1: //knight
+                $highlight_arr = moveKnight($r, $c, $sqr_index, $cur_color, $board);
                 break;
-            case "BISHOP":
-                $highlight_arr = moveBishop($r, $c, $cur_color, $board);
+            case 2: //bishop
+                $highlight_arr = moveBishop($r, $c, $sqr_index, $cur_color, $board);
                 break;
-            case "QUEEN":
-                $highlight_arr = moveQueen($r, $c, $cur_color, $board);
+            case 4: //queen
+                $highlight_arr = moveQueen($r, $c, $sqr_index, $cur_color, $board);
                 break;
-            case "KING":
-                $highlight_arr = moveKing($r, $c, $cur_color, $board);
+            case 5: //king
+                $highlight_arr = moveKing($r, $c, $sqr_index, $cur_color, $board);
                 break;
             default :
                 $highlight_arr[0]['row'] = $r;
                 $highlight_arr[0]['col'] = $c;
+                var_dump("piece switch fell to default " . $switch_var);
         }
         return $highlight_arr;    
     }
@@ -93,13 +96,13 @@ if(!function_exists('movePawn'))
             // if not oob, not this.color, and not empty --> capture condition. 
             if($c < 7 && $board[$sqr_index+9]['id'] < 200 && $board[$sqr_index+9]['id'] !== 0)
             {
-                $mve = array(array('row'=>$r+9, 'col'=>$c));
+                $mve = array(array('row'=>$r+1, 'col'=>$c+1));
                 array_push($moves, $mve);
             }
             
             if($c > 0 && $board[$sqr_index+7]['id'] < 200 && $board[$sqr_index+7]['id'] !== 0)
             {
-                $mve = array(array('row'=>$r+7, 'col'=>$c));
+                $mve = array(array('row'=>$r+1, 'col'=>$c-1));
                 array_push($moves, $mve);
             }
             
@@ -116,13 +119,13 @@ if(!function_exists('movePawn'))
             // if not oob, not this.color, and not empty --> capture condition. 
             if($c > 0 && $board[$sqr_index-9]['id'] > 199 && $board[$sqr_index-9]['id'] !== 0)
             {
-                $mve = array(array('row'=>$r-9, 'col'=>$c));
+                $mve = array(array('row'=>$r-1, 'col'=>$c-1));
                 array_push($moves, $mve);
             }
             
             if($c < 7 && $board[$sqr_index-7]['id'] < 200 && $board[$sqr_index-7]['id'] !== 0)
             {
-                $mve = array(array('row'=>$r-7, 'col'=>$c));
+                $mve = array(array('row'=>$r-1, 'col'=>$c+1));
                 array_push($moves, $mve);
             }
         }
@@ -219,7 +222,8 @@ if(!function_exists('moveRook'))
             array_push($moves, $move);
         }
         
-    }// end moveRook
+        return $moves; 
+    } // end moveRook
 }
 
 if(!function_exists('moveKnight'))
@@ -227,6 +231,127 @@ if(!function_exists('moveKnight'))
     function moveKnight($r, $c, $sqr_index, $color, $board) {
 
         $moves = array(array('row'=>$r, 'col'=>$c));
+
+        // this if checks if the move will go off the board.
+        if($r-2 >= 0 && $c-1 >=0)
+        {
+            // now look at the index and see what's there.
+            if($board[$sqr_index-17]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r-2, 'col'=>$c-1));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index-17]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index-17]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r-2, 'col'=>$c-1));
+                array_push($moves, $mve);
+            }
+
+        }
+        if($r-2 >= 0 && $c+1 < 8)
+        {
+            // now look at the index and see what's there.
+            if($board[$sqr_index-15]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r-2, 'col'=>$c+1));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index-15]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index-15]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r-2, 'col'=>$c+1));
+                array_push($moves, $mve);
+            }
+        }
+        if($r-1 >= 0 && $c-2 >=0)
+        {
+            // now look at the index and see what's there.
+            if($board[$sqr_index-10]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r-1, 'col'=>$c-2));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index-10]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index-10]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r-1, 'col'=>$c-2));
+                array_push($moves, $mve);
+            }
+        }
+        if($r-1 >= 0 && $c+2 < 8)
+        {
+            // now look at the index and see what's there.
+            if($board[$sqr_index-10]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r-1, 'col'=>$c-2));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index-10]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index-10]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r-1, 'col'=>$c-2));
+                array_push($moves, $mve);
+            }
+        }
+        if($r+2 < 8 && $c-1 >= 0)
+        {
+            // now look at the index and see what's there.
+            if($board[$sqr_index+15]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r+2, 'col'=>$c-1));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index+15]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index+15]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r+2, 'col'=>$c-1));
+                array_push($moves, $mve);
+            }
+        }
+        if($r+2 < 8 && $c+1 < 8)
+        {
+            if($board[$sqr_index+17]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r+2, 'col'=>$c+1));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index+17]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index+17]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r+2, 'col'=>$c+1));
+                array_push($moves, $mve);
+            }
+        }
+        if($r+1 < 8 && $c-2 >=0)
+        {
+            if($board[$sqr_index+6]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r+1, 'col'=>$c-2));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index+6]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index+6]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r+1, 'col'=>$c-2));
+                array_push($moves, $mve);
+            }
+        }
+        if($r+1 < 8 && $c+2 < 8)
+        {
+            if($board[$sqr_index+10]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r+1, 'col'=>$c+2));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index+10]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index+10]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r+1, 'col'=>$c+2));
+                array_push($moves, $mve);
+            }
+        }
+
         return $moves;
     }
 }
@@ -235,7 +360,91 @@ if(!function_exists('moveBishop'))
 {
     function moveBishop($r, $c, $sqr_index, $color, $board) {
         $moves = array(array('row'=>$r, 'col'=>$c));
-        return -1;
+        
+        //backward, left diag
+        for($i = 0; $i < (7 - $r); $i++)
+        {
+            
+            if($board[$sqr_index+7]['id'] !== 0)
+            {
+                // check if is opposing piece and break. 
+                if($color === 'w' && $board[$sqr_index+7]['id'] > 199 ||
+                  $color === 'b' && $board[$sqr_index+7]['id'] < 200 )
+                {
+                    $mve = array(array('row'=>$r+1, 'col'=>$c-1));
+                    array_push($moves, $mve);
+                }    
+                //piece stops movement
+                break;
+            }
+            // empty square, push onto 
+            $mve = array(array('row'=>$r+1, 'col'=>$c-1));
+            array_push($moves, $move);
+        }
+        
+        for($i = 0; $i < (7 - $r); $i++)
+        {
+            
+            if($board[$sqr_index+9]['id'] !== 0)
+            {
+                // check if is opposing piece and break. 
+                if($color === 'w' && $board[$sqr_index+9]['id'] > 199 ||
+                  $color === 'b' && $board[$sqr_index+9]['id'] < 200 )
+                {
+                    $mve = array(array('row'=>$r+1, 'col'=>$c+1));
+                    array_push($moves, $mve);
+                }    
+                //piece stops movement
+                break;
+            }
+            // empty square, push onto 
+            $mve = array(array('row'=>$r+1, 'col'=>$c+1));
+            array_push($moves, $move);
+        }
+        
+        // forward, left diag
+        for($i = 0; $i < (7 - $c); $i++)
+        {
+            
+            if($board[$sqr_index-9]['id'] !== 0)
+            {
+                // check if is opposing piece and break. 
+                if($color === 'w' && $board[$sqr_index-9]['id'] > 199 ||
+                  $color === 'b' && $board[$sqr_index-9]['id'] < 200 )
+                {
+                    $mve = array(array('row'=>$r-1, 'col'=>$c-1));
+                    array_push($moves, $mve);
+                }    
+                //piece stops movement
+                break;
+            }
+            // empty square, push onto 
+            $mve = array(array('row'=>$r-1, 'col'=>$c-1));
+            array_push($moves, $move);
+        }
+        
+        // forward, rigt diag
+        for($i = 0; $i < (7 - $c); $i++)
+        {
+            if($board[$sqr_index-7]['id'] !== 0)
+            {
+                // check if is opposing piece and break. 
+                if($color === 'w' && $board[$sqr_index-7]['id'] > 199 ||
+                  $color === 'b' && $board[$sqr_index-7]['id'] < 200 )
+                {
+                    $mve = array(array('row'=>$r-1, 'col'=>$c+1));
+                    array_push($moves, $mve);
+                }    
+                //piece stops movement
+                break;
+            }
+            // empty square, push onto 
+            $mve = array(array('row'=>$r-1, 'col'=>$c+1));
+            array_push($moves, $move);
+        }
+        
+        
+        return $moves;
     }
 }
 
@@ -243,7 +452,15 @@ if(!function_exists('moveQueen'))
 {
     function moveQueen($r, $c, $sqr_index, $color, $board) {
         $moves = array(array('row'=>$r, 'col'=>$c));
-        return -1;
+        
+        // queen has move ability of rook & bishop. Call those functions.
+        $rook_moves = moveRook($r, $c, $sqr_index, $color, $board);
+        $bishop_moves = moveBishop($r, $c, $sqr_index, $color, $board);
+        
+        array_push($moves, $rook_moves);
+        array_push($moves, $bishop_moves);
+        
+        return $moves;
     }
 }
 
@@ -251,7 +468,127 @@ if(!function_exists('moveKing'))
 {
     function moveKing($r, $c, $sqr_index, $color, $board) {
         $moves = array(array('row'=>$r, 'col'=>$c));
-        return -1;
+        
+        // this if checks if the move will go off the board.
+        if($r-1 >= 0 && $c-1 >=0)
+        {
+            // now look at the index and see what's there.
+            if($board[$sqr_index-9]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r-1, 'col'=>$c-1));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index-9]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index-9]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r-1, 'col'=>$c-1));
+                array_push($moves, $mve);
+            }
+        }
+        if($r-1 >= 0)
+        {
+            // now look at the index and see what's there.
+            if($board[$sqr_index-8]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r-1, 'col'=>$c));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index-8]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index-8]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r-1, 'col'=>$c));
+                array_push($moves, $mve);
+            }
+        }
+        if($r-1 >= 0 && $c+1 < 8)
+        {
+            // now look at the index and see what's there.
+            if($board[$sqr_index-7]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r-1, 'col'=>$c+1));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index-7]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index-7]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r-1, 'col'=>$c+1));
+                array_push($moves, $mve);
+            }
+        }
+        if($c-1 >= 0)
+        {
+            // now look at the index and see what's there.
+            if($board[$sqr_index-1]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r, 'col'=>$c-1));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index-1]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index-1]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r, 'col'=>$c-1));
+                array_push($moves, $mve);
+            }
+        }
+        if($c+1 < 8)
+        {
+            // now look at the index and see what's there.
+            if($board[$sqr_index+1]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r, 'col'=>$c+1));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index+1]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index+1]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r, 'col'=>$c+1));
+                array_push($moves, $mve);
+            }
+        }
+        if($r+1 < 8 && $c-1 >= 0)
+        {
+            if($board[$sqr_index+7]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r+1, 'col'=>$c-1));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index+7]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index+7]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r+1, 'col'=>$c-1));
+                array_push($moves, $mve);
+            }
+        }
+        if($r+1 < 8)
+        {
+            if($board[$sqr_index+8]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r+1, 'col'=>$c));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index+8]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index+8]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r+1, 'col'=>$c));
+                array_push($moves, $mve);
+            }
+        }
+        if($r+1 < 8 && $c+1 < 8)
+        {
+            if($board[$sqr_index+9]['id'] === 0)
+            {
+                $mve =  array(array('row'=>$r+1, 'col'=>$c+1));
+                array_push($moves, $mve);
+            }
+            else if($color === 'w' && $board[$sqr_index+9]['id'] > 199 ||
+                $color === 'b' && $board[$sqr_index+9]['id'] < 200 ) {
+
+                $mve =  array(array('row'=>$r+1, 'col'=>$c+1));
+                array_push($moves, $mve);
+            }
+        }
+        
+        return $moves;
     }
 }
 

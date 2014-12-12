@@ -1,9 +1,8 @@
 <?php
 include "classPlayer.php";
+define('WP_DEBUG',true);
 session_start();
 ?>
-<html>
-<body>
 <?php
     date_default_timezone_set('America/New_York');
     ini_set('display_errors', 'On');
@@ -51,5 +50,3 @@ session_start();
     }
     $conn->close();
 ?>
-</body>
-</html> 

@@ -2,8 +2,8 @@
     session_start();
 if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 {
-    ?>
-    <!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<title>Login | Checkmate</title>

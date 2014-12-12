@@ -4,7 +4,6 @@
 include_once "classPlayer.php";
 session_start();
 ?>
-
 <?php
     class Lobby
     {
@@ -56,14 +55,14 @@ session_start();
         */
         public function get_Player_Id()
         {
-             if (isset($this->player_id))
+            if (isset($this->player_id))
             {
                   return $this->player_id;
             }
-            else 
-            {
-                echo "this->player_id not set.";
-            }           
+//            else 
+//            {
+//                echo "this->player_id not set.";
+//            }           
         }
         
         /*
@@ -72,18 +71,16 @@ session_start();
         */
         public function get_Time_Entered()
         {
-             if (isset($this->time_entered))
+            if (isset($this->time_entered))
             {
                   return $this->time_entered;
             }
-            else 
-            {
-                echo "this->time_entered not set.";
-            }           
+//            else 
+//            {
+//                echo "this->time_entered not set.";
+//            }           
         }
-        
-        
-        
+
         /*
             Get oldest row entry from Lobby table:
                 Returns -1 if Lobby table is empty.
@@ -91,7 +88,7 @@ session_start();
         */
         public function get_Oldest_Entry()
         {
-             $db_host = 'mysql.cs.iastate.edu';
+            $db_host = 'mysql.cs.iastate.edu';
             $db_user = 'u309M13';
             $db_pass = 'T2GWRYDIw';
             $db_name = 'db309M13';           
@@ -109,7 +106,7 @@ session_start();
             // Otherwise, store row data and return an instance of the Lobby class. 
             if ($result->num_rows < 1)
             {
-                echo "get_Oldest_Entry(): Less than 1 row in result" . "<br/>";
+               // echo "get_Oldest_Entry(): Less than 1 row in result" . "<br/>";
                 $conn->close();
                 return -1;
             }
@@ -126,7 +123,7 @@ session_start();
             }
             else 
             {
-                echo "Error: Too many rows returned" . "<br/>";
+               // echo "Error: Too many rows returned" . "<br/>";
             }
             
             // Close database connection. 
@@ -153,17 +150,17 @@ session_start();
             
             // Define INSERT statement.
             $sql = "INSERT INTO Lobby (player_id, time_entered) VALUES ('$pId','$timeEnt')";
-            
-            // Query the database with our statement. 
-            if ($conn->query($sql) === TRUE) 
-            {
-                echo "Player successfully added to Lobby." . "<br/>";
-            }
-            else
-            {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
-            
+//            
+//            // Query the database with our statement. 
+//            if ($conn->query($sql) === TRUE) 
+//            {
+//                echo "Player successfully added to Lobby." . "<br/>";
+//            }
+//            else
+//            {
+//                echo "Error: " . $sql . "<br>" . $conn->error;
+//            }
+//            
             // Close database connection. 
             $conn->close();
         }
@@ -188,21 +185,18 @@ session_start();
             // Define DELETE statement.
             $sql = "DELETE FROM $tbl_name WHERE player_id = $id";
             
-            // Query the database with our statement. 
-            if ($conn->query($sql) === TRUE) 
-            {
-                echo "Player successfully removed from Lobby." . "<br/>";
-            }
-            else
-            {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
-            
+//            // Query the database with our statement. 
+//            if ($conn->query($sql) === TRUE) 
+//            {
+//                //echo "Player successfully removed from Lobby." . "<br/>";
+//            }
+//            else
+//            {
+//                //echo "Error: " . $sql . "<br>" . $conn->error;
+//            }   
             // Close database connection. 
             $conn->close();
         }
-        
-        
         /*
             Creates an entry in the Game table. Removes both players from the Lobby.
                 No return value.
@@ -219,7 +213,7 @@ session_start();
             if ($id_first === $id_second)
             {
                 // Throw error, id parameters must be different. 
-                echo "create_Game() Error: Paramters are identical. Must have two different account ids to create a game." . "<br/>";
+                //echo "create_Game() Error: Paramters are identical. Must have two different account ids to create a game." . "<br/>";
                 return;
             }
             // Check for matching account on first id.
@@ -227,7 +221,7 @@ session_start();
             if ($white === -1)
             {
                 // Throw error, first parameter is not a valid account id.
-                echo "create_Game() Error: First parameter is not a valid account id." . "<br/>";
+                //echo "create_Game() Error: First parameter is not a valid account id." . "<br/>";
                 return;
             }
  
@@ -236,7 +230,7 @@ session_start();
             if ($black === -1)
             {
                 // Throw error, second parameter is not a valid account id.
-                echo "create_Game() Error: First parameter is not a valid account id." . "<br/>";
+                //echo "create_Game() Error: First parameter is not a valid account id." . "<br/>";
                 return;
             }
 
@@ -317,15 +311,15 @@ session_start();
             // Define INSERT statement.
             $sql = "INSERT INTO $tbl_name (white_id, black_id, turn_num, white_in, black_in, white_username, black_username, board_json) VALUES ('$wId', '$bId', 0, 0, 0,'$wUsername', '$bUsername','$board_json')";
             
-            // Query the database with our statement. 
-            if ($conn->query($sql) === TRUE) 
-            {
-                echo "Game successfully created." . "<br/>";
-            }
-            else
-            {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
+//            // Query the database with our statement. 
+//            if ($conn->query($sql) === TRUE) 
+//            {
+//                echo "Game successfully created." . "<br/>";
+//            }
+//            else
+//            {
+//                echo "Error: " . $sql . "<br>" . $conn->error;
+//            }
             
             // Close database connection. 
             $conn->close();
@@ -334,10 +328,7 @@ session_start();
             $this->remove_Player($id_first);
             $this->remove_Player($id_second);
         }
-        
-        
-        
-        
+
         /*
             Attempts to add the player to the Lobby, but first checks if theres an person waiting in the lobby.
             Will create a game if opponent is found. Otherwise, adds player to lobby.
@@ -359,7 +350,6 @@ session_start();
             if ($conn->connect_error) {
                die("Connection failed: " . $conn->connect_error);
             }
-
             
             $sql      = "SELECT * FROM $tbl_name WHERE '$this->player_id' = white_id OR '$this->player_id' = black_id";
             $result   = $conn->query($sql);
@@ -367,7 +357,7 @@ session_start();
             // If result matched $username and $password, table row must be 1 row
             if ($result->num_rows > 0)
             {
-                echo "This player is already in a Game." . "<br/>";
+               // echo "This player is already in a Game." . "<br/>";
                 $conn->close();
                 return;
             }
@@ -378,13 +368,13 @@ session_start();
     
                 if ($opponent === -1)
                 {
-                    echo "No opponent found." . "<br/>";
+                    //echo "No opponent found." . "<br/>";
                     $this->time_entered = date("Y-m-d H:i:s", time());
                     $this->add_To_Table();
                 }
                 else
                 {
-                    echo "Opponent found. Create game." . "<br/>";
+                    //echo "Opponent found. Create game." . "<br/>";
                     $this->create_Game($opponent->get_Player_Id(),$this->player_id);
                 }
             }

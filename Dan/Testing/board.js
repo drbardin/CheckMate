@@ -13,6 +13,22 @@ $(document).ready(function () {
     var ROOK = 3;
     var QUEEN = 4;
     var KING = 5;
+    
+    // pristine black pieces
+    var bP_img = new Image();
+    var bN_img = new Image();
+    var bB_img = new Image();
+    var bR_img = new Image();
+    var bQ_img = new Image();
+    var bK_img = new Image();
+    
+    // pristine white pieces
+    var wP_img = new Image();
+    var wN_img = new Image();
+    var wB_img = new Image();
+    var wR_img = new Image();
+    var wQ_img = new Image();
+    var wK_img = new Image();
 
     var NUM_ROWS;
     var SQR_SIZE = h / 8;
@@ -46,10 +62,10 @@ $(document).ready(function () {
         // load piece image resource.
         pieces.src = 'pieces.png';
         
-        pieces.onload = drawPieces;
-        
         // call method to set up fresh chessboard
         setNewBoard();
+        
+        pieces.onload = putPiecesOnBoard;
         
         // query server for player names, this.color
         // GET: client username, client color, opponent username, turn_number, board_rep
@@ -218,48 +234,45 @@ $(document).ready(function () {
             console.log("Turn change: It is now your opponent "+OPPO_UNAME+"'s turn");
         }
     }
-    //////////////////////////////////////
-    //   INIT & DRAW PIECES FUNCTIONS   //
-    //////////////////////////////////////
-    function drawPieces() {
-        //Send white team to be drawn, then black team. 
-        drawAllPieces(json.white, false);
-        drawAllPieces(json.black, true);
-    }
-    
-    
-    // This send all pieces to be drawn in their base position.
-    function drawAllPieces(fullColorSet, isBlackTeam) {
+    /////////////////////////////////////////////
+    //   DRAW / ERASE / COPY  PIECE FUNCTIONS  //
+    /////////////////////////////////////////////
+    function putPiecesOnBoard() 
+    {
         var piece_index;
-        // go through black or white team one-by-one, send to drawImage function 
-        for (piece_index = 0; piece_index < fullColorSet.length; piece_index++) {
-            var curImage = fullColorSet[piece_index];
-            drawThisPiece(curImage, isBlackTeam);
+        var white_set = json.white;
+        var black_set = json.black;
+        
+        // draw piece sets to board
+        for(piece_index = 0; piece_index < white_set.length; piece_index++)
+        {
+            // params to clip white pieces from pieces.png.
+            var w_clip_x = white_set[piece_index].piece * 100; 
+            var w_clip_y = 0;
+            var w_drawAt_col = white_set[piece_index].col * SQR_SIZE;
+            var w_drawAt_row = white_set[piece_index].row * SQR_SIZE;
+            
+            // params to clip black pieces from pieces.png.
+            var b_clip_x = black_set[piece_index].piece * 100; 
+            var b_clip_y = 100;
+            var b_drawAt_col = black_set[piece_index].col * SQR_SIZE;
+            var b_drawAt_row = black_set[piece_index].row * SQR_SIZE;
+            
+            // draw the white image.
+            ctx.drawImage(pieces, w_clip_x, w_clip_y, 100, 100, w_drawAt_col, w_drawAt_row, 100, 100);
+            
+            // draw the black image
+            ctx.drawImage(pieces, b_clip_x, b_clip_y, 100, 100, b_drawAt_col, b_drawAt_row, 100, 100)
         }
     }
     
-    // Draws the specified piece. 
-    function drawThisPiece(pieceToDraw, isBlackTeam) {
-        
-        var thisXY = getCoordinates(pieceToDraw.piece, isBlackTeam);
-        //          ( image , clip at x, clip at y, w clip amt, h clip amt, canvas draw at x, canvas draw at y, width to draw, height to draw)   
-        ctx.drawImage(pieces, thisXY.x, thisXY.y, SQR_SIZE, SQR_SIZE, pieceToDraw.col * SQR_SIZE, pieceToDraw.row * SQR_SIZE, SQR_SIZE, SQR_SIZE);
-    }
     
-    // this chops out a 100x100 square from the pieces.png. Hopefully it'll be the right color and rank. 
-    function getCoordinates(thisPiece, isBlackTeam) {
-        // x is the column, so send the number of the current piece (e.g., ROOK = 3), multiply by size of piece images.
-        // y is row, or white/black team. 
-        var im_coordinates = {
-            "x": thisPiece * SQR_SIZE,
-            "y": (isBlackTeam ? SQR_SIZE : 0)
-        };
-        return im_coordinates;
-    }
-    //////////////////////////////////////////
-    //  END  INIT/DRAW PIECES FUNCTIONS   //
-    //////////////////////////////////////////
     
+
+    /////////////////////////////////////////////////////
+    //  END   DRAW / ERASE / COPY  PIECE FUNCTIONS     //
+    /////////////////////////////////////////////////////
+
     
     // After successful source square click, game engine returns 
     // an array of (row, col) pairs representing the locations the clicked piece
@@ -361,84 +374,6 @@ $(document).ready(function () {
         ctx.putImageData(piece_moving, to_loc.col * 100, to_loc.row * 100);
     }
     
-    function handleFromClick(JSONStr, row_click, col_click)
-    {
-         $.ajax({
-                type: 'POST',
-                url: 'from_click.php',
-                data: {'data': JSONStr},
-                // If ContentType is lower-case, causes null json properties to be echoed back.
-                ContentType: "application/json; charset=utf-8",
-                //dataType: "json",
-                success: function (data, textStatus, jqXHR) {
-                    console.log("Heard reply from from_click.php");
-                    //var updated_data = JSON.stringify(data);
-                    sqrs_to_highlight = JSON.parse(data);
-                    // get number of keys in new obj. 
-                    // sqrs_to_hlgt_len = Object.keys(sqrs_to_highlight).length;
-                    
-                    // call process return data function
-                    highlight_squares(sqrs_to_highlight);
-                    
-                    // store the user's click
-                    prev_click.col = col_clicked;
-                    prev_click.row = row_clicked;
-                    
-                    // increment click counter
-                    click_counter++;
-                },
-                error: function (xhr, desc, err) {
-                    console.log("No reply from from_click.php");
-                    console.log(desc);
-                    console.log(err);  
-                }
-            });    
-    }
-    
-    function handleToClick(JSONStr, row_click, col_click)
-    {
-            $.ajax({
-                    type: 'POST',
-                    url: 'to_click.php',
-                    data: {'data': JSONStr},
-
-                    // If ContentType is lower-case, causes null json properties to be echoed back.
-                    ContentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (data, textStatus, jqXHR) {
-                        console.log("Heard reply from to_click.php");
-
-                        // undo highlighted squares
-                        remove_highlights();
-
-                        // move piece
-                        ctx.clearRect(prev_click.col * 100, prev_click.row * 100, 100, 100);
-                        ctx.putImageData(before_highlight_imgs[0], col_clicked * 100, row_clicked * 100);
-
-                        var toClick = {row: row_clicked, col: col_clicked};
-                        // update local json
-                        update_json(toClick);
-
-                        // clear the highlight array. 
-                        before_highlight_imgs = [];
-
-                        // clear prev_click object.
-                        prev_click = { "row": null, "col": null };
-
-                        // Change turn ownership
-                        if (WHITE_TURN ? WHITE_TURN = false : WHITE_TURN = true);
-
-                        // increment click counter
-                        click_counter++;
-
-                        // $("canvas#gameCanvas").bind("click");
-
-                    },
-                    error: function (xhr, desc, err) {
-                        console.log("No reply from to_click.php");
-                    }
-            }); // end .ajaxTO
-    }
     
     // Click handler 
     // Listen for button click
@@ -466,27 +401,41 @@ $(document).ready(function () {
         // FROM_CLICK condition
         if (click_counter === parseFloat(click_counter) && !(click_counter % 2)) 
         {
+            
+            //$("canvas#gameCanvas").off("click", clickEvents);
+            
+            $.ajax({
+                    type: 'POST',
+                    url: 'from_click.php',
+                    data: {'data': JSONStr},
+                    // If ContentType is lower-case, causes null json properties to be echoed back.
+                    ContentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data, textStatus, jqXHR) {
+                        console.log("Heard reply from from_click.php");
+                        //var updated_data = JSON.stringify(data);
+                        sqrs_to_highlight = JSON.parse(data);
+                        // get number of keys in new obj. 
+                        // sqrs_to_hlgt_len = Object.keys(sqrs_to_highlight).length;
 
-            // Now make sure the piece we are moving is one of ours. 
-            var json_color;
-            var good_click = false; 
-            
-            if(CLIENT_COLOR === 'w'? json_color = json.white : json_color = json.black);
-            
-            // loop through client's pieces and check it exists at clicked r/c. 
-            for(var i = 0; i < json_color; i++)
-            {
-                if(json_color[i].col === col_clicked && json_color[i].row === row_clicked)
-                {
-                    // piece is ours, good to process.
-                    good_click = true; 
-                }
-            }
-            // click is good, send to handling function.
-            if(good_click)
-            {
-                handleFromClick(JSONStr, row_clicked, col_clicked);
-            }
+                        // call process return data function
+                        highlight_squares(sqrs_to_highlight);
+
+                        // store the user's click
+                        prev_click.col = col_clicked;
+                        prev_click.row = row_clicked;
+
+                        // increment click counter
+                        click_counter++;
+                        
+                      //  $("canvas#gameCanvas").on("click", clickEvents);
+                    },
+                    error: function (xhr, desc, err) {
+                        console.log("No reply from from_click.php");
+                        console.log(desc);
+                        console.log(err);  
+                    }
+                });    
         } 
         else // TO_CLICK condition
         {
@@ -514,7 +463,47 @@ $(document).ready(function () {
                 // If it is valid, process the move, otherwise, do nothing and wait for a valid click. 
                 if(selected_valid_destination) 
                 {
-                    handleToClick(JSONStr, row_clicked, col_clicked);
+                    $.ajax({
+                        type: 'POST',
+                        url: 'to_click.php',
+                        data: {'data': JSONStr},
+
+                        // If ContentType is lower-case, causes null json properties to be echoed back.
+                        ContentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data, textStatus, jqXHR) {
+                            console.log("Heard reply from to_click.php");
+
+                            // undo highlighted squares
+                            remove_highlights();
+
+                            // move piece
+                            ctx.clearRect(prev_click.col * 100, prev_click.row * 100, 100, 100);
+                            ctx.putImageData(before_highlight_imgs[0], col_clicked * 100, row_clicked * 100);
+
+                            var toClick = {row: row_clicked, col: col_clicked};
+                            // update local json
+                            update_json(toClick);
+
+                            // clear the highlight array. 
+                            before_highlight_imgs = [];
+
+                            // clear prev_click object.
+                            prev_click = { "row": null, "col": null };
+
+                            // Change turn ownership
+                            if (WHITE_TURN ? WHITE_TURN = false : WHITE_TURN = true);
+
+                            // increment click counter
+                            click_counter++;
+
+                            // $("canvas#gameCanvas").bind("click");
+
+                        },
+                        error: function (xhr, desc, err) {
+                            console.log("No reply from to_click.php");
+                        }
+                    }); // end .ajaxTO
                 }
             }
         } // end if(from || to)
