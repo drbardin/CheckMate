@@ -67,6 +67,22 @@ $(document).ready(function () {
         
         pieces.onload = putPiecesOnBoard;
         
+        // pristine black pieces (col, row, width, height)
+        var bP_img = ctx.getImageData(0, 100, 100, 100);
+        var bN_img = ctx.getImageData(100, 0, 100, 100);
+        var bB_img = ctx.getImageData(200, 0, 100, 100);
+        var bR_img = ctx.getImageData(0, 0, 100, 100);
+        var bQ_img = ctx.getImageData(400, 0, 100, 100);
+        var bK_img = ctx.getImageData(300, 0, 100, 100);
+    
+        // pristine white pieces
+        var wP_img = ctx.getImageData(0, 600, 100, 100);
+        var wN_img = ctx.getImageData(100, 0, 100, 100);
+        var wB_img = ctx.getImageData(200, 0, 100, 100);
+        var wR_img = ctx.getImageData(700, 0, 100, 100);
+        var wQ_img = ctx.getImageData(400, 0, 100, 100);
+        var wK_img = ctx.getImageData(300, 0, 100, 100);
+        
         // query server for player names, this.color
         // GET: client username, client color, opponent username, turn_number, board_rep
         $.ajax({
@@ -187,8 +203,8 @@ $(document).ready(function () {
             "black": [ { 'piece': ROOK,  'row': 0, 'col': 0, 'status': true, 'id':110},
                        { 'piece': KNIGHT,'row': 0, 'col': 1, 'status': true, 'id':120},
                        { 'piece': BISHOP,'row': 0, 'col': 2, 'status': true, 'id':130},
-                       { 'piece': KING,  'row': 0, 'col': 3, 'status': true, 'id':140},
-                       { 'piece': QUEEN, 'row': 0, 'col': 4, 'status': true, 'id':150},
+                       { 'piece': QUEEN, 'row': 0, 'col': 3, 'status': true, 'id':140},
+                       { 'piece': KING,  'row': 0, 'col': 4, 'status': true, 'id':150},
                        { 'piece': BISHOP,'row': 0, 'col': 5, 'status': true, 'id':131},
                        { 'piece': KNIGHT,'row': 0, 'col': 6, 'status': true, 'id':121},
                        { 'piece': ROOK,  'row': 0, 'col': 7, 'status': true, 'id':111},
@@ -204,8 +220,8 @@ $(document).ready(function () {
             "white": [ { 'piece': ROOK,  'row': 7, 'col': 0, 'status': true,'id':210},
                        { 'piece': KNIGHT,'row': 7, 'col': 1, 'status': true,'id':220},
                        { 'piece': BISHOP,'row': 7, 'col': 2, 'status': true,'id':230},
-                       { 'piece': KING,  'row': 7, 'col': 3, 'status': true,'id':240},
-                       { 'piece': QUEEN, 'row': 7, 'col': 4, 'status': true,'id':250},
+                       { 'piece': QUEEN, 'row': 7, 'col': 3, 'status': true,'id':240},
+                       { 'piece': KING,  'row': 7, 'col': 4, 'status': true,'id':250},
                        { 'piece': BISHOP,'row': 7, 'col': 5, 'status': true,'id':231},
                        { 'piece': KNIGHT,'row': 7, 'col': 6, 'status': true,'id':221},
                        { 'piece': ROOK,  'row': 7, 'col': 7, 'status': true,'id':211},
@@ -266,9 +282,34 @@ $(document).ready(function () {
         }
     }
     
+    function remove_PieceImage(row, col)
+    {
+        // remove image of piece at this row and column.    
+        ctx.clearRect(col * 100, row * 100, 100, 100);
+    }
     
+    function draw_PieceImage_To_Board(piece_image, row, col)
+    {
+        ctx.putImageData(piece_image, col*100, row*100);
+    }
     
-
+    function move_Piece(source_coords, target_coords)
+    {
+        var source_row = source_coords.row * 100;
+        var source_col = source_coords.col * 100;
+        var target_row = target_coords.row * 100;
+        var target_col = target_coords.col * 100;
+        
+        // get image data for source piece.
+        var piece_moving = ctx.getImageData(source_col, source_row, 100, 100);
+        
+        // remove the image currently at this source
+        ctx.clearRect(source_col, source_row, 100, 100);
+        
+        // "move" the piece by drawing the data on the new row and col.
+        ctx.putImageData(piece_moving, target_col, target_row);    
+        
+    }
     /////////////////////////////////////////////////////
     //  END   DRAW / ERASE / COPY  PIECE FUNCTIONS     //
     /////////////////////////////////////////////////////
@@ -362,19 +403,6 @@ $(document).ready(function () {
            
     }
 
-    function movePiece(from_loc, to_loc){
-
-        // grab the piece image.
-        var piece_moving = ctx.getImageData((c * 100), (r * 100), 100, 100);
-
-        // remove image from current location
-        ctx.clearRect(from_loc.col * 100, from_loc.row * 100, 100, 100);
-
-        // put the image in the new location.
-        ctx.putImageData(piece_moving, to_loc.col * 100, to_loc.row * 100);
-    }
-    
-    
     // Click handler 
     // Listen for button click
     function clickEvents(event) {
@@ -507,7 +535,8 @@ $(document).ready(function () {
                 }
             }
         } // end if(from || to)
+    
     }// end click
-    // end to_click condition 
+    
 }); // end canvas#gameCanvas
                               

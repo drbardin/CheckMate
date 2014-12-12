@@ -295,52 +295,6 @@ class Game {
                 $conn->close();
             }
     }
-    
-/*    public function initNewBoard(){
-            
-           $PAWN = 0;
-           $KNIGHT = 1;
-           $BISHOP = 2;
-           $ROOK = 3;
-           $QUEEN = 4;
-           $KING = 5;
-         
-           $json = ' "black":  [{ "piece": ROOK,  "row": 0, "col": 0, "status": UNCAPTURED },
-                                { "piece": KNIGHT,"row": 0, "col": 1, "status": UNCAPTURED },
-                                { "piece": BISHOP,"row": 0, "col": 2, "status": UNCAPTURED },
-                                { "piece": KING,  "row": 0, "col": 3, "status": UNCAPTURED },
-                                { "piece": QUEEN, "row": 0, "col": 4, "status": UNCAPTURED },
-                                { "piece": BISHOP,"row": 0, "col": 5, "status": UNCAPTURED },
-                                { "piece": KNIGHT,"row": 0, "col": 6, "status": UNCAPTURED },
-                                { "piece": ROOK,  "row": 0, "col": 7, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 1, "col": 0, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 1, "col": 1, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 1, "col": 2, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 1, "col": 3, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 1, "col": 4, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 1, "col": 5, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 1, "col": 6, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 1, "col": 7, "status": UNCAPTURED }, ],
-                     "white": [ { "piece": ROOK,  "row": 7, "col": 0, "status": UNCAPTURED },
-                                { "piece": KNIGHT,"row": 7, "col": 1, "status": UNCAPTURED },
-                                { "piece": BISHOP,"row": 7, "col": 2, "status": UNCAPTURED },
-                                { "piece": KING,  "row": 7, "col": 3, "status": UNCAPTURED },
-                                { "piece": QUEEN, "row": 7, "col": 4, "status": UNCAPTURED },
-                                { "piece": BISHOP,"row": 7, "col": 5, "status": UNCAPTURED },
-                                { "piece": KNIGHT,"row": 7, "col": 6, "status": UNCAPTURED },
-                                { "piece": ROOK,  "row": 7, "col": 7, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 6, "col": 0, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 6, "col": 1, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 6, "col": 2, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 6, "col": 3, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 6, "col": 4, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 6, "col": 5, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 6, "col": 6, "status": UNCAPTURED },
-                                { "piece": PAWN,  "row": 6, "col": 7, "status": UNCAPTURED }, ]';
 
-        $this->board_rep = json_decode($json, true);
-        var_dump($this->board_rep);
-    
- } */
 }
 ?>

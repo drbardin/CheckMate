@@ -4,9 +4,7 @@
     include_once "classPlayer.php";
     include_once "classLobby.php";
     session_start();
-?>
-
-<?php
+?><?php
     set_time_limit(500);
     $lobby_entry = new Lobby();
     $lobby_entry->add_Player();
