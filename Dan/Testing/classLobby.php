@@ -14,12 +14,6 @@ session_start();
             Default Constructor:
                 Sets variable values based upon SESSION variables and PHP's date() function. 
         */
-/*        public function __construct()
-        {
-            $this->player_id = $_SESSION["player"]->get_Id();
-            // $this->time_entered = date('Y-m-d G:i:s');
-        }*/
-        
         public function __construct()
         {
             $args = func_get_args();
@@ -194,7 +188,8 @@ session_start();
 //            else
 //            {
 //                //echo "Error: " . $sql . "<br>" . $conn->error;
-//            }   
+//            } 
+            $conn->query($sql);
             // Close database connection. 
             $conn->close();
         }
@@ -321,7 +316,7 @@ session_start();
 //            {
 //                echo "Error: " . $sql . "<br>" . $conn->error;
 //            }
-            
+            $conn->query($sql);
             // Close database connection. 
             $conn->close();
             
