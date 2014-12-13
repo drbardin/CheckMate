@@ -46,9 +46,7 @@
 		<br />
 
 		<footer style="float:right;">
-
-			<a href="help.php"><img src="help.png"></a> <a href="http://corgiorgy.com"><img src="contact.png"></a> <a href="options.php"><img src="options.png"></a>
-
+            <a href="options.php"><img src="options.png"></a>
 		</footer>
 
 	</body>

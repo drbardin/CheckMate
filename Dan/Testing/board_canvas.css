@@ -15,47 +15,93 @@ html {
 .displayed{position:absolute;z-index:1;}
 
 #header{
-    text-align: center; 
+    text-align: center;
     padding: 5px;
 }
 
 #container{
     display:inline-block;
-    width:800px; 
+    width:800px;
     height:800px;
-    margin: 0 auto; 
-    background: black; 
-    position:relative; 
-    border:5px solid black; 
-    border-radius: 10px; 
-    box-shadow: 0 5px 50px #333
+    margin: 0 auto;
+    background: black;
+    position:relative;
+    border:5px solid black;
+    border-radius: 10px;
+    box-shadow: 0 5px 50px #333;
 }
+
+#leftnamebox {
+    display: run-in;
+    margin-top: 15px;
+    width: 175px;
+    height:60px;
+    color: black;
+    background: white;
+    font-size: 25px;
+    font-family: Arial;
+}
+
+#leftmovedot {
+    position: absolute;
+    margin-top: 15px;
+    color: lightgreen;
+}
+
+#rightnamebox {
+    display: run-in;
+    margin-top: -465px;
+    width: 175px;
+    height:60px;
+    color: white;
+    background: black;
+    font-size: 25px;
+    font-family: Arial;
+}
+
+/*#leftsmove {*/
+    /*display: run-in;*/
+    /*margin-top: 15px;*/
+    /*width: 175px;*/
+    /*height:60px;*/
+    /*color: black;*/
+    /*background: white;*/
+    /*font-size: 40px;*/
+    /*font-family: Arial;*/
+/*}*/
+
+/*#rightsmove {*/
+/*display: run-in;*/
+    /*margin-top: 15px;*/
+    /*width: 175px;*/
+    /*height:60px;*/
+    /*color: black;*/
+    /*background: white;*/
+    /*font-size: 40px;*/
+    /*font-family: Arial;*/
+/*}*/
 
 #leftcapturedcontainer{
     position: absolute;
-    right: 120px;
-    left: auto; 
-    top: 260px;
-    background: black; 
-    width:175px; 
+    left: 120px;
+    top: 300px;
+    background: black;
+    width:175px;
     height:390px;
     box-shadow: 0 5px 50px #333;
-    padding: 5px; 
-    font-size: 40px;
-    font-family: Arial; 
+    padding: 5px;
+
 }
 
 #rightcapturedcontainer{
     position: absolute;
-    left: 120px;
-    top: 665px;
-    background: black; 
-    width:175px; 
+    right: 120px;
+    top: 710px;
+    background: black;
+    width:175px;
     height:390px;
     box-shadow: 0 5px 50px #333;
-    padding: 5px; 
-    font-size: 40px;
-    font-family: Arial; 
+    padding: 5px;
 }
 
 #gameCanvas{

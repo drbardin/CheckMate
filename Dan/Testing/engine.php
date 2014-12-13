@@ -81,7 +81,7 @@ if(!function_exists('movePawn'))
     {
         // 2d array to hold potential moves. 
         // always highlight this.piece 
-        $moves = array(array('row'=>$r, 'col'=>$c));
+        $moves[] = array(array('row'=>$r, 'col'=>$c));
         
         // On home row, open move available. 
         if($color === 'b')
@@ -138,7 +138,7 @@ if(!function_exists('moveRook'))
 {
     function moveRook($r, $c, $sqr_index, $color, $board) {
 
-        $moves = array(array('row'=>$r, 'col'=>$c));
+        $moves[] = array(array('row'=>$r, 'col'=>$c));
         
         // logic is from white's perspective.
         // left movement
@@ -230,7 +230,7 @@ if(!function_exists('moveKnight'))
 {
     function moveKnight($r, $c, $sqr_index, $color, $board) {
 
-        $moves = array(array('row'=>$r, 'col'=>$c));
+        $moves[] = array(array('row'=>$r, 'col'=>$c));
 
         // this if checks if the move will go off the board.
         if($r-2 >= 0 && $c-1 >=0)
@@ -359,7 +359,7 @@ if(!function_exists('moveKnight'))
 if(!function_exists('moveBishop'))
 {
     function moveBishop($r, $c, $sqr_index, $color, $board) {
-        $moves = array(array('row'=>$r, 'col'=>$c));
+        $moves[] = array(array('row'=>$r, 'col'=>$c));
         
         //backward, left diag
         for($i = 0; $i < (7 - $r); $i++)
@@ -451,7 +451,7 @@ if(!function_exists('moveBishop'))
 if(!function_exists('moveQueen'))
 {
     function moveQueen($r, $c, $sqr_index, $color, $board) {
-        $moves = array(array('row'=>$r, 'col'=>$c));
+        $moves[] = array(array('row'=>$r, 'col'=>$c));
         
         // queen has move ability of rook & bishop. Call those functions.
         $rook_moves = moveRook($r, $c, $sqr_index, $color, $board);
@@ -467,7 +467,7 @@ if(!function_exists('moveQueen'))
 if(!function_exists('moveKing'))
 {
     function moveKing($r, $c, $sqr_index, $color, $board) {
-        $moves = array(array('row'=>$r, 'col'=>$c));
+        $moves[] = array(array('row'=>$r, 'col'=>$c));
         
         // this if checks if the move will go off the board.
         if($r-1 >= 0 && $c-1 >=0)

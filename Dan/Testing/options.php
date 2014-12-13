@@ -4,18 +4,18 @@
 		<title>Options | Checkmate</title>
 	</head>
 	<body>
-		<header style="text-align:center";>
+        <header style="text-align:center";>
 			<h1><a href="index.php"><img src="logo.png" alt="Checkmate"></h1></a>
-		</header>
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<section>
-			<h2>Options</h2>
-			<br />
-			<br />
+            <link rel="stylesheet" type="text/css" href="website.css">
+        </header>
+            
+            <h2 id = "top" >Contact</h2>
+            <div class = "contact">
+                <input type= "username" name = "username" placeholder="Username" id="username">  
+                <input type="email" name = "email" placeholder="Email" id="Email">  
+                <textarea name = "comments" maxlength="1000" cols = "25" rows = "5"></textarea>
+                <input type="submit" value="Submit">
+            </div>
 			<br />
 			<br />
 			<br />
@@ -23,16 +23,10 @@
 		<br />
 		<br />
 		<br />
-		<br />
-		<br />
-		<a href="index.php"><button type="home"><<< Home (REMOVE THIS LATER, YO)</button></a>
-		<br />
-		<br />
-		<br />
-		<br />
+	<body>
 		<br />
 		<footer style="float:right;">
-			<a href="help.php"><img src="help.png"></a> <a href="contact.php"><img src="contact.png"></a> <a href="options.php"><img src="options.png"></a>
+			<a href="options.php"><img src="options.png"></a>
 		</footer>
 	</body>
 </html>

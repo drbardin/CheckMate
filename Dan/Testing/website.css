@@ -1,4 +1,15 @@
-html { height: 100% }
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.tutorialbody{ 
+    background: #956B95;
+}
 
 .mainpage{
     background-color: #ADB4C2;
@@ -6,6 +17,10 @@ html { height: 100% }
 
 .userpage{
     background-color: #ADB4C2;
+}
+
+.buttons{
+    display: inline-block;
 }
 
 .footerbuttons{
@@ -16,11 +31,215 @@ html { height: 100% }
     float: left;
 }
 
+/* CHESS INTRO TUTORIAL IMAGES */
+.chessboard{
+    height: 550px;
+    width:  550px;
+    z-index: 2; 
+    position: absolute;
+    left:70;
+    top:100;
+}
+
+.queen{
+    width: 300px; 
+    height: 300px; 
+    
+    position:absolute;
+    left:120;
+    top:50;
+}
+
+.knight{
+    width: 300px; 
+    height: 350px; 
+    
+    position:absolute;
+    left:125; 
+}
+
+.rook{
+    width: 300px; 
+    height: 450px; 
+    
+    position: absolute; 
+    left: 130; 
+    top: -20; 
+}
+
+.pawn{
+    max-width: 300px; 
+    max-height: 300px; 
+    position: absolute; 
+    left: 150; 
+}
+
+/*  CHESS INTRO TUTORIAL CONTAINERS  */
+.piecebox{
+    height: 250px;
+    width: 450px;
+    
+    position: absolute; 
+    top: 400; 
+    left: 40; 
+    
+    padding: 25px 5px 5px 5px; 
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
+.chesspawnbox{
+    height: 65px;
+    width: 620px;
+    font-family: "Arial", "Helvetica", sans-serif;
+    
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    position:absolute;
+    
+    left:30; right:0;
+    top:20; bottom:0;
+
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
+.chessqueenbox{
+    height: 55px;
+    width: 620px;
+    
+    font-family: "Arial", "Helvetica", sans-serif;
+    
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    position:absolute;
+    
+    left:30; right:0;
+    top:20; bottom:0;
+
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
+.chessbishopbox{
+    height: 70px;
+    width: 620px;
+    font-family: "Arial", "Helvetica", sans-serif;
+    
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    position:absolute;
+    
+    left:30; right:0;
+    top:20; bottom:0;
+
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
+.queenbox{
+    height: 150px;
+    width: 450px;
+    
+    position: absolute; 
+    top: 400; 
+    left: 40; 
+    
+    padding: 5px 5px 5px 5px; 
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
+.bishopbox{
+    height: 200px;
+    width: 450px;
+    
+    position: absolute; 
+    top: 420; 
+    left: 40; 
+    
+    padding: 25px 5px 5px 5px; 
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
+.knightbox{
+    height: 285px;
+    width: 450px;
+    
+    position: absolute; 
+    top: 400; 
+    left: 40; 
+    
+    padding: 2px 5px 5px 5px; 
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-weight:bold;
+    font-size: 16px;
+    color: #FFF;
+    
+    text-align: center;
+    background: #956B95;
+    border: 1px solid #FFF;
+    border-radius: 30px;
+    box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 5px 5px 5px #999;
+}
+
+
 #usertop{
     text-shadow: 2px 2px black;
     text-align: center;
     color: #fff;
     font-size: 45px;
+    font-family: arial; 
+}
+
+#subtop{
+    text-shadow: 2px 2px black;
+    text-align: center;
+    color: #fff;
+    font-size: 25px;
     font-family: arial; 
 }
 
@@ -31,6 +250,16 @@ html { height: 100% }
     font-size: 50px;
     font-family: arial; 
     line-height: 100px;
+}
+
+.contact {
+  background: #eceeee;
+  border: 1px solid #42464b;
+  border-radius: 6px;
+  height: 450px;
+  margin: 40px auto 0;
+  width: 350px;
+  box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
 }
 
 .login {
@@ -58,10 +287,79 @@ html { height: 100% }
   background: #eceeee;
   border: 1px solid #42464b;
   border-radius: 10px;
-    padding-left: 50px;
+  padding-left: 50px;
   height: 335px;
   margin: 20px auto 0;
   width: 450px;
+  box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
+}
+
+/* Chess Intro Tutorial Containers*/
+.chesspawntutorial{
+  height: 650px;
+  width: 600px;
+    
+  position: relative; 
+  margin: 20px auto 0;
+
+  text-align: center;
+  background: #F0E0F0;
+  border: 1px solid #42464b;
+  border-radius: 10px;
+  box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
+
+  padding: 50px 50px 50px 50px;
+  display: -webkit-flex; 
+  display: flex;
+}
+
+.piecetutorial{
+  height: 700px;
+  width: 450px;
+    
+  position: relative; 
+  margin: 20px auto 0;
+
+  text-align: center;
+  background: #F0E0F0;
+  border: 1px solid #42464b;
+  border-radius: 10px;
+  box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
+
+  padding: 50px 50px 50px 50px;
+  display: -webkit-flex; 
+  display: flex;
+}
+
+/* Entry and Exit Page for Tutorials */
+.endusertutorial{
+    width: 450px;
+    height: 200px;
+  
+    position: relative; 
+    margin: 30px auto 0;
+    
+    text-align: center;
+    background: #F0E0F0;
+    border: 1px solid #42464b;
+    border-radius: 10px;
+    padding: 50px 0px 0px 50px;
+  
+  box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
+}
+.usertutorial{
+    width: 450px;
+    height: 335px;
+  
+    position: relative; 
+    margin: 30px auto 0;
+    
+    text-align: center;
+    background: #F0E0F0;
+    border: 1px solid #42464b;
+    border-radius: 10px;
+    padding: 50px 0px 0px 50px;
+  
   box-shadow: inset 1px 1px 1px #CC99FF, 3px 5px 0px 0px #686C74, 10px 10px 5px #999;
 }
 
@@ -85,9 +383,104 @@ input[type="password"], input[type="username"],input[type="email"],input[type="n
   width: 87px;
 }
 
-input[type="user"]
-{
+
+/*  CHESS INTRO TUTORIAL BUTTONS */
+.inline{
+    display: inline; 
+    position: absolute; 
+}
+
+input[type="imgforback"]
+{  
+    width: 200px;
+    height: 50px; 
     
+    margin-top: 650px;
+    margin-left: 15px; 
+        
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-size:24px;
+    font-weight:bold;
+    
+    color:#fff;
+    text-decoration:none;
+    text-align:center;
+    
+    cursor:pointer;
+    border: none;  
+    background-color: #956B95;
+    border-radius: 30px;
+    box-shadow: inset 0px 1px 0px #CC99FF, 0px 5px 0px 0px #686C74, 0px 10px 5px #999;
+}
+
+
+input[type="tutorialforback"]
+{  
+    width: 200px;
+    height: 50px; 
+    
+    margin-top: 575px; 
+    margin-left: 55px; 
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-size:24px;
+    font-weight:bold;
+    
+    color:#fff;
+    text-decoration:none;
+    text-align:center;
+    
+    cursor:pointer;
+    border: none;  
+    background-color: #956B95;
+    border-radius: 30px;
+    box-shadow: inset 0px 1px 0px #CC99FF, 0px 5px 0px 0px #686C74, 0px 10px 5px #999;
+} /* END TUTORIAL RELATED BUTTONS */
+
+input[type="posttutorialpage"]{
+    width: 400px;
+    height: 50px; 
+    
+    display: inline-block; 
+    margin-left: -50px;
+    
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-size:24px;
+    font-weight:bold;
+    
+    color:#fff;
+    text-decoration:none;
+    text-align:center;
+    
+    cursor:pointer;
+    border: none;  
+    background-color: #956B95;
+    border-radius: 30px;
+    box-shadow: inset 0px 1px 0px #CC99FF, 0px 5px 0px 0px #686C74, 0px 10px 5px #999;
+}
+
+input[type="tutorialpage"]{
+    width: 400px;
+    height: 50px; 
+    
+    display: inline-block; 
+    
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-size:24px;
+    font-weight:bold;
+    
+    color:#fff;
+    text-decoration:none;
+    text-align:center;
+    
+    cursor:pointer;
+    border: none;  
+    background-color: #956B95;
+    border-radius: 30px;
+    box-shadow: inset 0px 1px 0px #CC99FF, 0px 5px 0px 0px #686C74, 0px 10px 5px #999;
+}
+
+input[type="user"]
+{    
     width: 400px;
     height: 50px; 
     font-family: "Arial", "Helvetica", sans-serif;
@@ -159,20 +552,24 @@ input[type="index"]
 input[type="submit"] {
   width:240px;
   height:35px;
+    
   display:block;
   font-family:Arial, "Helvetica", sans-serif;
   font-size:16px;
   font-weight:bold;
   color:#fff;
+    
   text-decoration:none;
   text-transform:uppercase;
   text-align:center;
   text-shadow:1px 1px 0px #ADB4C2;
   padding-top:6px;
+    
   margin: 29px 0 0 29px;
   position:relative;
   cursor:pointer;
   border: none;  
+    
   background-color: #ADB4C2;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -197,6 +594,16 @@ input[type="submit"] {
     width: 399px; 
 }
 
+.buttondescription_tutorial{
+    position: absolute;
+    margin-left: 120px;
+    background: #686C74; 
+    color: #FFF; 
+    
+    visibility: hidden;
+    opacity: 0;
+}
+
 .buttondescription{
     position: absolute;
     margin-left: 30px;
@@ -205,6 +612,11 @@ input[type="submit"] {
     
     visibility: hidden;
     opacity: 0;
+}
+
+.buttonwrap:hover .buttondescription_tutorial{
+    visibility: visible;
+    opacity: 0.75;
 }
 
 .buttonwrap:hover .buttondescription{
@@ -230,4 +642,15 @@ input[type="index"]:active {
 input[type="submit"]:active {
   top:3px;
   box-shadow: inset 0px 1px 0px #2ab7ec, 0px 2px 0px 0px #31524d, 0px 5px 3px #999;
+}
+
+#loading-image {
+    height: 100px;    
+    width: 100px;
+    display: block;
+    margin-top: 10px;
+    margin-left: 150px;
+    margin-right: auto;
+    position: absolute;
+    z-index: 100;
 }

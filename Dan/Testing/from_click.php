@@ -11,7 +11,7 @@ require_once "engine.php";
     $c = $myJson['col'];
     
     // call PHP function to produce legal moves for square clicked. 
-    // $newArray = getPotentialMoves($r, $c);
-    $newArray = array(array('row'=>$r,'col'=>$c));
+    $newArray = getPotentialMoves($r, $c);
+    //$newArray = array(array('row'=>$r,'col'=>$c));
     echo json_encode($newArray);
 ?>

@@ -1,19 +1,19 @@
 $(document).ready(function () {
-    
+
     var canvas = $("canvas#gameCanvas")[0];
     var ctx = canvas.getContext("2d");
     var w = $("canvas#gameCanvas").width();
     var h = $("canvas#gameCanvas").height();
-    
-    // value id for piece location in pieces.png. 
-    // used for cropping method. 
+
+    // value id for piece location in pieces.png.
+    // used for cropping method.
     var PAWN = 0;
     var KNIGHT = 1;
     var BISHOP = 2;
     var ROOK = 3;
     var QUEEN = 4;
     var KING = 5;
-    
+
     // pristine black pieces
     var bP_img = new Image();
     var bN_img = new Image();
@@ -21,7 +21,7 @@ $(document).ready(function () {
     var bR_img = new Image();
     var bQ_img = new Image();
     var bK_img = new Image();
-    
+
     // pristine white pieces
     var wP_img = new Image();
     var wN_img = new Image();
@@ -33,27 +33,27 @@ $(document).ready(function () {
     var NUM_ROWS;
     var SQR_SIZE = h / 8;
     var WHITE_TURN;
-    
+
     var CLIENT_UNAME=" ";  // this client's username
     var CLIENT_COLOR=" ";  // this client's color
     var OPPO_UNAME=" ";    // this client's opponent
     var MY_TURN=false;    // bool client's turn
-    
+
     var CUR_TURN=1; // current turn #
     var CUR_BOARD;
-    var click_counter = 0;  
+    var click_counter = 0;
     var selected_valid_destination = false;   // to_click flag for selecting valid destination
-   
+
     // object declarations
     var pieces = new Image();
     var json = null;
     var JSONObj = null;
-    var prev_click = {row: null, col: null};  // hold the last click successfully handleded by ajax. 
-    var before_highlight_imgs = new Array();  // array of image object before highlighting. 
-    var sqrs_to_highlight = new Array();      // array to hold the (row, col) pairs to highlight. 
+    var prev_click = {row: null, col: null};  // hold the last click successfully handleded by ajax.
+    var before_highlight_imgs = new Array();  // array of image object before highlighting.
+    var sqrs_to_highlight = new Array();      // array to hold the (row, col) pairs to highlight.
     var sqrs_to_hlgt_len = 0;                 // get count of keys returned from ajax query.
     var new_capture = {};                     // hold the array position of a captured piece
-    
+
 
     // This acts as main method
     function draw() {
@@ -61,12 +61,12 @@ $(document).ready(function () {
         WHITE_TURN = true;
         // load piece image resource.
         pieces.src = 'pieces.png';
-        
+
         // call method to set up fresh chessboard
         setNewBoard();
-        
+
         pieces.onload = putPiecesOnBoard;
-        
+
         // pristine black pieces (col, row, width, height)
         var bP_img = ctx.getImageData(0, 100, 100, 100);
         var bN_img = ctx.getImageData(100, 0, 100, 100);
@@ -74,7 +74,7 @@ $(document).ready(function () {
         var bR_img = ctx.getImageData(0, 0, 100, 100);
         var bQ_img = ctx.getImageData(400, 0, 100, 100);
         var bK_img = ctx.getImageData(300, 0, 100, 100);
-    
+
         // pristine white pieces
         var wP_img = ctx.getImageData(0, 600, 100, 100);
         var wN_img = ctx.getImageData(100, 0, 100, 100);
@@ -82,7 +82,7 @@ $(document).ready(function () {
         var wR_img = ctx.getImageData(700, 0, 100, 100);
         var wQ_img = ctx.getImageData(400, 0, 100, 100);
         var wK_img = ctx.getImageData(300, 0, 100, 100);
-        
+
         // query server for player names, this.color
         // GET: client username, client color, opponent username, turn_number, board_rep
         $.ajax({
@@ -104,7 +104,7 @@ $(document).ready(function () {
                 CUR_BOARD = p_data[4];
                 console.log(CUR_BOARD);
                 if (CLIENT_COLOR === 'w') {
-                    if (CUR_TURN % 2 != 0) { 
+                    if (CUR_TURN % 2 != 0) {
                         MY_TURN = true;
                         $("canvas#gameCanvas").off("click", clickEvents);
                         $("canvas#gameCanvas").on("click", clickEvents);
@@ -114,7 +114,7 @@ $(document).ready(function () {
                         $("canvas#gameCanvas").off("click", clickEvents);
                     }
                 }
-                
+
                 else if (CLIENT_COLOR === 'b') {
                     if (CUR_TURN % 2 === 0) {
                         MY_TURN = true;
@@ -126,19 +126,19 @@ $(document).ready(function () {
                         $("canvas#gameCanvas").off("click", clickEvents);
                     }
                 }
-                
+
                 // call the add client username function.
                 addClientUserName(CLIENT_UNAME, CLIENT_COLOR, OPPO_UNAME);
             },
             error: function (xhr, desc, err) {
                 console.log("No reply from init_draw_ajax.php");
                 console.log(desc);
-                console.log(err);  
+                console.log(err);
             }
         });
     }
     draw();
-    
+
     (function waitForTurn() {
         setTimeout(function(){
             $.ajax({
@@ -195,10 +195,10 @@ $(document).ready(function () {
             });
         }, 8000);
     })();
-    
+
     // JSON wrapped in function so can be used as a new game initializer.
    function setNewBoard() {
-        // two arrays, one black, one white. Their positions are 0-15. 
+        // two arrays, one black, one white. Their positions are 0-15.
         json = {
             "black": [ { 'piece': ROOK,  'row': 0, 'col': 0, 'status': true, 'id':110},
                        { 'piece': KNIGHT,'row': 0, 'col': 1, 'status': true, 'id':120},
@@ -236,7 +236,7 @@ $(document).ready(function () {
                      ]
             };
     }
-   
+
     function turnChange()
     {
         MY_TURN = !MY_TURN;
@@ -253,80 +253,80 @@ $(document).ready(function () {
     /////////////////////////////////////////////
     //   DRAW / ERASE / COPY  PIECE FUNCTIONS  //
     /////////////////////////////////////////////
-    function putPiecesOnBoard() 
+    function putPiecesOnBoard()
     {
         var piece_index;
         var white_set = json.white;
         var black_set = json.black;
-        
+
         // draw piece sets to board
         for(piece_index = 0; piece_index < white_set.length; piece_index++)
         {
             // params to clip white pieces from pieces.png.
-            var w_clip_x = white_set[piece_index].piece * 100; 
+            var w_clip_x = white_set[piece_index].piece * 100;
             var w_clip_y = 0;
             var w_drawAt_col = white_set[piece_index].col * SQR_SIZE;
             var w_drawAt_row = white_set[piece_index].row * SQR_SIZE;
-            
+
             // params to clip black pieces from pieces.png.
-            var b_clip_x = black_set[piece_index].piece * 100; 
+            var b_clip_x = black_set[piece_index].piece * 100;
             var b_clip_y = 100;
             var b_drawAt_col = black_set[piece_index].col * SQR_SIZE;
             var b_drawAt_row = black_set[piece_index].row * SQR_SIZE;
-            
+
             // draw the white image.
             ctx.drawImage(pieces, w_clip_x, w_clip_y, 100, 100, w_drawAt_col, w_drawAt_row, 100, 100);
-            
+
             // draw the black image
             ctx.drawImage(pieces, b_clip_x, b_clip_y, 100, 100, b_drawAt_col, b_drawAt_row, 100, 100)
         }
     }
-    
+
     function remove_PieceImage(row, col)
     {
-        // remove image of piece at this row and column.    
+        // remove image of piece at this row and column.
         ctx.clearRect(col * 100, row * 100, 100, 100);
     }
-    
+
     function draw_PieceImage_To_Board(piece_image, row, col)
     {
         ctx.putImageData(piece_image, col*100, row*100);
     }
-    
+
     function move_Piece(source_coords, target_coords)
     {
         var source_row = source_coords.row * 100;
         var source_col = source_coords.col * 100;
         var target_row = target_coords.row * 100;
         var target_col = target_coords.col * 100;
-        
+
         // get image data for source piece.
         var piece_moving = ctx.getImageData(source_col, source_row, 100, 100);
-        
+
         // remove the image currently at this source
         ctx.clearRect(source_col, source_row, 100, 100);
-        
+
         // "move" the piece by drawing the data on the new row and col.
-        ctx.putImageData(piece_moving, target_col, target_row);    
-        
+        ctx.putImageData(piece_moving, target_col, target_row);
+
     }
     /////////////////////////////////////////////////////
     //  END   DRAW / ERASE / COPY  PIECE FUNCTIONS     //
     /////////////////////////////////////////////////////
 
-    
-    // After successful source square click, game engine returns 
+
+    // After successful source square click, game engine returns
     // an array of (row, col) pairs representing the locations the clicked piece
-    // can legally move to. 
-    // Array contains the clicked piece at arr[0]. 
+    // can legally move to.
+    // Array contains the clicked piece at arr[0].
     function highlight_squares(sqrs_to_highlight) {
-        
-        for (var i = 0; i < sqrs_to_highlight.length; i++) 
+
+        for (var i = 0; i < sqrs_to_highlight.length; i++)
         {
             var r = sqrs_to_highlight[i].row;
             var c = sqrs_to_highlight[i].col;
-            
-            // add un-highlighted image to array. 
+
+            // add un-highlighted image to array.
             var temp = ctx.getImageData((c * 100), (r * 100), 100, 100);
             before_highlight_imgs.push(temp);
 
@@ -336,78 +336,79 @@ $(document).ready(function () {
                 ctx.strokeStyle = "#FF0000"; // red
             else
                 ctx.strokeStyle = "#66FF00"; // green
-            
+
             ctx.strokeRect((c * 100) + 3, (r * 100) + 3, 100 - (3 * 2), 100 - (3 * 2));
         }
     }
 
-    
-    // This will remove all highlights from the game board. 
+
+    // This will remove all highlights from the game board.
     function remove_highlights() {
-        
+
         for (var i = 0; i < sqrs_to_highlight.length; i++) {
-        
+
             var r = sqrs_to_highlight[i].row;
             var c = sqrs_to_highlight[i].col;
-            
+
             var temp = ctx.createImageData(before_highlight_imgs[i]);
             ctx.putImageData(temp, c * 100, r * 100);
         }
     }
-    
-    // After success FROM and TO clicks, update the local gamestate. 
+
+    // After success FROM and TO clicks, update the local gamestate.
     function update_json(to_click) {
-        
-        // container for black or white json. 
+
+        // container for black or white json.
         var cur_color;
-        
-        // Which color is playing. 
+
+        // Which color is playing.
         if (WHITE_TURN ? cur_color = json.white : cur_color = json.black);
         var i;
-        // Find the piece and update it to its new location. 
+        // Find the piece and update it to its new location.
         for(i = 0; i < cur_color.length; i++) {
-            
+
             if(cur_color[i].col === to_click.col && cur_color[i].row === to_click.row){
-            
+
                 cur_color[i].col = to_click.col;
                 cur_color[i].row = to_click.row;
             }
         }
-        
+
         // Now we want the opposing set, see if a piece lives in the space.
         if(WHITE_TURN ? cur_color = json.black : cur_color = json.white)
-        
+
         for(i = 0; i < cur_color.length; i++)
         {
             if(cur_color[i].col === to_click.col && cur_color[i].row === to_click.row){
                 new_capture = true;
                 cur_color[captured_arrpos].row = -1;
                 cur_color[captured_arrpos].col = -1;
-                cur_color[captured_arrpos].inPlay = false; 
+                cur_color[captured_arrpos].inPlay = false;
             }
         }
     }
-    
+
     function addClientUserName(CLIENT_UNAME, CLIENT_COLOR, OPPO_UNAME){
-        
+
         if(CLIENT_COLOR === 'w')
         {
-            $('#leftcapturedcontainer').append("<p>"+OPPO_UNAME+"</p>");
-            $('#rightcapturedcontainer').append("<p>"+CLIENT_UNAME+"</p>");
+            $('#leftnamebox').append(""+OPPO_UNAME+"");
+            //$('#leftnamebox').append("<p>"+OPPO_UNAME+"</p>");
+            $('#rightnamebox').append(""+CLIENT_UNAME+"");
         }
         else
         {
-            $('#leftcapturedcontainer').append("<p>"+CLIENT_UNAME+"</p>");
-            $('#rightcapturedcontainer').append("<p>"+OPPO_UNAME+"</p>");
+            $('#leftnamebox').append(""+CLIENT_UNAME+"");
+            $('#rightnamebox').append(""+OPPO_UNAME+"");
         }
-           
+
     }
 
-    // Click handler 
+    // Click handler
     // Listen for button click
     function clickEvents(event) {
         // Get (x,y) of mouse click ( pageX works best in this situation. )
-        // NOTE: (0,0) is top-left corner of canvas. 
+        // NOTE: (0,0) is top-left corner of canvas.
         var x = event.pageX - $("canvas#gameCanvas").offset().left;
         var y = event.pageY - $("canvas#gameCanvas").offset().top;
 
@@ -416,22 +417,22 @@ $(document).ready(function () {
         //  col = X val / 100 and then rounded down. This will also give a num 0-7
         var row_clicked = Math.floor(y / SQR_SIZE);
         var col_clicked = Math.floor(x / SQR_SIZE);
-        
+
         // JSON for outgoing click
         var JSONObj = {
             "row": row_clicked,
             "col": col_clicked
         };
 
-        // Turns JSONObj into a JSONStr. 
+        // Turns JSONObj into a JSONStr.
         var JSONStr = JSON.stringify(JSONObj);
-        
+
         // FROM_CLICK condition
-        if (click_counter === parseFloat(click_counter) && !(click_counter % 2)) 
+        if (click_counter === parseFloat(click_counter) && !(click_counter % 2))
         {
-            
+
             //$("canvas#gameCanvas").off("click", clickEvents);
-            
+
             $.ajax({
                     type: 'POST',
                     url: 'from_click.php',
@@ -443,7 +444,7 @@ $(document).ready(function () {
                         console.log("Heard reply from from_click.php");
                         //var updated_data = JSON.stringify(data);
                         sqrs_to_highlight = JSON.parse(data);
-                        // get number of keys in new obj. 
+                        // get number of keys in new obj.
                         // sqrs_to_hlgt_len = Object.keys(sqrs_to_highlight).length;
 
                         // call process return data function
@@ -455,16 +456,16 @@ $(document).ready(function () {
 
                         // increment click counter
                         click_counter++;
-                        
+
                       //  $("canvas#gameCanvas").on("click", clickEvents);
                     },
                     error: function (xhr, desc, err) {
                         console.log("No reply from from_click.php");
                         console.log(desc);
-                        console.log(err);  
+                        console.log(err);
                     }
-                });    
-        } 
+                });
+        }
         else // TO_CLICK condition
         {
             // UNDO CLICK condition, reset logic to FROM_CLICK game status.
@@ -475,21 +476,21 @@ $(document).ready(function () {
                 prev_click.row = null;
                 prev_click.col = null;
             }
-            else 
-            {   
-                // Loop through highlighted squares, which signify legal moves, and check 
-                // player is going to a valid destination. 
-                // Start at i = 1 so the piece can't capture itself.  
-                for(var i = 1; i < sqrs_to_highlight.length; i++) 
+            else
+            {
+                // Loop through highlighted squares, which signify legal moves, and check
+                // player is going to a valid destination.
+                // Start at i = 1 so the piece can't capture itself.
+                for(var i = 1; i < sqrs_to_highlight.length; i++)
                 {
                     if(sqrs_to_highlight[i].row === row_clicked && sqrs_to_highlight[i].col === col_clicked)
                     {
                         selected_valid_destination = true;
                     }
-                    
+
                 }
-                // If it is valid, process the move, otherwise, do nothing and wait for a valid click. 
-                if(selected_valid_destination) 
+                // If it is valid, process the move, otherwise, do nothing and wait for a valid click.
+                if(selected_valid_destination)
                 {
                     $.ajax({
                         type: 'POST',
@@ -513,7 +514,7 @@ $(document).ready(function () {
                             // update local json
                             update_json(toClick);
 
-                            // clear the highlight array. 
+                            // clear the highlight array.
                             before_highlight_imgs = [];
 
                             // clear prev_click object.
@@ -525,7 +526,8 @@ $(document).ready(function () {
                             // increment click counter
                             click_counter++;
 
-                            // $("canvas#gameCanvas").bind("click");
+                            var r_count = click_counter / 2;
+                          //  $("turnbox").append("It is "+CLIENT_UNAME+"'s turn.   Move count is: "+r_count+" ");
 
                         },
                         error: function (xhr, desc, err) {
@@ -535,8 +537,7 @@ $(document).ready(function () {
                 }
             }
         } // end if(from || to)
-    
+
     }// end click
-    
+
 }); // end canvas#gameCanvas
-                              
