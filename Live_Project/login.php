@@ -62,8 +62,8 @@ if(!(isset($_SESSION["login"]) && $_SESSION["login"] != ""))
 }
 
 else{
-    
-    header('Location: /player0.php');
+    header("location:player0.php");
+    //header('Location: /player0.php');
 }
     ?>
 

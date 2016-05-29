@@ -13,14 +13,15 @@
     error_reporting(E_ALL | E_STRICT);
 
 	// CheckMate database info
-	$db_host  = 'mysql.cs.iastate.edu';
-	$db_user  = 'u309M13';
-	$db_pass  = 'T2GWRYDIw';
+	$db_host  = 'localhost';
+	$db_user  = 'root';
+	$db_pass  = 'root';
 	$db_name  = 'db309M13';
+    $db_port  = 8889;
 	$tbl_name = 'Account'; 
 	
 	//Create connection
-	$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+	$conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
 
 	// Check connection
 	if ($conn->connect_error) {

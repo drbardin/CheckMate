@@ -84,14 +84,15 @@
         function get_Player($accountID)
         {
             // Database info
-            $db_host = 'mysql.cs.iastate.edu';
-            $db_user = 'u309M13';
-            $db_pass = 'T2GWRYDIw';
+            $db_host = 'localhost';
+            $db_user = 'root';
+            $db_pass = 'root';
             $db_name = 'db309M13';
+            $db_port  = 8889;
             $tbl_name = 'Account';
 
             // Create a connection
-            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
 
             // Define a SELECT statement.
             $sql = "SELECT * FROM $tbl_name WHERE id = '$accountID'";

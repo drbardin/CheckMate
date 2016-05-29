@@ -92,14 +92,15 @@ session_start();
         */
         public function get_Oldest_Entry()
         {
-             $db_host = 'mysql.cs.iastate.edu';
-            $db_user = 'u309M13';
-            $db_pass = 'T2GWRYDIw';
-            $db_name = 'db309M13';           
+             $db_host = 'localhost';
+            $db_user = 'root';
+            $db_pass = 'root';
+            $db_name = 'db309M13';
+            $db_port  = 8889;
             $tbl_name = 'Lobby';
             
             // Create connection
-            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
             
             // Define SELECT statement.
             $sql = "SELECT * FROM $tbl_name ORDER BY time_entered ASC LIMIT 1";
@@ -140,14 +141,15 @@ session_start();
         */
         public function add_To_Table()
         {
-            $db_host = 'mysql.cs.iastate.edu';
-            $db_user = 'u309M13';
-            $db_pass = 'T2GWRYDIw';
+             $db_host = 'localhost';
+            $db_user = 'root';
+            $db_pass = 'root';
             $db_name = 'db309M13';
+            $db_port  = 8889;
             $tbl_name = 'Lobby';
             
             // Create connection
-            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
             
             $pId = $this->player_id;
             $timeEnt = $this->time_entered;
@@ -177,14 +179,15 @@ session_start();
         */
         public function remove_Player($id)
         {
-            $db_host = 'mysql.cs.iastate.edu';
-            $db_user = 'u309M13';
-            $db_pass = 'T2GWRYDIw';
-            $db_name = 'db309M13';           
+             $db_host = 'localhost';
+            $db_user = 'root';
+            $db_pass = 'root';
+            $db_name = 'db309M13';
+            $db_port  = 8889;
             $tbl_name = 'Lobby';
             
             // Create connection
-            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
             
             // Define DELETE statement.
             $sql = "DELETE FROM $tbl_name WHERE player_id = $id";
@@ -213,10 +216,11 @@ session_start();
         */
         public function create_Game($id_first, $id_second)
         {
-            $db_host = 'mysql.cs.iastate.edu';
-            $db_user = 'u309M13';
-            $db_pass = 'T2GWRYDIw';
+             $db_host = 'localhost';
+            $db_user = 'root';
+            $db_pass = 'root';
             $db_name = 'db309M13';
+            $db_port  = 8889;
             $tbl_name = 'Game';
             
             //Parameter error checking
@@ -245,7 +249,7 @@ session_start();
             }
 
             // Create connection
-            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
             
             $wId = $white->get_Id();
             $bId = $black->get_Id();
@@ -283,15 +287,16 @@ session_start();
         */
         public function add_Player()
         {
-            $db_host = 'mysql.cs.iastate.edu';
-            $db_user = 'u309M13';
-            $db_pass = 'T2GWRYDIw';
+             $db_host = 'localhost';
+            $db_user = 'root';
+            $db_pass = 'root';
             $db_name = 'db309M13';
+            $db_port  = 8889;
             $tbl_name = 'Game';
 
             //NEED A CHECK HERE TO MAKE SURE THAT THE CURRENT ID ISN'T ALREADY IN A GAME.
             //Create connection
-            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+            $conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
 
             // Check connection
             if ($conn->connect_error) {
