@@ -2,10 +2,6 @@
     include "classPlayer.php";
     session_start();
 ?>
-
-<html>
-<body>
- 
 <?php
 
     date_default_timezone_set('America/New_York');
@@ -55,6 +51,3 @@
     }
     $conn->close();
 ?>
-
-</body>
-</html> 
