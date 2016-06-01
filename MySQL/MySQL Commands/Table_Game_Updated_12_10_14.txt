@@ -1,6 +1,0 @@
-ALTER TABLE `db309M13`.`Game` 
-CHANGE COLUMN `turn_num` `turn_num` INT(11) NULL DEFAULT 1 ;
-
-
-ALTER TABLE `db309M13`.`Game` 
-ADD COLUMN `last_move` VARCHAR(100) NULL AFTER `board_json`;
