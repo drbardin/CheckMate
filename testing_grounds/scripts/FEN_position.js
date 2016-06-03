@@ -1,3 +1,19 @@
+/*jslint devel: true*/
+
+////////////////////////
+// HELPER FUNCTIONS   //
+////////////////////////
+var checkType = function (expected_type, val) {
+    "use strict";
+    if (typeof (val) !== expected_type) {
+        return false;
+    } else {
+        return true;
+    }
+};
+/////////////////////////////////////////////////////////////////////////////
+//                            FEN DESCRIPTION                              //
+/////////////////////////////////////////////////////////////////////////////
 //  A chess game's position, in FEN, is defined the following way:
 //      - A FEN record contains six fields.
 //      - The separator between fields is a space.
@@ -59,44 +75,86 @@
 //
 //                      This is the number of the full move. It starts at 1
 //                      and is incremented after Black's move.
-//
+/////////////////////////////////////////////////////////////////////////////
+
+                            
+//////////////////////////////////////////
+//~~~~~~~~~~~~ FEN OBJECT ~~~~~~~~~~~~~~//
+//////////////////////////////////////////
 var FEN_position = function (fen_string) {
     "use strict";
-    // Check that fen_string is in proper FEN notation.         
-    function formatCheckFEN(input) {
-            //TODO
+    
+////////////////
+// EXCEPTIONS //
+////////////////
+    function inputTypeException() {
+        throw new Error("InputTypeException: FEN_position input must be in the form of a string primitive.");
     }
-    // Parse an FEN string and return the Piece Placement field (1)
+    
+///////////////////
+// FIELD-PARSERS //
+///////////////////
+    // Return: string primitive
+    // Descr: Parse an FEN string primitive and return the Piece Placement field (1)
     function parsePiecePlacement(input) {
-            //TODO    
+        
     }
-    // Parse an FEN string and return the Active Color field (2)
+    // Return: string primitive
+    // Descr: Parse an FEN string primitive and return the Active Color field (2)
     function parseActiveColor(input) {
             //TODO
     }
-    // Parse an FEN string and return the Castling Availability (3)
+    // Return: string primitive
+    // Descr: Parse an FEN string primitive and return the Castling Availability field (3)
     function parseCastlingAvailablity(input) {
             //TODO
     }
-    // Parse an FEN string and return the En Passante Target (4)
+    // Return: string primitive
+    // Descr: Parse an FEN string primitive and return the En Passante Target field (4)
     function parseEnPassanteTarget(input) {
             //TODO
     }
-    // Parse an FEN string and return the Halfmove Clock (5)
+    // Return: string primitive
+    // Descr: Parse an FEN string primitive and return the Halfmove Clock field (5)
     function parseHalfmoveClock(input) {
             //TODO
     }
-    // Parse an FEN string and return the Fullmove Number (6)
+    // Return: string primitive
+    // Descr: Parse an FEN string primitive and return the Fullmove Number field (6)
     function parseFullmoveNumber(input) {
             //TODO
     }
+    
+    // Return: boolean
+    // Descr: Check that fen_string primitive is in proper FEN notation.         
+    function formatCheckFEN(input) {
+        // verify that the input is a string.
+        if (checkType("string", input) !== true) {
+            inputTypeException();
+        } else {
+            var fen_str = input,
+                fen_arr = fen_str.split(" ");
+            if (fen_arr.length() !== 6) {
+                // THROW EXCEPTION: There should always be 6 fields.
+            } else {
+                //TODO
+            }
+        }
+    }
+    
+////////////////////////
+// PRIVATE VARIABLES  //
+////////////////////////
     var piece_placement = parsePiecePlacement(fen_string),
         active_color = parseActiveColor(fen_string),
         castling_availability = parseCastlingAvailablity(fen_string),
         en_passante_target = parseEnPassanteTarget(fen_string),
         halfmove_clock = parseHalfmoveClock(fen_string),
         fullmove_number = parseFullmoveNumber(fen_string);
-        
+    
+///////////////////////
+// FEN-FIELD GETTERS //
+///////////////////////
     this.getPiecePlacement = function () {
         return piece_placement;
     };
