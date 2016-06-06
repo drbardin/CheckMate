@@ -11,6 +11,7 @@ var checkType = function (expected_type, val) {
         return true;
     }
 };
+
 /////////////////////////////////////////////////////////////////////////////
 //                            FEN DESCRIPTION                              //
 /////////////////////////////////////////////////////////////////////////////
@@ -119,54 +120,70 @@ var FEN_position = function (fen_string) {
         // Here is an example of what the initial board configuration would look like in proper FEN notation:
         //      "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
         //           ^      ^      ^ ^ ^ ^      ^       ^
-        //           |      |      | | | |      |       |
-        // (rank#):  1      2      3 4 5 6      7       8
         //
+        // (rank#):  1      2      3 4 5 6      7       8
+        //                            |
+        //                            Rank 3, 4, 5, and 6 are occupied by 8 empty squares each. 
+        //                            Any # indicates that many empty squares, so for example 3pp3
+        //                            would represent 3 whitespaces, two black pawns, and 3 whitespaces. 
         // So how to parse this...
         //      i.) Required # of ranks: 8
-        //     ii.) Required # of files per rank: 8
-        //    iii.) Legal characters and their corresponding # of files:
+        //     ii.) Required # of files(squares) per rank: 8
+        //    iii.) Legal characters and their corresponding # of files (squares) that they occupy:
         //          a.) r,n,b,q,k,p,R,N,B,Q,K,P,1     :     1
         //          b.) 2                             :     2
         //          c.) 3                             :     3
         //          .
-        //          . 
+        //          .
+        //          .
         //          h.) 8                             :     8
         //
-        //    iv.) Character and max # of occurances in total:
+        //    iv.) Character and max # of occurances allowed (total):
         //              k, K                          :     1
         //              p, P                          :     8
         
-        // piece placement string 
-        var field_str = field_string,
-        // array of rank strings
-            field_arr = field_str.split("/");
-            // verify length of field_field array is 8 (i.e. verify # of ranks is 8)
-        if (field_arr.length() !== 8) {
+        var field_str = field_string, // piece placement string 
+            field_arr = field_str.split("/"), // array of rank strings
+            k_count,        // k_count: current # of Black king pieces counted in this field
+            K_count,        // K_count: current # of White king pieces counted in this field
+            p_count,        // p_count: current # of Black pawn pieces counted in this field
+            P_count,        // P_count: current # of White pawn pieces counted in this field
+            legal_chars,    // legal_chars: array of legal characters that may be parsed in this field
+            num_files,      // num_files: object that assigns each legal character a number of files (squares) that it represents having occupied.
+            i,              // i: index denoting current rank #
+            rank_str,       // rank_str: string denoting piece placement at this rank
+            file_count,     // file_count: sum of file spaces described at this rank
+            j,              // j: index of character to be parsed at this rank
+            curr_char;      // curr_char: current character at this index of this rank
+        // verify length of field_field array is 8 (i.e. verify # of ranks is 8)
+        if (field_arr.length !== 8) {
             improperFieldException("Piece Placement field contained a string of improper format. Exactly 8 rank subfields were expected.");
         } else {
             //  set count for occurences of k, K, p, P to 0. 
-            var k_count = 0,
-                K_count = 0,
-                p_count = 0,
-                P_count = 0,
+            k_count = 0;
+            K_count = 0;
+            p_count = 0;
+            P_count = 0;
             // set legal characters that may be encountered (DO NOT EDIT THIS LIST WITHOUT EDITING num_files)
-                legal_chars = ['r', 'n', 'b', 'q', 'k', 'p', 'R', 'N', 'B', 'Q', 'K', 'P', '1', '2', '3', '4', '5', '6', '7', '8'],
+            legal_chars = ['r', 'n', 'b', 'q', 'k', 'p', 'R', 'N', 'B', 'Q', 'K', 'P', '1', '2', '3', '4', '5', '6', '7', '8'];
             // set # of files that each legal character takes up (DO NOT EDIT THIS LIST WITHOUT EDITING legal_chars)
-                num_files = {r: 1, n: 1, b: 1, q: 1, k: 1, p: 1, R: 1, N: 1, B: 1, Q: 1, K: 1, P: 1, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8},
-            // index denoting current rank
-                i = 0;
-            for (i; i < 8; i = i + 1) {
-                // a single rank string
-                var rank_str = field_arr[i];
-                if (rank_str.length() < 1 || rank_str.length() > 8) {
+            num_files = {r: 1, n: 1, b: 1, q: 1, k: 1, p: 1, R: 1, N: 1, B: 1, Q: 1, K: 1, P: 1, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8};
+            // set index denoting current rank
+            i = 1;
+            for (i; i <= 8; i = i + 1) {
+                // get string description of piece placement at this rank
+                rank_str = field_arr[i - 1];
+                file_count = 0;
+                console.log(rank_str);
+                if (rank_str.length < 1 || rank_str.length > 8) {
                     improperFieldException("Piece Placement field contained a string of improper format. Each rank subfield should have at least 1 character, and at most 8 characters.");
                 }
-                // index denoting current character within rank_string. 
-                var j = 0;
-                for (j; j < rank_str.length(); j = j + 1) {
-                    var curr_char = rank_str.charAt(j),
-                        file_count = 0;
+                // set index denoting current character parsed within rank_str to 0
+                j = 0;
+                for (j; j < rank_str.length; j = j + 1) {
+                    // get character of rank_str at this index
+                    curr_char = rank_str.charAt(j);
+                    // verify that the character is legal
                     if (legal_chars.indexOf(curr_char) === -1) {
                         improperFieldException("Piece Placement field contained a string of improper format. An invalid character was found inside a rank subfield.");
                     } else {
@@ -195,64 +212,76 @@ var FEN_position = function (fen_string) {
                                 P_count = P_count + 1;
                             }
                         }
-                        // increment the count of files represented thus far in the rank
+                    // then increment the count of files (squares) occuppied thus far in the rank
                         file_count = file_count + num_files[curr_char];
-                    }
-                    // each rank should have a file_count of 8
-                    if (file_count !== 8) {
-                        improperFieldException("Piece Placement field contained a string of improper format. Each rank subfield should have representation equivalent to 8 files.");
+                        console.log(file_count);
                     }
                 }
+                // each rank should have a file_count of 8
+                if (file_count !== 8) {
+                    improperFieldException("Piece Placement field contained a string of improper format. Each rank subfield should have representation such that 8 files (squares) are counted.");
+                } else if (k_count === 0 && K_count === 0) {
+                    improperFieldException("Piece Placement field contained a string of improper format. No kings were counted.");
+                }
             }
+            //successful piece placement parsing
             return field_str;
         }
     }
     // Return: string primitive
-    // Descr: Parse an FEN string primitive and return the Active Color field (2)
+    // Descr: Parse a string primitive and return the Active Color field (2)
     function parseActiveColor(field_string) {
             //TODO
     }
     // Return: string primitive
-    // Descr: Parse an FEN string primitive and return the Castling Availability field (3)
+    // Descr: Parse a string primitive and return the Castling Availability field (3)
     function parseCastlingAvailablity(field_string) {
             //TODO
     }
     // Return: string primitive
-    // Descr: Parse an FEN string primitive and return the En Passante Target field (4)
+    // Descr: Parse a string primitive and return the En Passante Target field (4)
     function parseEnPassanteTarget(field_string) {
             //TODO
     }
     // Return: string primitive
-    // Descr: Parse an FEN string primitive and return the Halfmove Clock field (5)
+    // Descr: Parse a string primitive and return the Halfmove Clock field (5)
     function parseHalfmoveClock(field_string) {
             //TODO
     }
     // Return: string primitive
-    // Descr: Parse an FEN string primitive and return the Fullmove Number field (6)
+    // Descr: Parse a string primitive and return the Fullmove Number field (6)
     function parseFullmoveNumber(field_string) {
             //TODO
     }
     
     // Return: boolean
-    // Descr: Check that fen_string primitive is in proper FEN notation.         
+    // Descr: Check that input string primitive is in proper FEN.         
     function formatCheckFEN(input) {
+        var fen_str, // fen_str: input string that is expected to be in FEN.
+            fen_arr, // fen_arr: array of six field strings that make up a proper FEN string.
+            field_1, // field_1: string representation of piece placement
+            field_2, // field_2: string reprsentation of active color
+            field_3, // field_3: string representation of castling availaiblity
+            field_4, // field_4: string representation of an en passante target
+            field_5, // field_5: string representation of a halfmove clock
+            field_6; // field_6: string representation of a fullmove number
+        
         // verify that the input is a string.
         if (checkType("string", input) !== true) {
             inputTypeException();
         } else {
-            var fen_str = input,
-                fen_arr = fen_str.split(" ");
+            fen_str = input;
+            fen_arr = fen_str.split(" ");
             // verify that all fields are present.
-            if (fen_arr.length() !== 6) {
-                // THROW EXCEPTION: There should always be 6 fields.
+            if (fen_arr.length !== 6) {
                 improperNotationException("FEN standards dictate 6 fields, separated by whitespace.");
             } else {
-                var field_1 = fen_arr[0],
-                    field_2 = fen_arr[1],
-                    field_3 = fen_arr[2],
-                    field_4 = fen_arr[3],
-                    field_5 = fen_arr[4],
-                    field_6 = fen_arr[5];
+                field_1 = fen_arr[0];
+                field_2 = fen_arr[1];
+                field_3 = fen_arr[2];
+                field_4 = fen_arr[3];
+                field_5 = fen_arr[4];
+                field_6 = fen_arr[5];
                 piece_placement = parsePiecePlacement(field_1);
                 active_color = parseActiveColor(field_2);
                 castling_availability = parseCastlingAvailablity(field_3);
@@ -287,3 +316,6 @@ var FEN_position = function (fen_string) {
         return fullmove_number;
     };
 };
+
+var fen = new FEN_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+console.log(fen.getPiecePlacement());
