@@ -142,8 +142,8 @@ var FEN_position = function (fen_string) {
         //              k, K                          :     1
         //              p, P                          :     8
         
-        var field_str = field_string, // piece placement string 
-            field_arr = field_str.split("/"), // array of rank strings
+        var field_str = field_string,         // field_str: piece placement string 
+            field_arr = field_str.split("/"), // field_arr: array of rank strings
             k_count,        // k_count: current # of Black king pieces counted in this field
             K_count,        // K_count: current # of White king pieces counted in this field
             p_count,        // p_count: current # of Black pawn pieces counted in this field
@@ -155,6 +155,7 @@ var FEN_position = function (fen_string) {
             file_count,     // file_count: sum of file spaces described at this rank
             j,              // j: index of character to be parsed at this rank
             curr_char;      // curr_char: current character at this index of this rank
+        
         // verify length of field_field array is 8 (i.e. verify # of ranks is 8)
         if (field_arr.length !== 8) {
             improperFieldException("Piece Placement field contained a string of improper format. Exactly 8 rank subfields were expected.");
@@ -174,7 +175,6 @@ var FEN_position = function (fen_string) {
                 // get string description of piece placement at this rank
                 rank_str = field_arr[i - 1];
                 file_count = 0;
-                console.log(rank_str);
                 if (rank_str.length < 1 || rank_str.length > 8) {
                     improperFieldException("Piece Placement field contained a string of improper format. Each rank subfield should have at least 1 character, and at most 8 characters.");
                 }
@@ -214,7 +214,6 @@ var FEN_position = function (fen_string) {
                         }
                     // then increment the count of files (squares) occuppied thus far in the rank
                         file_count = file_count + num_files[curr_char];
-                        console.log(file_count);
                     }
                 }
                 // each rank should have a file_count of 8
@@ -231,7 +230,15 @@ var FEN_position = function (fen_string) {
     // Return: string primitive
     // Descr: Parse a string primitive and return the Active Color field (2)
     function parseActiveColor(field_string) {
-            //TODO
+        // get active color field string
+        var field_str = field_string;
+        // verify that it is a valid string
+        if (field_str !== "w" && field_str !== "b") {
+            improperFieldException("Active Color field contained a string of improper format. The only permitted field contents are 'w' or 'b'. ");
+        } else {
+            //successful active color parsing
+            return field_str;
+        }
     }
     // Return: string primitive
     // Descr: Parse a string primitive and return the Castling Availability field (3)
@@ -318,4 +325,4 @@ var FEN_position = function (fen_string) {
 };
 
 var fen = new FEN_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-console.log(fen.getPiecePlacement());
+console.log(fen.getActiveColor());
