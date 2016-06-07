@@ -243,7 +243,48 @@ var FEN_position = function (fen_string) {
     // Return: string primitive
     // Descr: Parse a string primitive and return the Castling Availability field (3)
     function parseCastlingAvailablity(field_string) {
-            //TODO
+        var field_str = field_string,
+            k_count = 0,
+            K_count = 0,
+            q_count = 0,
+            Q_count = 0,
+            legal_chars = ["k", "K", "q", "Q"],
+            i = 0,
+            curr_char;
+        if (field_str.length > 4 || field_str.length === 0) {
+            improperFieldException("Castling Availability field contained a string of improper format. The field should be at least 1 character in length, and no longer than 4 characters.");
+        } else if (field_str === "-") {
+            // successful castling availability parsing (No Castling Availability)
+            return field_str;
+        } else {
+            // parse through 
+            for (i; i < field_str.length; i = i + 1) {
+                // get current character in field string
+                curr_char = field_str.charAt(i);
+                // verify that the current character is a legal one
+                if (legal_chars.indexOf(curr_char) === -1) {
+                    improperFieldException("Castling Availability field contained a string of improper format. The field may only consist of a '-' or some combination of the following characters: 'k', 'K', 'q','Q'. ");
+                } else {
+                    // keep track of character counts so that duplicates can flag an error
+                    if (curr_char === k_count) {
+                        k_count = k_count + 1;
+                    } else if (curr_char === K_count) {
+                        K_count = K_count + 1;
+                    } else if (curr_char === q_count) {
+                        q_count = q_count + 1;
+                    } else if (curr_char === Q_count) {
+                        Q_count = Q_count + 1;
+                    }
+                }
+            }
+            // verify that there are no duplicate characters read
+            if (k_count > 1 || K_count > 1 || q_count > 1 || Q_count > 1) {
+                improperFieldException("Castling Availability field contained a string of improper format. The field may contain no duplicate characters.");
+            } else {
+                // successful castling availability parsing (Some Castling Availability)
+                return field_str;
+            }
+        }
     }
     // Return: string primitive
     // Descr: Parse a string primitive and return the En Passante Target field (4)
@@ -325,4 +366,4 @@ var FEN_position = function (fen_string) {
 };
 
 var fen = new FEN_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-console.log(fen.getActiveColor());
+console.log(fen.getCastlingAvailability());
