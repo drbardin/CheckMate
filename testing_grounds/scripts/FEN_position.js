@@ -121,9 +121,9 @@ var FEN_position = function (fen_string) {
         //      "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
         //           ^      ^      ^ ^ ^ ^      ^       ^
         //
-        // (rank#):  1      2      3 4 5 6      7       8
+        // (rank#):  8      7      6 5 4 3      2       1
         //                            |
-        //                            Rank 3, 4, 5, and 6 are occupied by 8 empty squares each. 
+        //                            Rank 6, 5, 4, and 3 are occupied by 8 empty squares each. 
         //                            Any # indicates that many empty squares, so for example 3pp3
         //                            would represent 3 whitespaces, two black pawns, and 3 whitespaces. 
         // So how to parse this...
@@ -170,8 +170,8 @@ var FEN_position = function (fen_string) {
             // set # of files that each legal character takes up (DO NOT EDIT THIS LIST WITHOUT EDITING legal_chars)
             num_files = {r: 1, n: 1, b: 1, q: 1, k: 1, p: 1, R: 1, N: 1, B: 1, Q: 1, K: 1, P: 1, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8};
             // set index denoting current rank
-            i = 1;
-            for (i; i <= 8; i = i + 1) {
+            i = 8;
+            for (i; i >= 1; i = i - 1) {
                 // get string description of piece placement at this rank
                 rank_str = field_arr[i - 1];
                 file_count = 0;
