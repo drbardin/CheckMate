@@ -290,6 +290,19 @@ var FEN_position = function (fen_string) {
     // Descr: Parse a string primitive and return the En Passante Target field (4)
     function parseEnPassanteTarget(field_string) {
             //TODO
+        var field_str = field_string,
+            legal_targets = ["a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3", "a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6"];
+        if (field_str === "-") {
+            // successful en passante target parsing (No Target)
+            return field_str;
+        } else if (legal_targets.indexOf(field_str) !== -1) {
+            // NOTE: this is not checking to see if the piece placement field is consistent w/ the en passante target field
+            // successful en passante target parsing (Legal Target Specified)
+            return field_str;
+        } else {
+            // invalid string specified
+            improperFieldException("En Passante Target field contained a string of improper format. The conceivable target squares for an en passant capture are: a3, b3, c3, ... , h3, a6, b6, c6, ... , h6.");
+        }
     }
     // Return: string primitive
     // Descr: Parse a string primitive and return the Halfmove Clock field (5)
@@ -366,4 +379,4 @@ var FEN_position = function (fen_string) {
 };
 
 var fen = new FEN_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-console.log(fen.getCastlingAvailability());
+alert(fen.getEnPassanteTarget());
