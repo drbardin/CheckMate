@@ -82,9 +82,8 @@ var checkType = function (expected_type, val) {
 //////////////////////////////////////////
 //~~~~~~~~~~~~ FEN OBJECT ~~~~~~~~~~~~~~//
 //////////////////////////////////////////
-var FEN_position = function (fen_string) {
+var Fen_Object  = function (fen_string) {
     "use strict";
-    
 ////////////////
 // EXCEPTIONS //
 ////////////////
@@ -307,12 +306,36 @@ var FEN_position = function (fen_string) {
     // Return: string primitive
     // Descr: Parse a string primitive and return the Halfmove Clock field (5)
     function parseHalfmoveClock(field_string) {
-            //TODO
+        var field_str = field_string,
+			num_val = +field_str;
+        // verify that the field string literal is a #
+		if (isNaN(field_str)) {
+			improperFieldException("Halfmove Clock field contained a string of improper format. This string literal should be equivalent to a numeric value that is a natural #.");
+		} else if (num_val < 0) {
+			//verify that the # is not negative
+            improperFieldException("Halfmove Clock field contained a string of improper format. This string literal should be a natural # (i.e. 0 or some positive integer).");
+		} else {
+            //// NOTE: this method is not checking for consistency w/ the piece placement field. 
+			//successful halfmove clock parsing
+			return field_str;
+		}
     }
     // Return: string primitive
     // Descr: Parse a string primitive and return the Fullmove Number field (6)
     function parseFullmoveNumber(field_string) {
-            //TODO
+        var field_str = field_string,
+			num_val = +field_str;
+        // verify that the field string literal is a #
+		if (isNaN(field_str)) {
+			improperFieldException("Fullmove Clock field contained a string of improper format. This string literal should be equivalent to a numeric value that is a natural #.");
+		} else if (num_val < 0) {
+			//verify that the # is not negative
+            improperFieldException("Fullmove Clock field contained a string of improper format. This string literal should be a natural # (i.e. 0 or some positive integer).");
+		} else {
+            // NOTE: this method is not checking for consistency w/ the piece placement field. 
+			//successful fullmove clock parsing
+			return field_str;
+		}
     }
     
     // Return: boolean
@@ -352,9 +375,10 @@ var FEN_position = function (fen_string) {
             }
         }
     }
-    
+/////////////////////////
+// PSEUDO -CONSTRUCTOR //
+/////////////////////////
     formatCheckFEN(fen_string);
-    
 ///////////////////////
 // FEN-FIELD GETTERS //
 ///////////////////////
@@ -378,5 +402,10 @@ var FEN_position = function (fen_string) {
     };
 };
 
-var fen = new FEN_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-alert(fen.getEnPassanteTarget());
+var fen = new Fen_Object("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+alert(fen.getPiecePlacement() + "\n"
+      + fen.getActiveColor() + "\n"
+      + fen.getCastlingAvailability() + "\n"
+      + fen.getEnPassanteTarget() + "\n"
+      + fen.getHalfmoveClock() + "\n"
+      + fen.getFullmoveNumber());
