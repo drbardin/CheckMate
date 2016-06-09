@@ -400,12 +400,10 @@ var Fen_Object  = function (fen_string) {
     this.getFullmoveNumber = function () {
         return fullmove_number;
     };
+    this.toString = function() {
+        return (piece_placement + " " + active_color + " " + castling_availability + " " + en_passante_target + " " + halfmove_clock + " " + fullmove_number);
+    };
 };
 
 var fen = new Fen_Object("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-alert(fen.getPiecePlacement() + "\n"
-      + fen.getActiveColor() + "\n"
-      + fen.getCastlingAvailability() + "\n"
-      + fen.getEnPassanteTarget() + "\n"
-      + fen.getHalfmoveClock() + "\n"
-      + fen.getFullmoveNumber());
+console.log(fen.toString());
